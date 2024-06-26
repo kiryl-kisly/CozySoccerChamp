@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0"/>
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.9.0"/>
+        <PackageReference Include="Telegram.Bot" Version="19.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CozySoccerChamp.Domain\CozySoccerChamp.Domain.csproj" />
+      <ProjectReference Include="..\ExternalServices\CozySoccerChamp.External.SoccerApi\CozySoccerChamp.External.SoccerApi.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="BackgroundServices\Jobs\" />
+      <Folder Include="Caches\" />
+    </ItemGroup>
+
+</Project>
