@@ -8,8 +8,10 @@ public class Prediction : BaseEntity
     public int MatchId { get; set; }
     public int? PredictedHomeScore { get; set; }
     public int? PredictedAwayScore { get; set; }
-    public double? PointPerMatch { get; set; }
     public DateTime PredictionTime { get; set; }
+    
+    public int? PointPerMatch { get; set; }
+    public double Coefficient { get; set; }
 
     public virtual ApplicationUser User { get; set; }
     public virtual Match Match { get; set; }
