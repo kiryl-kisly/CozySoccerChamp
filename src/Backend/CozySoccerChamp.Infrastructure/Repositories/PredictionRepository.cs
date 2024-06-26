@@ -1,3 +1,3 @@
 namespace CozySoccerChamp.Infrastructure.Repositories;
 
-public class PredictionRepository(DbContext context) : Repository<Prediction>(context), IPredictionRepository;
+public class PredictionRepository(ApplicationDbContext context) : Repository<Prediction>(context), IPredictionRepository;

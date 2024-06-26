@@ -1,13 +1,14 @@
 using CozySoccerChamp.External.SoccerApi.Extensions;
+using CozySoccerChamp.Infrastructure.Mappers;
 using Quartz;
 
 namespace CozySoccerChamp.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // services.AddAutoMapper(typeof(MappingProfile));
+        services.AddAutoMapper(typeof(MappingProfile));
 
         services
             .AddDbContext(configuration)
@@ -46,8 +47,8 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddTelegramWebhook(configuration)
-            .AddQuartzJobs(configuration);
+            .AddTelegramWebhook(configuration);
+            //.AddQuartzJobs(configuration);
 
         return services;
     }
@@ -74,39 +75,39 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static IServiceCollection AddQuartzJobs(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddQuartz(quartz =>
-        {
-            // quartz
-            //     .AddJobAndTrigger<DataProcessingJob>(configuration);
-        });
-
-        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
-
-        return services;
-    }
-
-    private static IServiceCollectionQuartzConfigurator AddJobAndTrigger<T>(this IServiceCollectionQuartzConfigurator quartz, IConfiguration configuration)
-        where T : IJob
-    {
-        const string sectionName = "JobScheduleSettings";
-
-        var jobName = typeof(T).Name;
-        var configKey = $"{sectionName}:{jobName}";
-        var cronSchedule = configuration[configKey];
-
-        if (string.IsNullOrEmpty(cronSchedule))
-            throw new InvalidOperationException($"No Quartz.NET Cron schedule found for job in configuration at {configKey}");
-
-        var jobKey = new JobKey(jobName);
-        quartz.AddJob<T>(options => options.WithIdentity(jobKey));
-
-        quartz.AddTrigger(options => options
-            .WithIdentity(jobName + "-trigger")
-            .ForJob(jobKey)
-            .WithCronSchedule(cronSchedule));
-
-        return quartz;
-    }
+    // private static IServiceCollection AddQuartzJobs(this IServiceCollection services, IConfiguration configuration)
+    // {
+    //     services.AddQuartz(quartz =>
+    //     {
+    //         quartz
+    //             .AddJobAndTrigger<DataProcessingJob>(configuration);
+    //     });
+    //
+    //     services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+    //
+    //     return services;
+    // }
+    //
+    // private static IServiceCollectionQuartzConfigurator AddJobAndTrigger<T>(this IServiceCollectionQuartzConfigurator quartz, IConfiguration configuration)
+    //     where T : IJob
+    // {
+    //     const string sectionName = "JobScheduleSettings";
+    //
+    //     var jobName = typeof(T).Name;
+    //     var configKey = $"{sectionName}:{jobName}";
+    //     var cronSchedule = configuration[configKey];
+    //
+    //     if (string.IsNullOrEmpty(cronSchedule))
+    //         throw new InvalidOperationException($"No Quartz.NET Cron schedule found for job in configuration at {configKey}");
+    //
+    //     var jobKey = new JobKey(jobName);
+    //     quartz.AddJob<T>(options => options.WithIdentity(jobKey));
+    //
+    //     quartz.AddTrigger(options => options
+    //         .WithIdentity(jobName + "-trigger")
+    //         .ForJob(jobKey)
+    //         .WithCronSchedule(cronSchedule));
+    //
+    //     return quartz;
+    // }
 }
