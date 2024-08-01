@@ -46,3 +46,6 @@ msbuild.wrn
 *.db
 *.db-shm
 *.db-wal
+
+# Migrations
+Migrations/
