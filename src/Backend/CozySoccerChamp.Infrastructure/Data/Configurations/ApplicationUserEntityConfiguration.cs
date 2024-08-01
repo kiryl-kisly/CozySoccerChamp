@@ -1,7 +1,3 @@
-using CozySoccerChamp.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace CozySoccerChamp.Infrastructure.Data.Configurations;
 
 public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>

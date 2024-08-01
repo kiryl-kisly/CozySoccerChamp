@@ -1,8 +1,4 @@
-using CozySoccerChamp.Domain.Entities.Soccer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace CozySoccerChamp.Infrastructure.Data.Configurations;
+namespace CozySoccerChamp.Infrastructure.Data.Configurations.Soccer;
 
 public class MatchEntityConfiguration : IEntityTypeConfiguration<Match>
 {
@@ -31,5 +27,10 @@ public class MatchEntityConfiguration : IEntityTypeConfiguration<Match>
             .WithOne(x => x.Match)
             .HasForeignKey<MatchResult>(x => x.MatchId)
             .IsRequired();
+
+        builder
+            .HasOne(x => x.Competition)
+            .WithMany(x => x.Matches)
+            .HasForeignKey(x => x.CompetitionId);
     }
 }

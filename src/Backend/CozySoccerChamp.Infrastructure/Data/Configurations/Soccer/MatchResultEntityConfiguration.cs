@@ -1,9 +1,4 @@
-using CozySoccerChamp.Domain.Entities.Soccer;
-using CozySoccerChamp.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace CozySoccerChamp.Infrastructure.Data.Configurations;
+namespace CozySoccerChamp.Infrastructure.Data.Configurations.Soccer;
 
 public class MatchResultEntityConfiguration : IEntityTypeConfiguration<MatchResult>
 {
@@ -16,6 +11,12 @@ public class MatchResultEntityConfiguration : IEntityTypeConfiguration<MatchResu
             .HasConversion(
                 v => v.ToString(),
                 v => (MatchResultStatus)Enum.Parse(typeof(MatchResultStatus), v));
+
+        builder
+            .Property(x => x.Duration)
+            .HasConversion(
+                v => v.ToString(),
+                v => (DurationStatus)Enum.Parse(typeof(DurationStatus), v));
 
         builder
             .HasOne(x => x.Match)

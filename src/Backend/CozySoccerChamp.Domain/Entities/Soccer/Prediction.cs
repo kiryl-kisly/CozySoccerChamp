@@ -11,7 +11,7 @@ public class Prediction : BaseEntity
     public DateTime PredictionTime { get; set; }
     
     public int? PointPerMatch { get; set; }
-    public double Coefficient { get; set; }
+    public double? Coefficient { get; set; }
 
     public virtual ApplicationUser User { get; set; }
     public virtual Match Match { get; set; }

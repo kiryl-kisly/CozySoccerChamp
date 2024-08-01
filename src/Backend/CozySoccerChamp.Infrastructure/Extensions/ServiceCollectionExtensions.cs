@@ -1,4 +1,7 @@
 using CozySoccerChamp.External.SoccerApi.Extensions;
+using CozySoccerChamp.Infrastructure.BackgroundServices;
+using CozySoccerChamp.Infrastructure.BackgroundServices.Jobs;
+using CozySoccerChamp.Infrastructure.BackgroundServices.Jobs.Settings;
 using CozySoccerChamp.Infrastructure.Mappers;
 using Quartz;
 
@@ -13,8 +16,9 @@ public static class ServiceCollectionExtensions
         services
             .AddDbContext(configuration)
             .AddRepositories()
-            .AddBackgroundServices(configuration)
-            .AddSoccerApiClient(configuration);
+            .AddSoccerApiClient(configuration)
+            .AddTelegramClient(configuration)
+            .AddBackgroundServices(configuration);
 
         return services;
     }
@@ -36,6 +40,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
+        services.AddScoped<ICompetitionRepository, CompetitionRepository>();
         services.AddScoped<IMatchRepository, MatchRepository>();
         services.AddScoped<IMatchResultRepository, MatchResultRepository>();
         services.AddScoped<ITeamRepository, TeamRepository>();
@@ -44,23 +49,12 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static IServiceCollection AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
-    {
-        services
-            .AddTelegramWebhook(configuration);
-            //.AddQuartzJobs(configuration);
-
-        return services;
-    }
-
-    private static IServiceCollection AddTelegramWebhook(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddTelegramClient(this IServiceCollection services, IConfiguration configuration)
     {
         var settings = configuration.GetSection(BotSettings.SectionName).Get<BotSettings>()
                        ?? throw new InvalidOperationException($"{BotSettings.SectionName} not found");
 
         services.AddSingleton(settings);
-
-        services.AddHostedService<TelegramWebhookHostedService>();
 
         services
             .AddHttpClient(settings.ClientName)
@@ -71,43 +65,57 @@ public static class ServiceCollectionExtensions
                 return new TelegramBotClient(options, httpClient);
             });
 
+        return services;
+    }
+
+    private static IServiceCollection AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        var settings = configuration.GetSection(PointCalculateSettings.SectionName).Get<PointCalculateSettings>()
+                       ?? throw new InvalidOperationException($"{PointCalculateSettings.SectionName} not found");
+
+        services.AddSingleton(settings);
+        
+        services
+            .AddHostedService<DataInitialization>()
+            .AddHostedService<TelegramSetWebhook>();
+
+        services.AddQuartzJobs(configuration);
 
         return services;
     }
 
-    // private static IServiceCollection AddQuartzJobs(this IServiceCollection services, IConfiguration configuration)
-    // {
-    //     services.AddQuartz(quartz =>
-    //     {
-    //         quartz
-    //             .AddJobAndTrigger<DataProcessingJob>(configuration);
-    //     });
-    //
-    //     services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
-    //
-    //     return services;
-    // }
-    //
-    // private static IServiceCollectionQuartzConfigurator AddJobAndTrigger<T>(this IServiceCollectionQuartzConfigurator quartz, IConfiguration configuration)
-    //     where T : IJob
-    // {
-    //     const string sectionName = "JobScheduleSettings";
-    //
-    //     var jobName = typeof(T).Name;
-    //     var configKey = $"{sectionName}:{jobName}";
-    //     var cronSchedule = configuration[configKey];
-    //
-    //     if (string.IsNullOrEmpty(cronSchedule))
-    //         throw new InvalidOperationException($"No Quartz.NET Cron schedule found for job in configuration at {configKey}");
-    //
-    //     var jobKey = new JobKey(jobName);
-    //     quartz.AddJob<T>(options => options.WithIdentity(jobKey));
-    //
-    //     quartz.AddTrigger(options => options
-    //         .WithIdentity(jobName + "-trigger")
-    //         .ForJob(jobKey)
-    //         .WithCronSchedule(cronSchedule));
-    //
-    //     return quartz;
-    // }
+    private static void AddQuartzJobs(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddQuartz(quartz =>
+        {
+            quartz
+                .AddJobAndTrigger<MatchDataProcessingJob>(configuration)
+                .AddJobAndTrigger<PointCalculatingJob>(configuration);
+        });
+
+        services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+    }
+
+    private static IServiceCollectionQuartzConfigurator AddJobAndTrigger<T>(this IServiceCollectionQuartzConfigurator quartz, IConfiguration configuration)
+        where T : IJob
+    {
+        const string sectionName = "JobScheduleSettings";
+
+        var jobName = typeof(T).Name;
+        var configKey = $"{sectionName}:{jobName}";
+        var cronSchedule = configuration[configKey];
+
+        if (string.IsNullOrEmpty(cronSchedule))
+            throw new InvalidOperationException($"No Quartz.NET Cron schedule found for job in configuration at {configKey}");
+
+        var jobKey = new JobKey(jobName);
+        quartz.AddJob<T>(options => options.WithIdentity(jobKey));
+
+        quartz.AddTrigger(options => options
+            .WithIdentity(jobName + "-trigger")
+            .ForJob(jobKey)
+            .WithCronSchedule(cronSchedule));
+
+        return quartz;
+    }
 }

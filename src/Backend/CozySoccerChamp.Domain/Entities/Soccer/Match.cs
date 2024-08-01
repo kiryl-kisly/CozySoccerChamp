@@ -10,10 +10,12 @@ public class Match : BaseEntity
     public char? Group { get; set; }
     public string Stage { get; set; }
     public DateTime MatchTime { get; set; }
+    public int? CompetitionId { get; set; }
 
     public virtual Team TeamHome { get; set; }
     public virtual Team TeamAway { get; set; }
     public virtual MatchResult MatchResult { get; set; }
+    public virtual Competition Competition { get; set; }
     
     public virtual ICollection<Prediction> Predictions { get; set; }
 }

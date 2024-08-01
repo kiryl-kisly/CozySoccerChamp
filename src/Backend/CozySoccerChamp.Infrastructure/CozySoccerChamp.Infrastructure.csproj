@@ -24,9 +24,4 @@
       <ProjectReference Include="..\ExternalServices\CozySoccerChamp.External.SoccerApi\CozySoccerChamp.External.SoccerApi.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="BackgroundServices\Jobs\" />
-      <Folder Include="Caches\" />
-    </ItemGroup>
-
 </Project>

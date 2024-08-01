@@ -33,4 +33,7 @@ public class MatchResponse
     
     [JsonProperty("group")]
     public string Group { get; set; }
+    
+    [JsonProperty("competition")]
+    public CompetitionResponse Competition { get; set; }
 }

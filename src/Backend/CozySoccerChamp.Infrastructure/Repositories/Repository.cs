@@ -4,69 +4,106 @@ namespace CozySoccerChamp.Infrastructure.Repositories;
 
 public abstract class Repository<TEntity>(DbContext context) : IRepository<TEntity> where TEntity : BaseEntity
 {
-    private DbSet<TEntity> Entities => context.Set<TEntity>();
+    private DbSet<TEntity> DbSet => context.Set<TEntity>();
 
-    public virtual Task<List<TEntity>> GetAllAsync(bool tracked = true)
+    public async Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes)
     {
-        return GetQueryable(tracked)
-            .ToListAsync();
+        var entity = await DbSet.FindAsync(id);
+
+        ArgumentNullException.ThrowIfNull(entity);
+
+        if (includes.Length == 0)
+            return entity;
+
+        foreach (var include in includes)
+        {
+            await context.Entry(entity).Reference(include!).LoadAsync();
+        }
+
+        return entity;
     }
 
-    public virtual Task<TEntity?> GetByIdAsync(int id, bool tracked = true)
+    public async Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = false, params Expression<Func<TEntity, object>>[] includes)
     {
-        return GetQueryable(tracked)
-            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+        IQueryable<TEntity> query = DbSet;
+
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        if (asNoTracking)
+        {
+            query = query.AsNoTracking();
+        }
+
+        return await query.ToListAsync();
     }
 
-    public async Task<List<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> expression)
+    public IQueryable<TEntity> GetAllAsQueryable(bool asNoTracking = false)
     {
-        return await Entities.Where(expression).ToListAsync();
+        return asNoTracking
+            ? DbSet.AsNoTracking()
+            : DbSet;
     }
 
-    public virtual async Task<TEntity> CreateAsync(TEntity entity)
+    public async Task AddAsync(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        await context.AddAsync(entity);
+        await DbSet.AddAsync(entity);
         await SaveChangesAsync();
-
-        return entity;
     }
 
-    public async Task<List<TEntity>> CreateAsync(ICollection<TEntity> entities)
+    public async Task AddRangeAsync(IEnumerable<TEntity> entities)
     {
-        await Entities.AddRangeAsync(entities);
-        await context.SaveChangesAsync();
-
-        return entities.ToList();
+        await DbSet.AddRangeAsync(entities);
+        await SaveChangesAsync();
     }
 
-    public virtual async Task<TEntity> UpdateAsync(TEntity entity)
+    public async Task UpdateAsync(TEntity entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        Entities.Update(entity);
-        await SaveChangesAsync();
+        DbSet.Attach(entity);
+        context.Entry(entity).State = EntityState.Modified;
 
-        return entity;
+        await SaveChangesAsync();
     }
 
-    public virtual async Task<TEntity?> DeleteAsync(int id)
+    public async Task UpdateRangeAsync(IEnumerable<TEntity> entities)
     {
-        var entity = await GetByIdAsync(id, tracked: true);
-
-        if (entity is null)
-            return null;
-
-        Entities.Remove(entity);
+        context.Set<TEntity>().UpdateRange(entities);
         await SaveChangesAsync();
-
-        return entity;
     }
 
-    private IQueryable<TEntity> GetQueryable(bool tracked = true) => tracked
-        ? Entities.AsQueryable()
-        : Entities.AsNoTracking();
+    public async Task DeleteAsync(int id)
+    {
+        var entity = await DbSet.FindAsync(id);
+
+        if (entity is not null)
+        {
+            DbSet.Remove(entity);
+            await SaveChangesAsync();
+        }
+    }
+
+    public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
+    {
+        IQueryable<TEntity> query = DbSet;
+
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return await query.FirstOrDefaultAsync(predicate);
+    }
+
+    public async Task<bool> AnyAsync()
+    {
+        return await DbSet.AnyAsync();
+    }
 
     private Task<int> SaveChangesAsync() => context.SaveChangesAsync();
 }

@@ -1,10 +1,14 @@
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace CozySoccerChamp.Infrastructure.BackgroundServices.TelegramWebhook;
 
-public class TelegramWebhookHostedService(IServiceProvider serviceProvider, BotSettings botSettings) : IHostedService
+public class TelegramSetWebhook(
+    IServiceProvider serviceProvider,
+    BotSettings botSettings,
+    ILogger<TelegramSetWebhook> logger) : BackgroundService
 {
-    public async Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         using var scope = serviceProvider.CreateScope();
         var botClient = scope.ServiceProvider.GetRequiredService<ITelegramBotClient>();
@@ -13,7 +17,7 @@ public class TelegramWebhookHostedService(IServiceProvider serviceProvider, BotS
 
         var allowedUpdates = new[]
         {
-            UpdateType.Message,
+            UpdateType.Message
         };
 
         await botClient.SetWebhookAsync(
@@ -21,13 +25,7 @@ public class TelegramWebhookHostedService(IServiceProvider serviceProvider, BotS
             allowedUpdates: allowedUpdates,
             secretToken: botSettings.SecretToken,
             cancellationToken: cancellationToken);
-    }
 
-    public async Task StopAsync(CancellationToken cancellationToken)
-    {
-        using var scope = serviceProvider.CreateScope();
-        var botClient = scope.ServiceProvider.GetRequiredService<ITelegramBotClient>();
-
-        await botClient.DeleteWebhookAsync(cancellationToken: cancellationToken);
+        logger.LogInformation("Telegram set webhook: {Url}", webhookAddress);
     }
 }

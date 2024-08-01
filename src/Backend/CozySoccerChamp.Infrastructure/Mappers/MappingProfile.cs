@@ -17,7 +17,24 @@ public class MappingProfile : Profile
 
         CreateMap<TeamResponse, Team>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.ShortName))
-            .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.CodeName));
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))
+            .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.CodeName))
+            .ForMember(dest => dest.EmblemUrl, opt => opt.MapFrom(src => src.EmblemUrl));
+
+        CreateMap<MatchResponse, Match>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ExternalMatchId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Group, opt => opt.MapFrom(src =>
+                string.IsNullOrEmpty(src.Group) ? (char?)null : src.Group.Replace("GROUP_", "").ToCharArray()[0]))
+            .ForMember(dest => dest.Stage, opt => opt.MapFrom(src =>
+                src.Matchday.HasValue && src.Stage == "GROUP_STAGE" ? $"{src.Stage}_{src.Matchday.Value}" : src.Stage))
+            .ForMember(dest => dest.MatchTime, opt => opt.MapFrom(src => src.StartDateUtc))
+            .ForMember(dest => dest.Competition, opt => opt.Ignore())
+            .ForMember(dest => dest.MatchResult, opt => opt.Ignore());
+
+        CreateMap<CompetitionResponse, Competition>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.EmblemUrl, opt => opt.MapFrom(src => src.EmblemUrl));
     }
 }

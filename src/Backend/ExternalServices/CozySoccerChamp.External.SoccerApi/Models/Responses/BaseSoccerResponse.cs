@@ -4,9 +4,6 @@ namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
 public class BaseSoccerResponse
 {
-    [JsonProperty("competition")]
-    public Competition Competition { get; set; }
-
     [JsonProperty("matches")]
     public IReadOnlyCollection<MatchResponse> Matches { get; set; }
 

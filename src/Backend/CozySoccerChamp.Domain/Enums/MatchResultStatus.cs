@@ -1,6 +1,6 @@
 namespace CozySoccerChamp.Domain.Enums;
 
-public enum MatchResultStatus
+public enum MatchResultStatus : byte
 {
     Timed,
     Started,

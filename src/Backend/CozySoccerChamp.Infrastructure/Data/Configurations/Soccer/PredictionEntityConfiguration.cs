@@ -1,8 +1,4 @@
-using CozySoccerChamp.Domain.Entities.Soccer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace CozySoccerChamp.Infrastructure.Data.Configurations;
+namespace CozySoccerChamp.Infrastructure.Data.Configurations.Soccer;
 
 public class PredictionEntityConfiguration : IEntityTypeConfiguration<Prediction>
 {

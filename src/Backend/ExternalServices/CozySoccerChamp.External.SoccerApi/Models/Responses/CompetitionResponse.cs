@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
-public class Competition
+public class CompetitionResponse
 {
     [JsonProperty("name")]
     public string Name { get; set; }
