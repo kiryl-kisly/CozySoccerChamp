@@ -23,7 +23,7 @@ public class MatchResponse
     public TeamResponse AwayTeam { get; set; }
     
     [JsonProperty("score")]
-    public ScoreResponse Score { get; set; }
+    public MatchResultResponse MatchResult { get; set; }
     
     [JsonProperty("matchday")]
     public int? Matchday { get; set; }

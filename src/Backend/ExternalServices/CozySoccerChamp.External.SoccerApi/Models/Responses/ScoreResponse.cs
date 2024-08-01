@@ -4,15 +4,9 @@ namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
 public class ScoreResponse
 {
-    [JsonProperty("winner")]
-    public string Winner { get; set; }
+    [JsonProperty("home")]
+    public int? HomeTeamScore { get; set; }
     
-    [JsonProperty("duration")]
-    public string Duration { get; set; }
-    
-    [JsonProperty("fullTime")]
-    public MatchResultResponse FullTime { get; set; }
-    
-    [JsonProperty("halfTime")]
-    public MatchResultResponse HalfTime { get; set; }
+    [JsonProperty("away")]
+    public int? AwayTeamScore { get; set; }
 }

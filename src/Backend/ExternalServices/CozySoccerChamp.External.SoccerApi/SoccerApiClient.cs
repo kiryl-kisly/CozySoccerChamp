@@ -10,16 +10,16 @@ public class SoccerApiClient(SoccerApiSettings settings) : ISoccerApiClient
 {
     private const string XAuthTokenHeader = "X-Auth-Token";
 
-    private const string MatchesRoute = $"/v4/competitions/EC/matches";
-    private const string TeamsRoute = "/v4/competitions/EC/teams";
+    private const string MatchesRoute = "/v4/competitions/CL/matches";
+    private const string TeamsRoute = "/v4/competitions/CL/teams";
     private const string SeasonQueryParameterName = "season";
-    
+
     private readonly RestClientOptions _restClientOptions = new(settings.BaseUrl)
     {
         ThrowOnAnyError = true,
-        MaxTimeout = 5000 // 5 second 
+        Timeout = TimeSpan.FromSeconds(5)
     };
-    
+
     public async Task<IReadOnlyCollection<MatchResponse>> GetMatchesAsync(int season)
     {
         try
