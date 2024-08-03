@@ -2,8 +2,6 @@ using System.Diagnostics;
 using AutoMapper;
 using CozySoccerChamp.External.SoccerApi.Abstractions;
 using CozySoccerChamp.External.SoccerApi.Models.Responses;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace CozySoccerChamp.Infrastructure.BackgroundServices;
 
@@ -93,8 +91,9 @@ public class DataInitialization(
             return;
 
         var competitionId = await CreateAndGetCompetitionId(matchesData.FirstOrDefault()!.Competition);
-        
+
         var matches = new List<Match>();
+
         foreach (var match in matchesData)
         {
             var teamHome = await _teamRepository.FindAsync(x => x.CodeName == match.HomeTeam.CodeName);
@@ -108,9 +107,9 @@ public class DataInitialization(
 
             matches.Add(matchEntity);
         }
-        
+
         await _matchRepository.AddRangeAsync(matches);
-        
+
         #region local methods
 
         async Task<int?> CreateAndGetCompetitionId(CompetitionResponse source)

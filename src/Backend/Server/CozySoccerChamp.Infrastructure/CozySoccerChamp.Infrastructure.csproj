@@ -15,13 +15,13 @@
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0"/> 
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0"/>
-        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.11.0" />
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.12.0" />
         <PackageReference Include="Telegram.Bot" Version="19.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\ExternalServices\CozySoccerChamp.External.SoccerApi\CozySoccerChamp.External.SoccerApi.csproj" />
       <ProjectReference Include="..\CozySoccerChamp.Domain\CozySoccerChamp.Domain.csproj" />
-      <ProjectReference Include="..\ExternalServices\CozySoccerChamp.External.SoccerApi\CozySoccerChamp.External.SoccerApi.csproj" />
     </ItemGroup>
 
 </Project>
