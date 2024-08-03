@@ -1,27 +1,27 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace CozySoccerChamp.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class MatchController : ControllerBase
+[Produces("application/json")]
+[Consumes("application/json")]
+public class MatchController(IMatchService matchService) : ControllerBase
 {
     /// <summary>
-    /// Получить список всех матчей
+    ///     Получить информацию о всех матчах
     /// </summary>
     [HttpGet]
-    public Task<IActionResult> Get()
+    public async Task<IReadOnlyCollection<MatchResponse>> GetAll()
     {
-        throw new NotImplementedException();
+        return await matchService.GetAllAsync();
     }
 
     /// <summary>
     /// Получить информацию по матчу
     /// </summary>
     /// <param name="matchId"> Уникальный идентификатор матча </param>
-    [HttpGet("/{matchId}")]
-    public Task<IActionResult> Get([FromRoute] int matchId)
+    [HttpGet("{matchId}")]
+    public async Task<MatchResponse> Get([FromRoute] int matchId)
     {
-        throw new NotImplementedException();
+        return await matchService.GetByIdAsync(matchId);
     }
 }

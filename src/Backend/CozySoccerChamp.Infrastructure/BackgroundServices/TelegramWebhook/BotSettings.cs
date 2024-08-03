@@ -9,4 +9,5 @@ public class BotSettings
     public string Route { get; init; } = default!;
     public string SecretToken { get; init; } = default!;
     public string ClientName { get; init; } = default!;
+    public string ClientUrl { get; init; } = default!;
 }

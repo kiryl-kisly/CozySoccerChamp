@@ -1,26 +1,32 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace CozySoccerChamp.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class PredictionController : ControllerBase
+[Produces("application/json")]
+[Consumes("application/json")]
+public class PredictionController(IPredictionService predictionService) : ControllerBase
 {
     /// <summary>
-    /// Создать новый прогноз на матч
+    ///     Создать новый прогноз на матч
     /// </summary>
+    /// <param name="request"> Запрос на создание предикта </param>
     [HttpPost]
-    public Task<IActionResult> Post(int matchId, long chatId)
+    public async Task<IActionResult> Create([FromBody] PredictionRequest request)
     {
-        throw new NotImplementedException();
+        await predictionService.CreateAsync(request);
+
+        return Ok(true);
     }
-    
+
     /// <summary>
-    /// Обновить прогноз на матч
+    ///     Обновить прогноз на матч
     /// </summary>
+    /// <param name="request"> Запрос на обновление предикта </param>
     [HttpPut]
-    public Task<IActionResult> Put(int matchId, long chatId)
+    public async Task<IActionResult> Update([FromBody] PredictionRequest request)
     {
-        throw new NotImplementedException();
+        await predictionService.UpdateAsync(request);
+
+        return Ok(true);
     }
 }

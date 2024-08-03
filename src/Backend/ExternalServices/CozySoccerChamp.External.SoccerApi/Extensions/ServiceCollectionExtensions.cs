@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSoccerApiClient(this IServiceCollection services, IConfiguration configuration)
     {
         var settings = configuration.GetSection(SoccerApiSettings.SectionName).Get<SoccerApiSettings>()
-                       ?? throw new InvalidOperationException($"{SoccerApiSettings.SectionName} not found");
+                       ?? throw new ApplicationException($"{SoccerApiSettings.SectionName} not found");
 
         services.AddSingleton(settings);
 

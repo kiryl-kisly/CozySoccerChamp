@@ -28,7 +28,7 @@ public static class ServiceCollectionExtensions
         const string sectionName = "DefaultDbConnection";
 
         var connectionString = configuration.GetConnectionString(sectionName)
-                               ?? throw new InvalidOperationException("ConnectionString not found");
+                               ?? throw new ApplicationException("ConnectionString not found");
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(connectionString));
@@ -52,7 +52,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddTelegramClient(this IServiceCollection services, IConfiguration configuration)
     {
         var settings = configuration.GetSection(BotSettings.SectionName).Get<BotSettings>()
-                       ?? throw new InvalidOperationException($"{BotSettings.SectionName} not found");
+                       ?? throw new ApplicationException($"{BotSettings.SectionName} not found");
 
         services.AddSingleton(settings);
 
@@ -71,7 +71,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
     {
         var settings = configuration.GetSection(PointCalculateSettings.SectionName).Get<PointCalculateSettings>()
-                       ?? throw new InvalidOperationException($"{PointCalculateSettings.SectionName} not found");
+                       ?? throw new ApplicationException($"{PointCalculateSettings.SectionName} not found");
 
         services.AddSingleton(settings);
         
@@ -106,7 +106,7 @@ public static class ServiceCollectionExtensions
         var cronSchedule = configuration[configKey];
 
         if (string.IsNullOrEmpty(cronSchedule))
-            throw new InvalidOperationException($"No Quartz.NET Cron schedule found for job in configuration at {configKey}");
+            throw new ApplicationException($"No Quartz.NET Cron schedule found for job in configuration at {configKey}");
 
         var jobKey = new JobKey(jobName);
         quartz.AddJob<T>(options => options.WithIdentity(jobKey));

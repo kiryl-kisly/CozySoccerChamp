@@ -43,7 +43,7 @@ public class DataInitialization(
                 return;
             }
 
-            var season = 2023; //DateTime.UtcNow.Year;
+            var season = 2023; // TODO: Пока в тесте есть только за 2023 сезон DateTime.UtcNow.Year;
 
             await TeamInitializationAsync(season);
             await MatchInitializationAsync(season);

@@ -8,7 +8,7 @@ public class Prediction : BaseEntity
     public int MatchId { get; set; }
     public int? PredictedHomeScore { get; set; }
     public int? PredictedAwayScore { get; set; }
-    public DateTime PredictionTime { get; set; }
+    public DateTime PredictionTime { get; set; } = DateTime.UtcNow;
     
     public int? PointPerMatch { get; set; }
     public double? Coefficient { get; set; }

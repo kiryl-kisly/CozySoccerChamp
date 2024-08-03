@@ -27,8 +27,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ExternalMatchId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Group, opt => opt.MapFrom(src =>
                 string.IsNullOrEmpty(src.Group) ? (char?)null : src.Group.Replace("GROUP_", "").ToCharArray()[0]))
-            .ForMember(dest => dest.Stage, opt => opt.MapFrom(src =>
-                src.Matchday.HasValue && src.Stage == "GROUP_STAGE" ? $"{src.Stage}_{src.Matchday.Value}" : src.Stage))
+            .ForMember(dest => dest.Stage, opt => opt.MapFrom(src => src.Stage))
+            .ForMember(dest => dest.MatchDay, opt => opt.MapFrom(src => src.Matchday))
             .ForMember(dest => dest.MatchTime, opt => opt.MapFrom(src => src.StartDateUtc))
             .ForMember(dest => dest.Competition, opt => opt.Ignore())
             .ForMember(dest => dest.MatchResult, opt => opt.Ignore());

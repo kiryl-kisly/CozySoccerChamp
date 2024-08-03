@@ -9,6 +9,7 @@ public class Match : BaseEntity
     public int? TeamAwayId { get; set; }
     public char? Group { get; set; }
     public string Stage { get; set; }
+    public int? MatchDay { get; set; }
     public DateTime MatchTime { get; set; }
     public int? CompetitionId { get; set; }
 

@@ -10,8 +10,9 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
     {
         var entity = await DbSet.FindAsync(id);
 
-        ArgumentNullException.ThrowIfNull(entity);
-
+        if (entity is null)
+            return null;
+        
         if (includes.Length == 0)
             return entity;
 
@@ -27,10 +28,7 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
     {
         IQueryable<TEntity> query = DbSet;
 
-        foreach (var include in includes)
-        {
-            query = query.Include(include);
-        }
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         if (asNoTracking)
         {
@@ -49,8 +47,6 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
 
     public async Task AddAsync(TEntity entity)
     {
-        ArgumentNullException.ThrowIfNull(entity);
-
         await DbSet.AddAsync(entity);
         await SaveChangesAsync();
     }
@@ -63,8 +59,6 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
 
     public async Task UpdateAsync(TEntity entity)
     {
-        ArgumentNullException.ThrowIfNull(entity);
-
         DbSet.Attach(entity);
         context.Entry(entity).State = EntityState.Modified;
 
@@ -92,10 +86,7 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
     {
         IQueryable<TEntity> query = DbSet;
 
-        foreach (var include in includes)
-        {
-            query = query.Include(include);
-        }
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         return await query.FirstOrDefaultAsync(predicate);
     }

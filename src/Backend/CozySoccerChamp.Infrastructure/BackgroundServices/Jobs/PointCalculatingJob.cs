@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using CozySoccerChamp.Infrastructure.BackgroundServices.Jobs.Settings;
-using Microsoft.Extensions.Logging;
 using Quartz;
 
 namespace CozySoccerChamp.Infrastructure.BackgroundServices.Jobs;

@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using CozySoccerChamp.External.SoccerApi.Abstractions;
 using CozySoccerChamp.External.SoccerApi.Models.Responses;
-using Microsoft.Extensions.Logging;
 using Quartz;
 
 namespace CozySoccerChamp.Infrastructure.BackgroundServices.Jobs;
@@ -36,7 +35,7 @@ public sealed class MatchDataProcessingJob(
 
     private async Task ExecuteAsync()
     {
-        var season = 2023; //DateTime.UtcNow.Year;
+        var season = 2023; // TODO: Пока в тесте есть только за 2023 сезон DateTime.UtcNow.Year;
 
         await MatchesProcessingAsync(season);
     }
