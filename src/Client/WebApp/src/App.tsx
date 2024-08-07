@@ -4,7 +4,9 @@ export function App() {
   return (
     <>
       <div>
-        Hello
+        <h1 className="text-7xl">
+          Hello world!
+        </h1>
       </div>
     </>
   )
