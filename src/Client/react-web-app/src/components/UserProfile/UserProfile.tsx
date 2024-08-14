@@ -1,13 +1,15 @@
-import { GiBearFace } from "react-icons/gi"
+import { GiBearFace } from 'react-icons/gi'
 
 export function UserProfile() {
 	return (
 		<>
-			<div className='relative w-full'>
-				<div className='absolute top-0 right-0'>
-					<div className='flex items-center space-x-2 text-white font-bold text-sm p-2'>
+			<div className="px-4 z-10">
+				<div className="flex items-center space-x-2 pt-4">
+					<div className="p-1 rounded-lg bg-[#1d2025]">
 						<GiBearFace size={25} />
-						<p>Lemon Drink</p>
+					</div>
+					<div>
+						<p className="text-sm">Lemon Drink</p>
 					</div>
 				</div>
 			</div>
