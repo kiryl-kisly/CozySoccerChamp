@@ -10,12 +10,12 @@ public class UserProfileController : ControllerBase
     ///     Изменить отображаемый никнейм пользователя в профиле
     /// </summary>
     /// <param name="userId"> UserId пользователя </param>
-    /// <param name="username"> Новый username пользователя </param>
+    /// <param name="newUserName"> Новый username пользователя </param>
     /// <param name="userService"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<UserResponse> ChangeUsername(int userId, string username, [FromServices] IUserService userService)
+    public async Task<UserResponse> ChangeUsername(int userId, string newUserName, [FromServices] IUserService userService)
     {
-        return await userService.ChangeUsernameAsync(userId, username);
+        return await userService.ChangeUsernameAsync(userId, newUserName);
     }
 }

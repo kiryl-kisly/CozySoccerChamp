@@ -7,7 +7,7 @@ internal sealed class ExceptionHandler(ILogger<ExceptionHandler> logger) : IExce
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        logger.LogError(exception, "Exception!: {Message}", exception.Message);
+        logger.LogError(exception, "Exception: {Message}", exception.Message);
         
         var errorResponse = new ErrorResponse
         {

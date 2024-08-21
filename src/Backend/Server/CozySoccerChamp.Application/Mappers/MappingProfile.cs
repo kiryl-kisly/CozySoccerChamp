@@ -10,7 +10,11 @@ public class MappingProfile : Profile
     {
         CreateMap<ApplicationUser, UserResponse>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName ?? string.Empty))
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>
+                src.UserName
+                ?? (string.IsNullOrEmpty(src.TelegramUserName)
+                    ? $"{src.TelegramUserName} {src.TelegramLastName}"
+                    : src.TelegramUserName)))
             .ReverseMap();
 
         CreateMap<Match, MatchResponse>()

@@ -6,7 +6,7 @@ namespace CozySoccerChamp.Domain.Entities;
 public class ApplicationUser : BaseEntity
 {
     public long ChatId { get; set; }
-    public string TelegramUsername { get; set; } = string.Empty;
+    public string TelegramUserName { get; set; } = string.Empty;
     public string TelegramFirstName { get; set; } = string.Empty;
     public string TelegramLastName { get; set; } = string.Empty;
 

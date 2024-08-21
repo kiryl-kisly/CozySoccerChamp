@@ -9,12 +9,16 @@ builder.Services
     .AddApplicationServices()
     .AddInfrastructureServices(builder.Configuration);
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseExceptionHandler();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5175"));
 
 app.MapControllers();
 
