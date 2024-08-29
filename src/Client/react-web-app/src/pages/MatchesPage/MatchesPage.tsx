@@ -1,7 +1,16 @@
-export function MatchesPage() {
+import { MatchCard } from '../../components/Match/MatchCard'
+import { IMatchResponse } from '../../services/interfaces/IMatchResponse'
+
+export function MatchesPage({ matches }: IMatchResponse) {
 	return (
 		<>
-			<h1 className='text-white'>MatchesPage</h1>
+
+			{matches.map((match: IMatchResponse, index: number) => (
+				<MatchCard match={match} />
+				// <div key={index}>
+				// 	<span>{match.teamHome?.shortName} - {match.teamAway?.shortName}</span>
+				// </div>
+			))}
 		</>
 	)
 }

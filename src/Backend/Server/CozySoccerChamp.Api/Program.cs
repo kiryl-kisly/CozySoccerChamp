@@ -18,7 +18,7 @@ app.UseSwaggerUI();
 
 app.UseExceptionHandler();
 
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5175"));
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 
 app.MapControllers();
 

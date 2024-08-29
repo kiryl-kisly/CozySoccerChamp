@@ -2,6 +2,15 @@ namespace CozySoccerChamp.Application.Services;
 
 public class UserService(IApplicationUserRepository userRepository, IMapper mapper) : IUserService
 {
+    public async Task<UserResponse> GetUserById(int userId)
+    {
+        var user = await userRepository.GetByIdAsync(userId);
+        if (user is null)
+            throw new ArgumentException($"{nameof(User)} not found");
+        
+        return mapper.Map<UserResponse>(user);
+    }
+
     public async Task<UserResponse> CreateOrGetAsync(Update update)
     {
         if (update.Message?.Chat is null)
