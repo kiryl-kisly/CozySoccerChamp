@@ -11,6 +11,10 @@
       <NoWarn>1701;1702;1591</NoWarn>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\net8.0\CozySoccerChamp.Api.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />

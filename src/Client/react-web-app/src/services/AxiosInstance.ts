@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
-const baseURL = 'http://localhost:5001/api/'
+const baseURL = 'http://localhost:8000/api/'
 
 const axiosClient = (): AxiosInstance => {
   const headers = {
