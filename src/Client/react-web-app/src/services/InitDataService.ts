@@ -9,8 +9,12 @@ export const getInitData = async (userId: number) => {
 			}
 		})
 
-	if (response.status == 200 && response.statusText == "OK")
-		response.data.isLoading = false
+	console.log(response)
+
+	if (response.status === 200) {
+		if (response.data.matches !== null)
+			response.data.isLoading = false
+	}
 
 	return response.data
 }
