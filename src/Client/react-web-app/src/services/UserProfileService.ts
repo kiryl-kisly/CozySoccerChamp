@@ -1,5 +1,5 @@
 import axiosClient from './AxiosInstance'
-import { IUserProfileResponse } from './interfaces/IUserProfileResponse'
+import { IUserProfileResponse } from './interfaces/Responses/IUserProfileResponse'
 
 export const changeUserName = async (userId: number, newUserName: string) => {
 

@@ -1,5 +1,5 @@
 import axiosClient from './AxiosInstance'
-import { IInitDataResponse } from './interfaces/IInitDataResponse'
+import { IInitDataResponse } from './interfaces/Responses/IInitDataResponse'
 
 export const getInitData = async (userId: number) => {
 	const response = await axiosClient().get<IInitDataResponse>('initData/get',

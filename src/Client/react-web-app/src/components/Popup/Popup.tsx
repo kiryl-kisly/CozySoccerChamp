@@ -27,7 +27,7 @@ export function Popup({ message, isError = false, duration = 2000 }: PopupProps)
 	}
 
 	const text = isError
-		? 'Oops, try again please'
+		? `Oops, something  wrong... ${message}`
 		: message
 
 	const icon = isError

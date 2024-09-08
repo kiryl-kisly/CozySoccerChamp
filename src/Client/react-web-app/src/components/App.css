@@ -1,5 +1,5 @@
 .main-container {
-	@apply flex-grow mt-4 bg-[#f3ba2f] rounded-t-[48px] relative z-0;
+	@apply flex-grow mt-8 bg-[#f3ba2f] rounded-t-[48px] relative z-0;
 	box-shadow: 0 -26px 20px rgba(98, 255, 0, 0.3)
 }
 

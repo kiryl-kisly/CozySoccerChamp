@@ -7,7 +7,7 @@ import { SettingsPage } from '../pages/SettingsPage/SettingsPage'
 import { TablePage } from '../pages/TablePage/TablePage'
 import { TeamPage } from '../pages/TeamPage/TeamPage'
 import { getInitData } from '../services/InitDataService'
-import { IInitDataResponse } from '../services/interfaces/IInitDataResponse'
+import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
 import './App.css'
 import { Menu } from './Menu/Menu'
 import { UserProfile } from './UserProfile/UserProfile'
@@ -16,12 +16,13 @@ export function App() {
   const [data, setData] = useState<IInitDataResponse>({
     isLoading: true,
     userProfile: null,
-    matches: null
+    matches: null,
+    predictions: null
   })
 
   useEffect(() => {
     async function fetchData() {
-      setData((await getInitData(2)))
+      setData((await getInitData(1)))
     }
     fetchData()
   }, [])
@@ -39,8 +40,8 @@ export function App() {
 
                 <Routes>
                   <Route path="/" element={<Layout />}>
-                    <Route index element={<MatchesPage matches={data.matches} />} />
-                    <Route path='matches' element={<MatchesPage matches={data.matches} />} />
+                    <Route index element={<MatchesPage matches={data.matches} predictions={data.predictions} />} />
+                    <Route path='matches' element={<MatchesPage matches={data.matches} predictions={data.predictions} />} />
                     <Route path='prediction' element={<PredictionPage />} />
                     <Route path='settings' element={<SettingsPage />} />
                     <Route path='table' element={<TablePage />} />

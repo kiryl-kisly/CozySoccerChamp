@@ -8,7 +8,7 @@ export interface IMatchResponse {
 	stage: string | null
 	matchDay: number | null
 	competitionId: number | null
-	teamHome: ITeamResponse | null | null
-	teamAway: ITeamResponse | null | null
+	teamHome: ITeamResponse | null
+	teamAway: ITeamResponse | null
 	matchResult: IMatchResultResponse | null
 }	
