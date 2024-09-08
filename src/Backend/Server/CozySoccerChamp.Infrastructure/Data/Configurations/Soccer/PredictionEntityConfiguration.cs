@@ -15,5 +15,9 @@ public class PredictionEntityConfiguration : IEntityTypeConfiguration<Prediction
             .HasOne(x => x.Match)
             .WithMany(x => x.Predictions)
             .HasForeignKey(x => x.MatchId);
+        
+        builder
+            .HasIndex(x => new { x.UserId, x.MatchId })
+            .IsUnique();
     }
 }

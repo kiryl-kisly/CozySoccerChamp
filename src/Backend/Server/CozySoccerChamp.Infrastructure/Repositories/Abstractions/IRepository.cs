@@ -6,11 +6,11 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
 {
     Task<TEntity?> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includes);
     Task<IEnumerable<TEntity>> GetAllAsync(bool asNoTracking = false, params Expression<Func<TEntity, object>>[] includes);
-    IQueryable<TEntity> GetAllAsQueryable(bool asNoTracking = false);
+    IQueryable<TEntity> GetAllAsQueryable(bool asNoTracking = false, params Expression<Func<TEntity, object>>[] includes);
 
-    Task AddAsync(TEntity entity);
+    Task<TEntity> AddAsync(TEntity entity);
     Task AddRangeAsync(IEnumerable<TEntity> entities);
-    Task UpdateAsync(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity);
     Task UpdateRangeAsync(IEnumerable<TEntity> entities);
     Task DeleteAsync(int id);
 

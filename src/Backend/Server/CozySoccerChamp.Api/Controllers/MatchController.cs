@@ -16,7 +16,7 @@ public class MatchController(IMatchService matchService) : ControllerBase
     }
 
     /// <summary>
-    /// Получить информацию по матчу
+    ///     Получить информацию по матчу
     /// </summary>
     /// <param name="matchId"> Уникальный идентификатор матча </param>
     [HttpGet("{matchId}")]

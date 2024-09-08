@@ -6,8 +6,8 @@ namespace CozySoccerChamp.Infrastructure.BackgroundServices.Jobs;
 
 [DisallowConcurrentExecution]
 public class PointCalculatingJob(
-    IServiceProvider serviceProvider,
     IMatchResultRepository matchResultRepository,
+    IApplicationUserRepository userRepository,
     PointCalculateSettings settings,
     ILogger<PointCalculatingJob> logger) : IJob
 {
@@ -34,24 +34,20 @@ public class PointCalculatingJob(
 
     private async Task ExecuteAsync()
     {
-        var matchResults = await matchResultRepository.GetAllAsync(asNoTracking: true, includes: x => x.Match);
+        var finishedMatches = await matchResultRepository.GetAllAsQueryable(asNoTracking: true, x => x.Match)
+            .Where(x => x.Status == MatchResultStatus.Finished)
+            .ToListAsync();
 
-        var tasks = matchResults
-            .Select(matchResult => Task.Run(async () =>
-            {
-                using var scope = serviceProvider.CreateScope();
+        if (finishedMatches.Count == 0)
+            return;
 
-                var scopedServiceProvider = scope.ServiceProvider;
-                var userRepository = scopedServiceProvider.GetRequiredService<IApplicationUserRepository>();
-
-                await UpdatePointsForUserAsync(matchResult, matchResult.Match.Stage, userRepository);
-            }))
-            .ToList();
-
-        await Task.WhenAll(tasks);
+        foreach (var matchResult in finishedMatches)
+        {
+            await UpdatePointsForUserAsync(matchResult);
+        }
     }
 
-    private async Task UpdatePointsForUserAsync(MatchResult matchResult, string stage, IApplicationUserRepository userRepository)
+    private async Task UpdatePointsForUserAsync(MatchResult matchResult)
     {
         var users = await userRepository.GetAllAsync(includes: x => x.Predictions);
 
@@ -102,14 +98,14 @@ public class PointCalculatingJob(
 
             double GetCoefficient()
             {
-                return stage switch
+                return matchResult.Match.Stage switch
                 {
-                    "GROUP_STAGE" => settings.CoefficientSettings.GroupStage,
+                    "LEAGUE_STAGE" => settings.CoefficientSettings.LeagueStage,
                     "LAST_16" => settings.CoefficientSettings.Last16,
                     "QUARTER_FINALS" => settings.CoefficientSettings.QuarterFinals,
                     "SEMI_FINALS" => settings.CoefficientSettings.SemiFinals,
                     "FINAL" => settings.CoefficientSettings.Final,
-                    _ => settings.CoefficientSettings.GroupStage
+                    _ => settings.CoefficientSettings.LeagueStage
                 };
             }
 

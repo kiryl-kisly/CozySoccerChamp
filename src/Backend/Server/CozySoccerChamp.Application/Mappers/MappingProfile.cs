@@ -44,6 +44,12 @@ public class MappingProfile : Profile
             .ForPath(dest => dest.Prediction!.PredictedHomeScore, opt => opt.MapFrom(src => src.PredictedHomeScore))
             .ForPath(dest => dest.Prediction!.PredictedAwayScore, opt => opt.MapFrom(src => src.PredictedAwayScore))
             .ReverseMap();
+        
+        CreateMap<Prediction, PredictionResponse>()
+            .ForMember(dest => dest.MatchId, opt => opt.MapFrom(src => src.MatchId))
+            .ForPath(dest => dest.PredictedHomeScore, opt => opt.MapFrom(src => src.PredictedHomeScore))
+            .ForPath(dest => dest.PredictedAwayScore, opt => opt.MapFrom(src => src.PredictedAwayScore))
+            .ReverseMap();
     }
 
     private static ScoreResponse? GetScore(string? source)

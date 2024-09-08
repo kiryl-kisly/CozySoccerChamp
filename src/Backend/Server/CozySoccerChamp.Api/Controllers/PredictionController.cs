@@ -7,26 +7,12 @@ namespace CozySoccerChamp.Api.Controllers;
 public class PredictionController(IPredictionService predictionService) : ControllerBase
 {
     /// <summary>
-    ///     Создать новый прогноз на матч
+    ///     Сделать прогноз на матч
     /// </summary>
     /// <param name="request"> Запрос на создание предикта </param>
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] PredictionRequest request)
+    public async Task<PredictionResponse> MakePrediction([FromBody] PredictionRequest request)
     {
-        await predictionService.CreateAsync(request);
-
-        return Ok(true);
-    }
-
-    /// <summary>
-    ///     Обновить прогноз на матч
-    /// </summary>
-    /// <param name="request"> Запрос на обновление предикта </param>
-    [HttpPut]
-    public async Task<IActionResult> Update([FromBody] PredictionRequest request)
-    {
-        await predictionService.UpdateAsync(request);
-
-        return Ok(true);
+        return await predictionService.MakePredictionAsync(request);
     }
 }

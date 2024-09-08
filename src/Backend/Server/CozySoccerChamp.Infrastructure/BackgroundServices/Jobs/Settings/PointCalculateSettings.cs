@@ -18,7 +18,7 @@ public class PointSettings
 
 public class CoefficientSettings
 {
-    public double GroupStage { get; init; }
+    public double LeagueStage { get; init; }
     public double Last16 { get; init; }
     public double QuarterFinals { get; init; }
     public double SemiFinals { get; init; }

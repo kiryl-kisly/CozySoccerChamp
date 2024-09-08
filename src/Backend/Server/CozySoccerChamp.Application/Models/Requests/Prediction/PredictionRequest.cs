@@ -1,6 +1,6 @@
 namespace CozySoccerChamp.Application.Models.Requests.Prediction;
 
-public class PredictionRequest
+public record PredictionRequest
 {
     public int UserId { get; init; }
     public int MatchId { get; init; }

@@ -12,7 +12,7 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
 
         if (entity is null)
             return null;
-        
+
         if (includes.Length == 0)
             return entity;
 
@@ -38,17 +38,23 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
         return await query.ToListAsync();
     }
 
-    public IQueryable<TEntity> GetAllAsQueryable(bool asNoTracking = false)
+    public IQueryable<TEntity> GetAllAsQueryable(bool asNoTracking = false, params Expression<Func<TEntity, object>>[] includes)
     {
+        IQueryable<TEntity> query = DbSet;
+
+        query = includes.Aggregate(query, (current, include) => current.Include(include));
+
         return asNoTracking
-            ? DbSet.AsNoTracking()
-            : DbSet;
+            ? query.AsNoTracking()
+            : query;
     }
 
-    public async Task AddAsync(TEntity entity)
+    public async Task<TEntity> AddAsync(TEntity entity)
     {
         await DbSet.AddAsync(entity);
         await SaveChangesAsync();
+
+        return entity;
     }
 
     public async Task AddRangeAsync(IEnumerable<TEntity> entities)
@@ -57,12 +63,14 @@ public abstract class Repository<TEntity>(DbContext context) : IRepository<TEnti
         await SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(TEntity entity)
+    public async Task<TEntity> UpdateAsync(TEntity entity)
     {
         DbSet.Attach(entity);
         context.Entry(entity).State = EntityState.Modified;
 
         await SaveChangesAsync();
+
+        return entity;
     }
 
     public async Task UpdateRangeAsync(IEnumerable<TEntity> entities)

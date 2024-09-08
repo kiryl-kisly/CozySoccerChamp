@@ -35,7 +35,7 @@ public sealed class MatchDataProcessingJob(
 
     private async Task ExecuteAsync()
     {
-        var season = 2023; // TODO: Пока в тесте есть только за 2023 сезон DateTime.UtcNow.Year;
+        var season = DateTime.UtcNow.Year;
 
         await MatchesProcessingAsync(season);
     }
