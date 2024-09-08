@@ -1,9 +1,7 @@
 export function HorizontalCard({ title, isSelected, onClick }) {
 	return (
-		<div className={`flex-shrink-0 p-2 m-1 w-44 text-center shadow-lg rounded-lg ${isSelected ? 'bg-green-500' : 'bg-[#9c9c9cb7]'}`}>
-			<button onClick={onClick}>
-				{getStageDisplayValue(title)}
-			</button>
+		<div className={`flex-shrink-0 p-2 m-1 w-44 text-center shadow-lg rounded-lg ${isSelected ? 'bg-green-500' : 'bg-[#9c9c9cb7]'}`} onClick={onClick}>
+			{getStageDisplayValue(title)}
 		</div>
 	)
 }
