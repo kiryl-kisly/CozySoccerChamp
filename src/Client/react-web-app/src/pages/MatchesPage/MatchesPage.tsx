@@ -5,15 +5,15 @@ import { IMatchResponse } from '../../services/interfaces/Responses/IMatchRespon
 import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
 import './MatchesPage.css'
 
-interface MatchPageProps {
+interface Props {
 	matches: IMatchResponse[] | null
 	predictions: IPredictionResponse[] | null
 }
 
-export function MatchesPage({ matches, predictions }: MatchPageProps) {
+export function MatchesPage({ matches, predictions }: Props) {
 
-	const groupedMatchData = matches?.reduce((groups, item) => {
-		const stage = item.stage
+	const groupedMatchData: Record<string, IMatchResponse[]> = (matches || []).reduce((groups, item) => {
+		const stage = item.stage ?? ''
 		if (!groups[stage]) {
 			groups[stage] = []
 		}
@@ -25,8 +25,13 @@ export function MatchesPage({ matches, predictions }: MatchPageProps) {
 		const now = new Date()
 		for (const [stage, matches] of Object.entries(groupedMatchData)) {
 			if (matches.length > 0) {
-				const startTime = new Date(matches[0]?.startTimeUtc)
-				const endTime = new Date(matches[matches.length - 1]?.startTimeUtc)
+				const startTime = matches[0]?.startTimeUtc
+					? new Date(matches[0]?.startTimeUtc as unknown as string)
+					: null
+
+				const endTime = matches[matches.length - 1]?.startTimeUtc
+					? new Date(matches[matches.length - 1]?.startTimeUtc as unknown as string)
+					: null
 
 				if (startTime instanceof Date && endTime instanceof Date) {
 					if (now >= startTime && now <= endTime) {
@@ -89,12 +94,11 @@ export function MatchesPage({ matches, predictions }: MatchPageProps) {
 			</div>
 
 			{/* Контейнер с MatchCard */}
-
 			{selectedItems && selectedItems.map((match: IMatchResponse, index: number) => (
 				<MatchCard
 					key={index}
 					match={match}
-					prediction={predictions?.find(x => x.matchId === match.matchId)}
+					prediction={predictions?.find(x => x.matchId === match.matchId) ?? null}
 				/>
 			))}
 		</>

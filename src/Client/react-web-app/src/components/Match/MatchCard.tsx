@@ -1,10 +1,18 @@
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { IPredictionRequest } from '../../services/interfaces/Requests/IPredictionRequest'
+import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
+import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
 import { makePrediction } from '../../services/PredictionService'
 import { Popup } from '../Popup/Popup'
 import './MatchCard.css'
 
-export function MatchCard({ match, prediction }) {
+interface Props {
+	match: IMatchResponse
+	prediction: IPredictionResponse | null
+}
+
+export function MatchCard({ match, prediction }: Props) {
 	const [homePredictedCount, setHomePredictedCount] = useState(prediction?.predictedHomeScore ?? 0)
 	const [awayPredictedCount, setAwayPredictedCount] = useState(prediction?.predictedAwayScore ?? 0)
 
@@ -25,7 +33,7 @@ export function MatchCard({ match, prediction }) {
 			const request: IPredictionRequest =
 			{
 				userId: 1,
-				matchId: match.matchId,
+				matchId: match.matchId ?? 0,
 				prediction: { predictedHomeScore: homePredictedCount, predictedAwayScore: awayPredictedCount }
 			}
 
@@ -35,7 +43,9 @@ export function MatchCard({ match, prediction }) {
 				setIsError(false)
 			}
 		} catch (error) {
-			const errorMessage = error.response?.data?.message || error.message
+			const axiosError = error as AxiosError<{ message?: string }>
+			const errorMessage = axiosError.response?.data?.message || axiosError.message
+
 			setPopupMessage(errorMessage)
 			setIsError(true)
 		}
@@ -75,7 +85,7 @@ export function MatchCard({ match, prediction }) {
 				</div>
 
 				{
-					match.matchResult.fullTime
+					match.matchResult?.fullTime
 						? (
 							<>
 								<div className='score-wrapper'>

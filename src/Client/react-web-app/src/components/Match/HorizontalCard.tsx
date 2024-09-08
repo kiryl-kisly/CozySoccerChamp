@@ -1,4 +1,10 @@
-export function HorizontalCard({ title, isSelected, onClick }) {
+interface Props {
+	title: string
+	isSelected: boolean
+	onClick: () => void
+}
+
+export function HorizontalCard({ title, isSelected, onClick }: Props) {
 	return (
 		<div className={`flex-shrink-0 p-2 m-1 w-44 text-center shadow-lg rounded-lg ${isSelected ? 'bg-green-500' : 'bg-[#9c9c9cb7]'}`} onClick={onClick}>
 			{getStageDisplayValue(title)}
