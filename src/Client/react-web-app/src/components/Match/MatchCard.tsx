@@ -41,7 +41,6 @@ export function MatchCard({ match, prediction }) {
 		}
 	}
 
-
 	return (
 		<>
 			<div className='wrapper'>

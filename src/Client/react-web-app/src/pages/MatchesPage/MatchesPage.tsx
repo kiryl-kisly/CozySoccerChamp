@@ -15,9 +15,17 @@ export function MatchesPage({ matches, predictions }) {
 		return groups
 	}, {} as Record<string, IMatchResponse[]>)
 
+	interface MatchProps {
+		selectedItems: IMatchResponse[]
+		isSelected: boolean
+	}
+
+	const [selectedCardId, setSelectedCardId] = useState<string | null>(null)
 	const [selectedItems, setSelectedItems] = useState<IMatchResponse[] | null>(null)
-	const handleCardClick = (items: IMatchResponse[]) => {
+	const handleCardClick = (items: IMatchResponse[], stage: string) => {
 		setSelectedItems(items)
+		setSelectedCardId(stage)
+		console.log(stage)
 	}
 
 	return (
@@ -27,8 +35,9 @@ export function MatchesPage({ matches, predictions }) {
 					{Object.entries(groupedMatchData).map(([stage, items]) => (
 						<HorizontalCard
 							key={stage}
+							isSelected={stage === selectedCardId}
 							title={stage}
-							onClick={() => handleCardClick(items)}
+							onClick={() => handleCardClick(items, stage)}
 						/>
 					))}
 				</div>
