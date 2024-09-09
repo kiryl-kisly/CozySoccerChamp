@@ -51,6 +51,33 @@ public class PredictionService(
         return mapper.Map<IReadOnlyCollection<PredictionResponse>>(predictions);
     }
 
+    public async Task<IReadOnlyCollection<LeaderboardResponse>> GetLeaderboardAsync()
+    {
+        var leaderboard = await predictionRepository.GetAllAsQueryable(includes: x => x.User)
+            .GroupBy(x => x.User.ChatId)
+            .Select(g => new LeaderboardResponse
+            {
+                UserId = g.FirstOrDefault()!.UserId,
+                UserName = g.FirstOrDefault()!.User.UserName,
+                Points = g.Sum(x => x.PointPerMatch) // TODO: не хочется добавлять коэфициенты * x.Coefficient) 
+            })
+            .OrderByDescending(x => x.Points)
+            .ToListAsync();
+        
+        var place = 1;
+        var leaderboardWithPlaces = leaderboard
+            .Select(x => new LeaderboardResponse
+            {
+                UserId = x.UserId,
+                UserName = x.UserName,
+                Points = x.Points,
+                Place = place++
+            })
+            .ToList();
+
+        return leaderboardWithPlaces;
+    }
+
     private async Task ValidateRequest(PredictionRequest request)
     {
         var match = await matchRepository.GetByIdAsync(request.MatchId,

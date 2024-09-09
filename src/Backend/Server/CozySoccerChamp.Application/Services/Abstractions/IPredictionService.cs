@@ -7,4 +7,5 @@ public interface IPredictionService
 {
     Task<PredictionResponse> MakePredictionAsync(PredictionRequest request);
     Task<IReadOnlyCollection<PredictionResponse>> GetAllByUserIdAsync(int userId);
+    Task<IReadOnlyCollection<LeaderboardResponse>> GetLeaderboardAsync();
 }
