@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  cozysoccerchamp.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8000
+    container_name: cozysoccerchamp.api
+    image: cozysoccerchamp.api
+    build:
+      context: ./src/Backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+       - ./src/Backend/Server/CozySoccerChamp.Api/CozySoccerChamp.db:/app/CozySoccerChamp.db
