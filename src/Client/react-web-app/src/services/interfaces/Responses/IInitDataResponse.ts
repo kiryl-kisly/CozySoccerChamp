@@ -1,3 +1,4 @@
+import { ILeaderboardResponse } from './ILeaderboardResponse'
 import { IMatchResponse } from './IMatchResponse'
 import { IPredictionResponse } from './IPredictionResponse'
 import { IUserProfileResponse } from './IUserProfileResponse'
@@ -7,4 +8,5 @@ export interface IInitDataResponse {
 	userProfile: IUserProfileResponse | null
 	matches: IMatchResponse[] | null
 	predictions: IPredictionResponse[] | null
+	leaderboard: ILeaderboardResponse[] | null
 }

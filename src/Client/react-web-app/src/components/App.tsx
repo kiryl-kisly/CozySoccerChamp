@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router'
 import { Layout } from '../layouts/MainLayout'
+import { LeaderboardPage } from '../pages/LeaderboardPage/LeaderboardPage'
 import { MatchesPage } from '../pages/MatchesPage/MatchesPage'
 import { PredictionPage } from '../pages/PredictionPage/PredictionPage'
 import { SettingsPage } from '../pages/SettingsPage/SettingsPage'
-import { TablePage } from '../pages/TablePage/TablePage'
 import { TeamPage } from '../pages/TeamPage/TeamPage'
 import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
@@ -17,7 +17,8 @@ export function App() {
     isLoading: true,
     userProfile: null,
     matches: null,
-    predictions: null
+    predictions: null,
+    leaderboard: null
   })
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export function App() {
                     <Route path='matches' element={<MatchesPage matches={data.matches} predictions={data.predictions} />} />
                     <Route path='prediction' element={<PredictionPage />} />
                     <Route path='settings' element={<SettingsPage />} />
-                    <Route path='table' element={<TablePage />} />
+                    <Route path='leaderboard' element={<LeaderboardPage leaderboard={data.leaderboard} />} />
                     <Route path='team' element={<TeamPage />} />
                   </Route>
                 </Routes>

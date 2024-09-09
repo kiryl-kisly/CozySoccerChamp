@@ -15,12 +15,14 @@ public class InitDataController(IMatchService matchService, IUserService userSer
         var userProfile = await userService.GetUserById(userId);
         var matches = await matchService.GetAllAsync();
         var predictions = await predictionService.GetAllByUserIdAsync(userId);
+        var leaderboard = await predictionService.GetLeaderboardAsync();
 
         var response = new Response
         {
             UserProfile = userProfile,
             Matches = matches,
-            Predictions = predictions
+            Predictions = predictions,
+            Leaderboard = leaderboard,
         };
 
         return Ok(response);

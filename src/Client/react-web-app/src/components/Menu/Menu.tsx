@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { FaUserFriends } from 'react-icons/fa'
-import { FaTableList } from 'react-icons/fa6'
 import { IoIosSettings } from 'react-icons/io'
 import { IoFootball } from 'react-icons/io5'
+import { MdLeaderboard } from 'react-icons/md'
 import { RiFlashlightFill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import './Menu.css'
@@ -13,7 +13,7 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { icon: <FaTableList />, text: 'Table' },
+  { icon: <MdLeaderboard />, text: 'Leaderboard' },
   { icon: <RiFlashlightFill />, text: 'Prediction' },
   { icon: <IoFootball />, text: 'Matches' },
   { icon: <FaUserFriends />, text: 'Team' },

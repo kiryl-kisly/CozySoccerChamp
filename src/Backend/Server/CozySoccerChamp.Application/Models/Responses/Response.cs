@@ -8,4 +8,5 @@ public class Response
     public CompetitionResponse? Competition { get; set; }
     public IReadOnlyCollection<MatchResponse>? Matches { get; set; }
     public IReadOnlyCollection<PredictionResponse>? Predictions { get; set; }
+    public IReadOnlyCollection<LeaderboardResponse>? Leaderboard { get; set; }
 }
