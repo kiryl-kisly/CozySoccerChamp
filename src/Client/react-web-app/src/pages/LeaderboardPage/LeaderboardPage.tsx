@@ -20,14 +20,17 @@ export function LeaderboardPage({ leaderboard }: Props) {
 		<>
 			<h1 className='text-white mb-10'>Leaderboard</h1>
 
-			{data && data.map((item: ILeaderboardResponse, index: number) => (
-				<div key={index} className='relative flex justify-between items-end border-b border-gray-500 mb-5'>
-					<div className='absolute left-0 text-green-500 p-2'>#{item.place}</div>
-					<div className='ml-[40px] text-white p-2 font-normal'>{item.userName}</div>
-					<div className='ml-auto text-green-300 p-2'>{item.points}</div>
-				</div>
-			))}
-
+			{data && data.length > 0 ? (
+				data.map((item: ILeaderboardResponse, index: number) => (
+					<div key={index} className='relative flex justify-between items-end border-b border-gray-500 mb-5'>
+						<div className='absolute left-0 text-green-500 p-2'>#{item.place}</div>
+						<div className='ml-[40px] text-white p-2 font-normal'>{item.userName}</div>
+						<div className='ml-auto text-green-300 p-2'>{item.points}</div>
+					</div>
+				))
+			) : (
+				<p className='text-white'>Data for the leaderboard is not yet available</p>
+			)}
 		</>
 	)
 }
