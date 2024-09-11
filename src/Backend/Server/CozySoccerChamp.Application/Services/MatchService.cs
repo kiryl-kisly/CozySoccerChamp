@@ -33,7 +33,8 @@ public class MatchService(IMatchRepository matchRepository, IMapper mapper) : IM
     {
         var matches = await matchRepository.GetAllAsQueryable(asNoTracking: true,
                 x => x.TeamHome,
-                x => x.TeamAway)
+                x => x.TeamAway,
+                x => x.MatchResult)
             .Where(x => x.MatchResult.Status == MatchResultStatus.Started || x.MatchResult.Status == MatchResultStatus.Finished)
             .OrderByDescending(x => x.Id)
             .ToListAsync();
