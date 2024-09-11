@@ -11,6 +11,10 @@ export function PredictionPage({ competition }: Props) {
 			<h1 className='text-white mb-10 text-3xl'>Predictions</h1>
 
 			<Competition competition={competition} />
+
+			<div>
+				Coming soon...
+			</div>
 		</>
 	)
 }
