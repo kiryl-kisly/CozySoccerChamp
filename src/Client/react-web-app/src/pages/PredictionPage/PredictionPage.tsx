@@ -25,6 +25,7 @@ export function PredictionPage({ competition, matches }: Props) {
 	return (
 		<>
 			<h1 className='text-white mb-10 text-3xl'>Predictions</h1>
+			<h1 className='text-white mb-10 text-3xl'>Predictions</h1>
 
 			<Competition competition={competition} />
 
