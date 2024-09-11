@@ -4,6 +4,5 @@ import { ILeaderboardResponse } from './interfaces/Responses/ILeaderboardRespons
 export const getLeaderboard = async () => {
 	const response = await axiosClient().get<ILeaderboardResponse[]>('leaderboard/get', {})
 
-	console.log(response.data)
 	return response.data
 }

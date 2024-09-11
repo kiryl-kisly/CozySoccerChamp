@@ -29,6 +29,10 @@ export function App() {
     fetchData()
   }, [])
 
+  // const startedOrFinishedMatches = data.matches?.filter(
+  //   (match) => match.matchResult?.status === "Finished" || match.matchResult?.status === "Started"
+  // ) ?? null
+
   return (
     <div className='bg-black flex justify-center'>
       <div className='w-full text-white h-screen font-bold flex flex-col max-w-xl'>
@@ -44,7 +48,7 @@ export function App() {
                   <Route path="/" element={<Layout />}>
                     <Route index element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
                     <Route path='matches' element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
-                    <Route path='prediction' element={<PredictionPage competition={data.competition} />} />
+                    <Route path='prediction' element={<PredictionPage competition={data.competition} matches={null} />} />
                     <Route path='settings' element={<SettingsPage />} />
                     <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
                     <Route path='team' element={<TeamPage />} />

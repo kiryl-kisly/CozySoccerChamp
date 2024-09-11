@@ -47,8 +47,9 @@ public class MappingProfile : Profile
         
         CreateMap<Prediction, PredictionResponse>()
             .ForMember(dest => dest.MatchId, opt => opt.MapFrom(src => src.MatchId))
-            .ForPath(dest => dest.PredictedHomeScore, opt => opt.MapFrom(src => src.PredictedHomeScore))
-            .ForPath(dest => dest.PredictedAwayScore, opt => opt.MapFrom(src => src.PredictedAwayScore))
+            .ForMember(dest => dest.PredictedHomeScore, opt => opt.MapFrom(src => src.PredictedHomeScore))
+            .ForMember(dest => dest.PredictedAwayScore, opt => opt.MapFrom(src => src.PredictedAwayScore))
+            .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
             .ReverseMap();
         
         CreateMap<Competition, CompetitionResponse>()

@@ -7,4 +7,5 @@ public class PredictionResponse
     public int? PredictedAwayScore { get; set; }
     public int? PointPerMatch { get; set; }
     public double? Coefficient { get; set; }
+    public UserResponse? User { get; set; }
 }
