@@ -34,7 +34,7 @@ export function App() {
   // ) ?? null
 
   return (
-    <div className='bg-black flex justify-center'>
+    <div className='flex justify-center'>
       <div className='w-full text-white h-screen font-bold flex flex-col max-w-xl'>
         {
           data.isLoading

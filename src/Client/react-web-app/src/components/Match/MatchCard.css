@@ -57,6 +57,18 @@
 	position: relative;
 }
 
+.tab-item.active {
+	color: var(--white);
+	background-color: var(--green);
+	border: 1px solid var(--green-black);
+}
+
+.tab-item {
+	color: var(--gray-light);
+	background-color: var(--black);
+	border: 1px solid var(--gray-light);
+}
+
 .team-icon {
 	width: 45px;
 	height: 45px;
@@ -139,7 +151,7 @@
 
 
 
-/* 
+/*
 .prediction-card {
 	display: flex;
 	justify-content: space-between;

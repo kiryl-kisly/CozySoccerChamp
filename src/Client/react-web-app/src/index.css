@@ -10,11 +10,18 @@
 
 :root {
   --bgClr: #1d2025;
+  --body: #282828;
+  --black: #1D1D1D;
+  --green: #009B01;
+  --green-black: #026002;
+  --gray: ;
+  --gray-light: #818181;
+  --white: #fff;
 }
 
 body {
   min-height: 100vh;
-  background: var(--bgClr);
+  background: var(--body);
   font-family: "Istok Web", sans-serif;
   font-weight: 400;
   font-style: normal;
