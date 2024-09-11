@@ -54,7 +54,7 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 
 	return (
 		<>
-			<h1 className='text-white mb-10 text-3xl'>Matches</h1>
+			<h1 className='title-page'>Matches</h1>
 
 			<Competition competition={competition} />
 
