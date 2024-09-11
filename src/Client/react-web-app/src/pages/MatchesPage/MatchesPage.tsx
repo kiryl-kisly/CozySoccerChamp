@@ -1,16 +1,19 @@
 import { useRef, useState } from 'react'
+import { Competition } from '../../components/Competition/Competition'
 import { HorizontalCard } from '../../components/Match/HorizontalCard'
 import { MatchCard } from '../../components/Match/MatchCard'
+import { ICompetitionResponse } from '../../services/interfaces/Responses/ICompetitionResponse'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
 import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
 import './MatchesPage.css'
 
 interface Props {
+	competition: ICompetitionResponse | null
 	matches: IMatchResponse[] | null
 	predictions: IPredictionResponse[] | null
 }
 
-export function MatchesPage({ matches, predictions }: Props) {
+export function MatchesPage({ competition, matches, predictions }: Props) {
 
 	const groupedMatchData: Record<string, IMatchResponse[]> = (matches || []).reduce((groups, item) => {
 		const stage = item.stage ?? ''
@@ -21,71 +24,51 @@ export function MatchesPage({ matches, predictions }: Props) {
 		return groups
 	}, {} as Record<string, IMatchResponse[]>)
 
-	const getActiveStage = (groupedMatchData: Record<string, IMatchResponse[]>): string => {
-		const now = new Date()
-		for (const [stage, matches] of Object.entries(groupedMatchData)) {
-			if (matches.length > 0) {
-				const startTime = matches[0]?.startTimeUtc
-					? new Date(matches[0]?.startTimeUtc as unknown as string)
-					: null
-
-				const endTime = matches[matches.length - 1]?.startTimeUtc
-					? new Date(matches[matches.length - 1]?.startTimeUtc as unknown as string)
-					: null
-
-				if (startTime instanceof Date && endTime instanceof Date) {
-					if (now >= startTime && now <= endTime) {
-						return stage
-					}
-				}
-			}
-		}
-
-		return 'LEAGUE_STAGE'
-	}
-
 	const activeStage = getActiveStage(groupedMatchData)
 	const [selectedCardId, setSelectedCardId] = useState<string | null>(activeStage)
 	const [selectedItems, setSelectedItems] = useState<IMatchResponse[]>(
 		() => groupedMatchData[activeStage] || []
 	)
 
-	const matchCardContainerRef = useRef<HTMLDivElement>(null)
+	const matchCardRef = useRef<HTMLDivElement>(null)
 
-	const scrollToMatchCardStart = () => {
-		if (matchCardContainerRef.current) {
-			matchCardContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' })
-		}
-	}
+	const scrollToMatchCard = (offset: number) => {
+		if (matchCardRef.current) {
+			const elementPosition = matchCardRef.current.getBoundingClientRect().top + window.pageYOffset
+			const offsetPosition = elementPosition - offset
 
-	const scrollToHorizontalCard = (ref: HTMLDivElement | null) => {
-		if (ref) {
-			ref.scrollIntoView({ behavior: 'smooth', inline: 'start' })
+			window.scrollTo({
+				top: offsetPosition,
+				behavior: 'smooth',
+			})
 		}
 	}
 
 	const handleCardClick = (items: IMatchResponse[], stage: string) => {
-		setSelectedItems(items)
 		setSelectedCardId(stage)
-		console.log(stage)
+		setSelectedItems(items)
+
+		const scrollOffset = 90
+		scrollToMatchCard(scrollOffset)
 	}
 
 	return (
 		<>
-			{/* Контейнер с HorizontalCard */}
-			<div className='w-full overflow-x-auto sticky top-3'>
+			<h1 className='text-white mb-10 text-3xl'>Matches</h1>
+
+			<Competition competition={competition} />
+
+			<div className='w-full overflow-x-auto sticky top-3 z-50'>
 				<div className='flex space-x-2'>
 					{Object.entries(groupedMatchData).map(([stage, items]) => (
 						<div
 							key={stage}
-							ref={el => stage === selectedCardId && scrollToHorizontalCard(el)}
 						>
 							<HorizontalCard
 								isSelected={stage === selectedCardId}
 								title={stage}
 								onClick={() => {
 									handleCardClick(items, stage)
-									scrollToMatchCardStart()
 								}}
 							/>
 						</div>
@@ -93,14 +76,39 @@ export function MatchesPage({ matches, predictions }: Props) {
 				</div>
 			</div>
 
-			{/* Контейнер с MatchCard */}
-			{selectedItems && selectedItems.map((match: IMatchResponse, index: number) => (
-				<MatchCard
-					key={index}
-					match={match}
-					prediction={predictions?.find(x => x.matchId === match.matchId) ?? null}
-				/>
-			))}
+			<div ref={matchCardRef}>
+				{selectedItems &&
+					selectedItems.map((match: IMatchResponse, index: number) => (
+						<MatchCard
+							key={index}
+							match={match}
+							prediction={predictions?.find(x => x.matchId === match.matchId) ?? null}
+						/>
+					))}
+			</div>
 		</>
 	)
+};
+
+const getActiveStage = (groupedMatchData: Record<string, IMatchResponse[]>): string => {
+	const now = new Date()
+	for (const [stage, matches] of Object.entries(groupedMatchData)) {
+		if (matches.length > 0) {
+			const startTime = matches[0]?.startTimeUtc
+				? new Date(matches[0]?.startTimeUtc as unknown as string)
+				: null
+
+			const endTime = matches[matches.length - 1]?.startTimeUtc
+				? new Date(matches[matches.length - 1]?.startTimeUtc as unknown as string)
+				: null
+
+			if (startTime instanceof Date && endTime instanceof Date) {
+				if (now >= startTime && now <= endTime) {
+					return stage
+				}
+			}
+		}
+	}
+
+	return 'LEAGUE_STAGE'
 }

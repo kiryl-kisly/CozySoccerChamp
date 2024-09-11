@@ -15,6 +15,7 @@ import { UserProfile } from './UserProfile/UserProfile'
 export function App() {
   const [data, setData] = useState<IInitDataResponse>({
     isLoading: true,
+    competition: null,
     userProfile: null,
     matches: null,
     predictions: null,
@@ -41,11 +42,11 @@ export function App() {
 
                 <Routes>
                   <Route path="/" element={<Layout />}>
-                    <Route index element={<MatchesPage matches={data.matches} predictions={data.predictions} />} />
-                    <Route path='matches' element={<MatchesPage matches={data.matches} predictions={data.predictions} />} />
-                    <Route path='prediction' element={<PredictionPage />} />
+                    <Route index element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
+                    <Route path='matches' element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
+                    <Route path='prediction' element={<PredictionPage competition={data.competition} />} />
                     <Route path='settings' element={<SettingsPage />} />
-                    <Route path='leaderboard' element={<LeaderboardPage leaderboard={data.leaderboard} />} />
+                    <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
                     <Route path='team' element={<TeamPage />} />
                   </Route>
                 </Routes>

@@ -1,16 +1,114 @@
 .wrapper {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: 200px;
+	margin: 10px 0px 30px 0px;
+	padding: 10px;
+	border: 1px solid #5e5e5e;
+	border-radius: 10px;
+	z-index: 0;
+}
+
+.started-time {
+	position: absolute;
+	top: -10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #8d8d8d;
+	border: 1px solid #8d8d8d;
+	border-radius: 5px;
+	padding: 0px 20px;
+	color: #1d2025
+}
+
+.main-content {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	height: 200px;
-	margin: 15px 0px;
-	padding: 20px;
-	border: 1px solid #5e5e5e;
-	border-radius: 10px;
+	position: relative;
 }
 
-.team-wrapper {
+.team-item {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	top: 5px;
+	padding: 10px;
+	width: 120px;
+}
+
+.team-item.first {
+	left: 0;
+}
+
+.team-item.last {
+	right: 0;
+}
+
+.center-item {
+	margin: 0 auto;
+	padding: 10px;
+	top: -30px;
+	position: relative;
+}
+
+.team-icon {
+	width: 45px;
+	height: 45px;
+	margin-bottom: 10px;
+}
+
+.team-name {
+	font-size: 12px;
+	font-weight: 500;
+	text-align: center;
+}
+
+.wrapper-prediction {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.prediction-value {}
+
+.prediction-increment {
+	height: 50px;
+	width: 50px;
+	border: 1px solid #fff;
+}
+
+.prediction {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 35px;
+	width: 35px;
+	border: 1px solid rgba(255, 255, 255, 0.855)d8d;
+	border-radius: 5px;
+	background-color: #8d8d8d;
+}
+
+.prediction-button {
+	position: absolute;
+	bottom: 5px;
+	flex-direction: column;
+	align-items: center;
+	background-color: #303030;
+	border: 1px solid #424141;
+	border-radius: 5px;
+	padding: 2px 5px;
+	color: #fff
+}
+
+
+/* .team-wrapper {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -30,7 +128,16 @@
 .prediction-wrapper {
 	display: flex;
 	justify-content: space-between;
-}
+} */
+
+
+
+
+
+
+
+
+
 
 /* 
 .prediction-card {

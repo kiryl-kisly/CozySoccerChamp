@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios'
+import { format } from 'date-fns'
 import { useState } from 'react'
 import { IPredictionRequest } from '../../services/interfaces/Requests/IPredictionRequest'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
@@ -51,9 +52,69 @@ export function MatchCard({ match, prediction }: Props) {
 		}
 	}
 
+	const formattedStartDate = format(new Date(match?.startTimeUtc as unknown as string), 'dd MMM yyyy HH:mm')
+
 	return (
 		<>
-			<div className='wrapper'>
+			<div className='wrapper '>
+				<div className='started-time'>
+					<div className='text-sm font-normal'>{formattedStartDate}</div>
+				</div>
+
+				<div className='main-content'>
+
+
+
+					<div className='team-item first'>
+						<div className='team-icon'>
+							<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
+						</div>
+						<div className='team-name'>
+							{match?.teamHome?.shortName}
+						</div>
+						<div className='wrapper-prediction'>
+							<div className='prediction-value'>0</div>
+							<div className='flex space-x-4'>
+								<div className='prediction'>-</div>
+								<div className='prediction'>+</div>
+							</div>
+						</div>
+					</div>
+
+					<div className='center-item text-5xl font-normal'>
+						0 : 0
+					</div>
+
+					<div className='team-item last'>
+						<div className='team-icon'>
+							<img src={match?.teamAway?.emblemUrl} alt='Team Emblem' />
+						</div>
+						<div className='team-name'>
+							{match?.teamAway?.shortName}
+						</div>
+						<div className='wrapper-prediction'>
+							<div className='prediction-value'>0</div>
+							<div className='flex space-x-4'>
+								<div className='prediction'>-</div>
+								<div className='prediction'>+</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+
+				<div className='prediction-button font-thin'>
+					make a prediction
+				</div>
+			</div>
+
+
+
+
+
+			{/* <div className='wrapper'>
 				<div className='team-wrapper'>
 					{match.teamHome ? (
 						<>
@@ -107,7 +168,7 @@ export function MatchCard({ match, prediction }: Props) {
 				}
 				<div>
 					<button onClick={sendRequest}>
-						save
+						make prediction
 					</button>
 				</div>
 
@@ -141,7 +202,7 @@ export function MatchCard({ match, prediction }: Props) {
 					)}
 				</div>
 
-			</div>
+			</div> */}
 
 			{popupMessage && <Popup message={popupMessage} isError={isError} duration={2000} />}
 		</>

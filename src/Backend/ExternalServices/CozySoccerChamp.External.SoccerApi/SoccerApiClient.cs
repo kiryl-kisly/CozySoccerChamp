@@ -20,6 +20,37 @@ public class SoccerApiClient(SoccerApiSettings settings) : ISoccerApiClient
         Timeout = TimeSpan.FromSeconds(5)
     };
 
+    public async Task<(CompetitionResponse, ResultSetResponse)> GetCompetitionAsync(int season)
+    {
+        try
+        {
+            var request = new RestRequest(MatchesRoute);
+
+            request.AddQueryParameter(SeasonQueryParameterName, season);
+            request.AddHeader(XAuthTokenHeader, settings.ApiToken);
+
+            var client = new RestClient(_restClientOptions);
+
+            var response = await client.GetAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Response status code is {response.StatusCode}.\nContent: {response.Content}");
+
+            var soccerApiResponse = response.Content is null
+                ? null
+                : JsonConvert.DeserializeObject<BaseSoccerResponse>(response.Content);
+
+            if (soccerApiResponse is not null)
+                return (soccerApiResponse.Competition, soccerApiResponse.ResultSet);
+        }
+        catch
+        {
+            // ignored
+        }
+
+        return (null, null);
+    }
+
     public async Task<IReadOnlyCollection<MatchResponse>> GetMatchesAsync(int season)
     {
         try

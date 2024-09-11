@@ -43,6 +43,7 @@ public class DataInitialization(
 
             var season = DateTime.UtcNow.Year;
 
+            await CompetitionInitializationAsync(season);
             await TeamInitializationAsync(season);
             await MatchInitializationAsync(season);
 
@@ -63,6 +64,27 @@ public class DataInitialization(
     private async Task<bool> IsInitialized()
     {
         return await _teamRepository.AnyAsync() && await _matchRepository.AnyAsync();
+    }
+    
+    private async Task CompetitionInitializationAsync(int season)
+    {
+        if (await _competitionRepository.AnyAsync())
+            return;
+
+        var (competitionsData, resultSetData) = await _apiClient.GetCompetitionAsync(season);
+
+        if (competitionsData is null && resultSetData is null)
+            return;
+
+        var competition = new Competition
+        {
+            Name = competitionsData!.Name,
+            EmblemUrl = competitionsData.EmblemUrl,
+            Started = resultSetData.First,
+            Finished = resultSetData.Last
+        };
+
+        await _competitionRepository.AddAsync(competition);
     }
 
     private async Task TeamInitializationAsync(int season)
@@ -90,7 +112,7 @@ public class DataInitialization(
         if (matchesData is null)
             return;
 
-        var competitionId = await CreateAndGetCompetitionId(matchesData.FirstOrDefault()!.Competition);
+        var competitionId = await GetCompetitionId(matchesData.FirstOrDefault()!.Competition);
 
         var matches = new List<Match>();
 
@@ -112,11 +134,8 @@ public class DataInitialization(
 
         #region local methods
 
-        async Task<int?> CreateAndGetCompetitionId(CompetitionResponse source)
+        async Task<int?> GetCompetitionId(CompetitionResponse source)
         {
-            var competitionEntity = mapper.Map<Competition>(source);
-            await _competitionRepository.AddAsync(competitionEntity);
-
             var competition = await _competitionRepository.FindAsync(x => x.Name == source.Name);
 
             return competition?.Id;

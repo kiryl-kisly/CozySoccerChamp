@@ -50,6 +50,13 @@ public class MappingProfile : Profile
             .ForPath(dest => dest.PredictedHomeScore, opt => opt.MapFrom(src => src.PredictedHomeScore))
             .ForPath(dest => dest.PredictedAwayScore, opt => opt.MapFrom(src => src.PredictedAwayScore))
             .ReverseMap();
+        
+        CreateMap<Competition, CompetitionResponse>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.EmblemUrl, opt => opt.MapFrom(src => src.EmblemUrl))
+            .ForMember(dest => dest.Started, opt => opt.MapFrom(src => src.Started))
+            .ForMember(dest => dest.Finished, opt => opt.MapFrom(src => src.Finished))
+            .ReverseMap();
     }
 
     private static ScoreResponse? GetScore(string? source)

@@ -6,7 +6,7 @@ interface Props {
 
 export function HorizontalCard({ title, isSelected, onClick }: Props) {
 	return (
-		<div className={`flex-shrink-0 p-2 m-1 w-44 text-center shadow-lg rounded-lg ${isSelected ? 'bg-green-500' : 'bg-[#9c9c9cb7]'}`} onClick={onClick}>
+		<div className={`flex-shrink-0 p-2 m-1 w-44 text-center shadow-lg rounded-lg ${isSelected ? 'bg-green-500' : 'bg-[#9c9c9c]'}`} onClick={onClick}>
 			{getStageDisplayValue(title)}
 		</div>
 	)

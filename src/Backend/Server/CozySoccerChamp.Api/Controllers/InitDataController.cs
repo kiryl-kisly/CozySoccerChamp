@@ -4,7 +4,11 @@ namespace CozySoccerChamp.Api.Controllers;
 [Route("api/[controller]/[action]")]
 [Produces("application/json")]
 [Consumes("application/json")]
-public class InitDataController(IMatchService matchService, IUserService userService, IPredictionService predictionService) : ControllerBase
+public class InitDataController(
+    ICompetitionService competitionService,
+    IMatchService matchService,
+    IUserService userService, 
+    IPredictionService predictionService) : ControllerBase
 {
     /// <summary>
     ///     Получить всё информацию при первоночальной загрузке веб-приложения
@@ -12,6 +16,7 @@ public class InitDataController(IMatchService matchService, IUserService userSer
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] int userId)
     {
+        var competition = await competitionService.GetById(1);
         var userProfile = await userService.GetUserById(userId);
         var matches = await matchService.GetAllAsync();
         var predictions = await predictionService.GetAllByUserIdAsync(userId);
@@ -19,6 +24,7 @@ public class InitDataController(IMatchService matchService, IUserService userSer
 
         var response = new Response
         {
+            Competition = competition,
             UserProfile = userProfile,
             Matches = matches,
             Predictions = predictions,

@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITelegramHandler, TelegramHandler>();
         services.AddScoped<IUserService, UserService>();
 
+        services.AddScoped<ICompetitionService, CompetitionService>();
         services.AddScoped<IMatchService, MatchService>();
         services.AddScoped<IPredictionService, PredictionService>();
 

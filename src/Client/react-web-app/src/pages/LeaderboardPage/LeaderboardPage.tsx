@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
+import { Competition } from '../../components/Competition/Competition'
+import { ICompetitionResponse } from '../../services/interfaces/Responses/ICompetitionResponse'
 import { ILeaderboardResponse } from '../../services/interfaces/Responses/ILeaderboardResponse'
 import { getLeaderboard } from '../../services/LeaderboardService'
 
 interface Props {
+	competition: ICompetitionResponse | null
 	leaderboard: ILeaderboardResponse[] | null
 }
 
-export function LeaderboardPage({ leaderboard }: Props) {
+export function LeaderboardPage({ leaderboard, competition }: Props) {
 	const [data, setData] = useState<ILeaderboardResponse[] | null>(leaderboard)
 
 	useEffect(() => {
@@ -18,7 +21,9 @@ export function LeaderboardPage({ leaderboard }: Props) {
 
 	return (
 		<>
-			<h1 className='text-white mb-10'>Leaderboard</h1>
+			<h1 className='text-white mb-10 text-3xl'>Leaderboard</h1>
+
+			<Competition competition={competition} />
 
 			{data && data.length > 0 ? (
 				data.map((item: ILeaderboardResponse, index: number) => (
