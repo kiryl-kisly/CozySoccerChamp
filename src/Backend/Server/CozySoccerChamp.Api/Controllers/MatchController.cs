@@ -1,3 +1,5 @@
+using Microsoft.Net.Http.Headers;
+
 namespace CozySoccerChamp.Api.Controllers;
 
 [ApiController]
@@ -10,6 +12,7 @@ public class MatchController(IMatchService matchService) : ControllerBase
     ///     Получить информацию о всех матчах
     /// </summary>
     [HttpGet]
+    [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
     public async Task<IReadOnlyCollection<MatchResponse>> GetAll()
     {
         return await matchService.GetAllAsync();
@@ -23,5 +26,15 @@ public class MatchController(IMatchService matchService) : ControllerBase
     public async Task<MatchResponse> Get([FromRoute] int matchId)
     {
         return await matchService.GetByIdAsync(matchId);
+    }
+    
+    /// <summary>
+    ///     Получить информацию по начатым или завершенным матчам
+    /// </summary>
+    [HttpGet]
+    [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
+    public async Task<IReadOnlyCollection<MatchResponse>> GetStartedOrFinished()
+    {
+        return await matchService.GetStartedOrFinishedAsync();
     }
 }

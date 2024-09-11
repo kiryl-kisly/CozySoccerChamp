@@ -53,18 +53,19 @@ public class PredictionService(
 
     public async Task<IReadOnlyCollection<LeaderboardResponse>> GetLeaderboardAsync()
     {
-        var leaderboard = await predictionRepository.GetAllAsQueryable(includes: x => x.User)
+        var leaderboard = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
             .GroupBy(x => x.User.ChatId)
             .Select(g => new LeaderboardResponse
             {
                 UserId = g.FirstOrDefault()!.UserId,
                 UserName = g.FirstOrDefault()!.User.UserName,
-                Points = g.Sum(x => x.PointPerMatch) // TODO: не хочется добавлять коэфициенты * x.Coefficient) 
+                Points = g.Sum(x => x.PointPerMatch * x.Coefficient)
             })
             .OrderByDescending(x => x.Points)
             .ToListAsync();
-        
+
         var place = 1;
+
         var leaderboardWithPlaces = leaderboard
             .Select(x => new LeaderboardResponse
             {
@@ -76,6 +77,16 @@ public class PredictionService(
             .ToList();
 
         return leaderboardWithPlaces;
+    }
+
+    public async Task<IReadOnlyCollection<PredictionResponse>> GetPredictionByMatchIdAsync(int matchId)
+    {
+        var predictions = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
+            .Where(x => x.MatchId == matchId)
+            .OrderBy(x => x.UserId)
+            .ToListAsync();
+
+        return mapper.Map<IReadOnlyCollection<PredictionResponse>>(predictions);
     }
 
     private async Task ValidateRequest(PredictionRequest request)
