@@ -7,6 +7,8 @@ import { IPredictionResponse } from '../../services/interfaces/Responses/IPredic
 import { makePrediction } from '../../services/PredictionService'
 import { Popup } from '../Popup/Popup'
 import './MatchCard.css'
+import { PiPlusBold } from 'react-icons/pi'
+import { PiMinusBold } from 'react-icons/pi'
 
 interface Props {
 	match: IMatchResponse
@@ -56,14 +58,12 @@ export function MatchCard({ match, prediction }: Props) {
 
 	return (
 		<>
-			<div className='wrapper '>
+			<div className='match-wrapper'>
 				<div className='started-time'>
 					<div className='text-sm font-normal'>{formattedStartDate}</div>
 				</div>
 
-				<div className='main-content'>
-
-
+				<div className='match-content'>
 
 					<div className='team-item first'>
 						<div className='team-icon'>
@@ -75,8 +75,8 @@ export function MatchCard({ match, prediction }: Props) {
 						<div className='wrapper-prediction'>
 							<div className='prediction-value'>0</div>
 							<div className='flex space-x-4'>
-								<div className='prediction'>-</div>
-								<div className='prediction'>+</div>
+								<div className='prediction'><PiMinusBold /></div>
+								<div className='prediction'><PiPlusBold /></div>
 							</div>
 						</div>
 					</div>
@@ -95,8 +95,8 @@ export function MatchCard({ match, prediction }: Props) {
 						<div className='wrapper-prediction'>
 							<div className='prediction-value'>0</div>
 							<div className='flex space-x-4'>
-								<div className='prediction'>-</div>
-								<div className='prediction'>+</div>
+								<div className='prediction'><PiMinusBold /></div>
+								<div className='prediction'><PiPlusBold /></div>
 							</div>
 						</div>
 					</div>

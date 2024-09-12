@@ -1,14 +1,21 @@
-.wrapper {
+.match-wrapper {
 	position: relative;
 	display: flex;
 	justify-content: center;
 	width: 100%;
-	height: 200px;
-	margin: 10px 0px 30px 0px;
+	height: auto;
+	min-height: 200px;
 	padding: 10px;
-	border: 1px solid #5e5e5e;
+	margin: 10px 0 30px;
+	border: 1px solid var(--gray-light);
+	background-color: var(--black);
 	border-radius: 10px;
 	z-index: 0;
+
+	background-image: url(./img/lch.png);
+	background-size: 80%;
+	background-repeat: no-repeat;
+	background-position: -100px -40px;
 }
 
 .started-time {
@@ -24,7 +31,7 @@
 	color: #1d2025
 }
 
-.main-content {
+.match-content {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -33,13 +40,11 @@
 }
 
 .team-item {
-	position: absolute;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	top: 5px;
-	padding: 10px;
-	width: 120px;
+	/* width: 120px; */
 }
 
 .team-item.first {
@@ -51,7 +56,6 @@
 }
 
 .center-item {
-	margin: 0 auto;
 	padding: 10px;
 	top: -30px;
 	position: relative;
@@ -102,9 +106,9 @@
 	justify-content: center;
 	height: 35px;
 	width: 35px;
-	border: 1px solid rgba(255, 255, 255, 0.855)d8d;
+	border: 1px solid var(--gray-dark);
 	border-radius: 5px;
-	background-color: #8d8d8d;
+	background-color: var(--body);
 }
 
 .prediction-button {
