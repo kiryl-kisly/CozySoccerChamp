@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Competition } from '../../components/Competition/Competition'
-import { PredictionPopup } from '../../components/Popup/PredictionPopup'
 import { PredictionCard } from '../../components/Prediction/PredictionCard'
+import { PredictionPopup } from '../../components/Prediction/PredictionPopup'
 import { ICompetitionResponse } from '../../services/interfaces/Responses/ICompetitionResponse'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
+import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
 import { getStartedOrFinished } from '../../services/MatchService'
+import { getPredictionsByMatchId } from '../../services/PredictionService'
 
 interface Props {
 	competition: ICompetitionResponse | null
@@ -13,45 +15,55 @@ interface Props {
 
 export function PredictionPage({ competition, matches }: Props) {
 	const [data, setData] = useState<IMatchResponse[] | null>(matches)
-
-	const [isPopupOpen, setPopupOpen] = useState(false)
-	const [popupContent, setPopupContent] = useState('')
-
-	const openPopup = (content) => {
-		setPopupContent(content)
-		setPopupOpen(true)
-	}
-
-	const closePopup = () => {
-		setPopupOpen(false)
-	}
+	const [selectedMatch, setSelectedMatch] = useState<IMatchResponse | null>(null)
+	const [predictions, setPredictions] = useState<IPredictionResponse[] | null>(null)
+	const [isPopupVisible, setIsPopupVisible] = useState(false)
+	const [showPopup, setShowPopup] = useState(false)
 
 	useEffect(() => {
 		async function fetchData() {
-			setData((await getStartedOrFinished()))
+			setData(await getStartedOrFinished())
 		}
 		fetchData()
 	}, [])
 
+	useEffect(() => {
+		setShowPopup(isPopupVisible)
+	}, [isPopupVisible])
+
+	const handleCardClick = async (match: IMatchResponse) => {
+		setSelectedMatch(match)
+		setIsPopupVisible(true)
+
+		const fetchedPredictions = await getPredictionsByMatchId(match.matchId)
+		setPredictions(fetchedPredictions)
+	}
+
+	const closePopup = () => {
+		setIsPopupVisible(false)
+	}
+
 	return (
 		<>
-			<h1 className='text-white mb-10 text-3xl'>Predictions</h1>
+			<h1 className='title-page'>Predictions</h1>
 
 			<Competition competition={competition} />
 
-			{data && data.map((match: IMatchResponse, index: number) => (
-				<>
-					<div
+			{data &&
+				data.map((match: IMatchResponse, index: number) => (
+					<PredictionCard
 						key={index}
-						onClick={() => openPopup('Ваши данные для попапа')}>
-						<PredictionCard
-							key={index}
-							match={match} />
-					</div>
-				</>
-			))}
+						match={match}
+						onClick={() => handleCardClick(match)}
+					/>
+				))}
 
-			<PredictionPopup isOpen={isPopupOpen} onClose={closePopup} content={popupContent} />
+			<PredictionPopup
+				selectedMatch={selectedMatch}
+				predictions={predictions}
+				isVisible={showPopup}
+				onClose={closePopup}
+			/>
 		</>
 	)
 }

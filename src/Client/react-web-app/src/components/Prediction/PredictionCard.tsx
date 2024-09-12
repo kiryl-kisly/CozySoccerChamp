@@ -3,15 +3,19 @@ import { IMatchResponse } from '../../services/interfaces/Responses/IMatchRespon
 
 interface Props {
 	match: IMatchResponse | null
+	onClick: () => void
 }
 
-export function PredictionCard({ match }: Props) {
+export function PredictionCard({ match, onClick }: Props) {
 
 	const isActive = match?.matchResult?.status === 'Started'
 
 	return (
 		<>
-			<div className={`flex w-full h-16 mb-4 text-white rounded-lg border ${isActive ? 'border-green-500' : 'border-gray-500'}`}>
+			<div
+				className={`flex w-full h-16 mb-4 text-white rounded-lg border ${isActive ? 'border-green-500' : 'border-gray-500'}`}
+				onClick={onClick}
+			>
 
 				<div className={`h-full w-2 rounded-l-lg ${isActive ? 'bg-green-500' : 'bg-gray-500'}`}></div>
 
@@ -38,5 +42,4 @@ export function PredictionCard({ match }: Props) {
 			</div>
 		</>
 	)
-
 }

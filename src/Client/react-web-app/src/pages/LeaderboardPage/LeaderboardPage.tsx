@@ -21,7 +21,7 @@ export function LeaderboardPage({ leaderboard, competition }: Props) {
 
 	return (
 		<>
-			<h1 className='text-white mb-10 text-3xl'>Leaderboard</h1>
+			<h1 className='title-page'>Leaderboard</h1>
 
 			<Competition competition={competition} />
 
