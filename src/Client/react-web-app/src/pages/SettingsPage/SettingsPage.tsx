@@ -11,7 +11,7 @@ export function SettingsPage() {
 
 	return (
 		<>
-			<h1 className='text-white mb-10 text-3xl'>Settings</h1>
+			<h1 className='title-page'>Settings</h1>
 			{/* <div className='text-white p-20'>
 				<button onClick={handleUserAction}>Save</button>
 				{popupMessage && <Popup message={popupMessage} isError={false} duration={2000} />}
