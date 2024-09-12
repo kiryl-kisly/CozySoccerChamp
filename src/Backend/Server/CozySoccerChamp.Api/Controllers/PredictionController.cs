@@ -1,3 +1,5 @@
+using Microsoft.Net.Http.Headers;
+
 namespace CozySoccerChamp.Api.Controllers;
 
 [ApiController]
@@ -15,12 +17,13 @@ public class PredictionController(IPredictionService predictionService) : Contro
     {
         return await predictionService.MakePredictionAsync(request);
     }
-    
+
     /// <summary>
     ///     Получить все прогнозы по матчу
     /// </summary>
     [HttpGet("{matchId}")]
-    public async Task<IReadOnlyCollection<PredictionResponse>> GetPredictionsByMatchId([FromQuery] int matchId)
+    [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
+    public async Task<IReadOnlyCollection<PredictionResponse>> GetPredictionsByMatchId([FromRoute] int matchId)
     {
         return await predictionService.GetPredictionByMatchIdAsync(matchId);
     }

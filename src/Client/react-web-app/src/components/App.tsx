@@ -9,7 +9,6 @@ import { TeamPage } from '../pages/TeamPage/TeamPage'
 import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
 import './App.css'
-import { Menu } from './Menu/Menu'
 import { UserProfile } from './UserProfile/UserProfile'
 
 export function App() {
@@ -28,10 +27,6 @@ export function App() {
     }
     fetchData()
   }, [])
-
-  // const startedOrFinishedMatches = data.matches?.filter(
-  //   (match) => match.matchResult?.status === "Finished" || match.matchResult?.status === "Started"
-  // ) ?? null
 
   return (
     <div className='flex justify-center'>
@@ -55,7 +50,6 @@ export function App() {
                   </Route>
                 </Routes>
 
-                <Menu />
               </>
             )
         }
