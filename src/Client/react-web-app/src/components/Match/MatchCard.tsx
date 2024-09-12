@@ -1,14 +1,13 @@
 import { AxiosError } from 'axios'
 import { format } from 'date-fns'
 import { useState } from 'react'
+import { PiMinusBold, PiPlusBold } from 'react-icons/pi'
 import { IPredictionRequest } from '../../services/interfaces/Requests/IPredictionRequest'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
 import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
 import { makePrediction } from '../../services/PredictionService'
 import { Popup } from '../Popup/Popup'
 import './MatchCard.css'
-import { PiPlusBold } from 'react-icons/pi'
-import { PiMinusBold } from 'react-icons/pi'
 
 interface Props {
 	match: IMatchResponse
@@ -59,6 +58,7 @@ export function MatchCard({ match, prediction }: Props) {
 	return (
 		<>
 			<div className='match-wrapper'>
+
 				<div className='started-time'>
 					<div className='text-sm font-normal'>{formattedStartDate}</div>
 				</div>
@@ -66,143 +66,101 @@ export function MatchCard({ match, prediction }: Props) {
 				<div className='match-content'>
 
 					<div className='team-item first'>
-						<div className='team-icon'>
-							<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
-						</div>
-						<div className='team-name'>
-							{match?.teamHome?.shortName}
-						</div>
-						<div className='wrapper-prediction'>
-							<div className='prediction-value'>0</div>
-							<div className='flex space-x-4'>
-								<div className='prediction'><PiMinusBold /></div>
-								<div className='prediction'><PiPlusBold /></div>
-							</div>
-						</div>
-					</div>
-
-					<div className='center-item text-5xl font-normal'>
-						0 : 0
-					</div>
-
-					<div className='team-item last'>
-						<div className='team-icon'>
-							<img src={match?.teamAway?.emblemUrl} alt='Team Emblem' />
-						</div>
-						<div className='team-name'>
-							{match?.teamAway?.shortName}
-						</div>
-						<div className='wrapper-prediction'>
-							<div className='prediction-value'>0</div>
-							<div className='flex space-x-4'>
-								<div className='prediction'><PiMinusBold /></div>
-								<div className='prediction'><PiPlusBold /></div>
-							</div>
-						</div>
-					</div>
-
-
-
-				</div>
-
-				<div className='prediction-button font-thin'>
-					make a prediction
-				</div>
-			</div>
-
-
-
-
-
-			{/* <div className='wrapper'>
-				<div className='team-wrapper'>
-					{match.teamHome ? (
-						<>
-							<div className='team-icon'>
-								<img src={match.teamHome.emblemUrl} alt='Team Emblem' />
-							</div>
-							<div className='team-name'>{match.teamHome.shortName}</div>
-							<div className='prediction-wrapper text-4xl'>
-								<div>
-									<button
-										onClick={() =>
-											updatePredictionValue(homePredictedCount, setHomePredictedCount, -1)}>
-										-
-									</button>
-								</div>
-								<div>{homePredictedCount}</div>
-								<div>
-									<button
-										onClick={() =>
-											updatePredictionValue(homePredictedCount, setHomePredictedCount, +1)}>
-										+
-									</button>
-								</div>
-							</div>
-						</>
-					) : (
-						<span>TBD</span>
-					)}
-				</div>
-
-				{
-					match.matchResult?.fullTime
-						? (
+						{match.teamHome ? (
 							<>
-								<div className='score-wrapper'>
-									<div className='score-wrapper-actual'>
-										<span className='score-home-team'>
-											{match.matchResult.fullTime.homeTeamScore}
-										</span>
-										|
-										<span className='score-away-team'>
-											{match.matchResult.fullTime.awayTeamScore}
-										</span>
+								<div className='team-icon'>
+									<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
+								</div>
+								<div className='team-name'>
+									{match?.teamHome?.shortName}
+								</div>
+								<div className='wrapper-prediction'>
+									<div className='prediction-value'>{homePredictedCount}</div>
+									<div className='flex space-x-4'>
+										<div
+											className='prediction'
+											onClick={() =>
+												updatePredictionValue(homePredictedCount, setHomePredictedCount, -1)}>
+											<PiMinusBold />
+										</div>
+										<div
+											className='prediction'
+											onClick={() =>
+												updatePredictionValue(homePredictedCount, setHomePredictedCount, +1)}>
+											<PiPlusBold />
+										</div>
 									</div>
 								</div>
 							</>
-						)
-						: (
-							<span>? : ?</span>
-						)
-				}
-				<div>
-					<button onClick={sendRequest}>
-						make prediction
-					</button>
+						) : (
+							<>
+								<div className='text-4xl font-normal'>
+									TBD
+								</div>
+							</>
+						)}
+					</div>
+
+					<div className='center-item text-5xl font-normal'>
+						{match.matchResult?.fullTime
+							? (
+								<>
+									{match.matchResult.fullTime.homeTeamScore} : {match.matchResult.fullTime.awayTeamScore}
+								</>
+							)
+							: (
+								<>0 : 0</>
+							)
+						}
+					</div>
+
+					<div className='team-item last'>
+						{match.teamAway ? (
+							<>
+								<div className='team-icon'>
+									<img src={match?.teamAway?.emblemUrl} alt='Team Emblem' />
+								</div>
+								<div className='team-name'>
+									{match?.teamAway?.shortName}
+								</div>
+								<div className='wrapper-prediction'>
+									<div className='prediction-value'>{awayPredictedCount}</div>
+									<div className='flex space-x-4'>
+										<div
+											className='prediction'
+											onClick={() =>
+												updatePredictionValue(awayPredictedCount, setAwayPredictedCount, -1)}>
+											<PiMinusBold />
+										</div>
+										<div
+											className='prediction'
+											onClick={() =>
+												updatePredictionValue(awayPredictedCount, setAwayPredictedCount, +1)}>
+											<PiPlusBold />
+										</div>
+									</div>
+								</div>
+							</>
+						) : (
+							<div className='text-4xl font-normal'>
+								TBD
+							</div>
+						)}
+					</div>
+
 				</div>
 
-				<div className='team-wrapper'>
-					{match.teamAway ? (
-						<>
-							<div className='team-icon'>
-								<img src={match.teamAway.emblemUrl} alt='Team Emblem' />
-							</div>
-							<div className='team-name'>{match.teamAway.shortName}</div>
-							<div className='prediction-wrapper text-4xl'>
-								<div>
-									<button
-										onClick={() =>
-											updatePredictionValue(awayPredictedCount, setAwayPredictedCount, -1)}>
-										-
-									</button>
-								</div>
-								<div>{awayPredictedCount}</div>
-								<div>
-									<button
-										onClick={() =>
-											updatePredictionValue(awayPredictedCount, setAwayPredictedCount, +1)}>
-										+
-									</button>
-								</div>
-							</div>
-						</>
-					) : (
-						<span>TBD</span>
-					)}
-				</div>
+				{match.teamHome && match.teamAway ? (
+					<div
+						className='prediction-button font-thin'
+						onClick={sendRequest}>
+						make a prediction
+					</div>
+				) : (
+					<></>
+				)}
 
-			</div> */}
+			</div>
 
 			{popupMessage && <Popup message={popupMessage} isError={isError} duration={2000} />}
 		</>
