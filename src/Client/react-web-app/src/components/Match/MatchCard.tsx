@@ -63,45 +63,55 @@ export function MatchCard({ match, prediction }: Props) {
 					<div className='text-sm font-normal'>{formattedStartDate}</div>
 				</div>
 
+				<div className="match-point">
+					<span className="match-point-value">+5<sup>x2</sup></span>
+					<span className="match-point-text">Points</span>
+				</div>
+
 				<div className='match-content'>
 
-					<div className='team-item first'>
-						<div className='team-icon'>
-							<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
+					<div className="match-disabled"></div>
+
+
+
+					<div className="match-info">
+
+						<div className='team-item first'>
+							<div className='team-icon'>
+								<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
+							</div>
+							<div className='team-name'>
+								{match?.teamHome?.shortName}
+							</div>
+							<div className='wrapper-prediction'>
+								<div className='prediction-value'>0</div>
+								<div className='flex space-x-4'>
+									<div className='prediction'><PiMinusBold /></div>
+									<div className='prediction'><PiPlusBold /></div>
+								</div>
+							</div>
 						</div>
-						<div className='team-name'>
-							{match?.teamHome?.shortName}
+
+						<div className='center-item text-5xl font-normal'>
+							0 : 0
 						</div>
-						<div className='wrapper-prediction'>
-							<div className='prediction-value'>0</div>
-							<div className='flex space-x-4'>
-								<div className='prediction'><PiMinusBold /></div>
-								<div className='prediction'><PiPlusBold /></div>
+
+						<div className='team-item last'>
+							<div className='team-icon'>
+								<img src={match?.teamAway?.emblemUrl} alt='Team Emblem' />
+							</div>
+							<div className='team-name'>
+								{match?.teamAway?.shortName}
+							</div>
+							<div className='wrapper-prediction'>
+								<div className='prediction-value'>0</div>
+								<div className='flex space-x-4'>
+									<div className='prediction'><PiMinusBold /></div>
+									<div className='prediction'><PiPlusBold /></div>
+								</div>
 							</div>
 						</div>
 					</div>
-
-					<div className='center-item text-5xl font-normal'>
-						0 : 0
-					</div>
-
-					<div className='team-item last'>
-						<div className='team-icon'>
-							<img src={match?.teamAway?.emblemUrl} alt='Team Emblem' />
-						</div>
-						<div className='team-name'>
-							{match?.teamAway?.shortName}
-						</div>
-						<div className='wrapper-prediction'>
-							<div className='prediction-value'>0</div>
-							<div className='flex space-x-4'>
-								<div className='prediction'><PiMinusBold /></div>
-								<div className='prediction'><PiPlusBold /></div>
-							</div>
-						</div>
-					</div>
-
-
 
 				</div>
 
