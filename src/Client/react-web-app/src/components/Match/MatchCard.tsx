@@ -63,7 +63,18 @@ export function MatchCard({ match, prediction }: Props) {
 					<div className='text-sm font-normal'>{formattedStartDate}</div>
 				</div>
 
+				<div className="match-point">
+					<span className="match-point-value">+5<sup>x2</sup></span>
+					<span className="match-point-text">Points</span>
+				</div>
+
 				<div className='match-content'>
+
+					<div className="match-disabled"></div>
+
+
+
+					<div className="match-info">
 
 					<div className='team-item first'>
 						{match.teamHome ? (
