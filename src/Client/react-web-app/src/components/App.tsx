@@ -10,6 +10,7 @@ import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
 import './App.css'
 import { UserProfile } from './UserProfile/UserProfile'
+import { InfoPage } from '../pages/InfoPage/InfoPage'
 
 export function App() {
   const [data, setData] = useState<IInitDataResponse>({
@@ -20,6 +21,8 @@ export function App() {
     predictions: null,
     leaderboard: null
   })
+
+  const leaderBoard = data.leaderboard?.find((x) => x.userId === data.userProfile?.userId)
 
   useEffect(() => {
     async function fetchData() {
@@ -37,7 +40,7 @@ export function App() {
               <p>loading ...</p>
             ) : (
               <>
-                <UserProfile userName={data.userProfile?.userName} />
+                <UserProfile leaderBoard = {leaderBoard}/>
 
                 <Routes>
                   <Route path="/" element={<Layout />}>
@@ -47,6 +50,7 @@ export function App() {
                     <Route path='settings' element={<SettingsPage />} />
                     <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
                     <Route path='team' element={<TeamPage />} />
+                    <Route path='info' element={<InfoPage />} />
                   </Route>
                 </Routes>
 

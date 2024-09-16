@@ -76,104 +76,105 @@ export function MatchCard({ match, prediction }: Props) {
 
 					<div className="match-info">
 
-					<div className='team-item first'>
-						{match.teamHome ? (
-							<>
-								<div className='team-icon'>
-									<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
-								</div>
-								<div className='team-name'>
-									{match?.teamHome?.shortName}
-								</div>
-								<div className='wrapper-prediction'>
-									<div className='prediction-value'>{homePredictedCount}</div>
-									<div className='flex space-x-4'>
-										<div
-											className='prediction'
-											onClick={() =>
-												updatePredictionValue(homePredictedCount, setHomePredictedCount, -1)}>
-											<PiMinusBold />
-										</div>
-										<div
-											className='prediction'
-											onClick={() =>
-												updatePredictionValue(homePredictedCount, setHomePredictedCount, +1)}>
-											<PiPlusBold />
+						<div className='team-item first'>
+							{match.teamHome ? (
+								<>
+									<div className='team-icon'>
+										<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
+									</div>
+									<div className='team-name'>
+										{match?.teamHome?.shortName}
+									</div>
+									<div className='wrapper-prediction'>
+										<div className='prediction-value'>{homePredictedCount}</div>
+										<div className='flex space-x-4'>
+											<div
+												className='prediction'
+												onClick={() =>
+													updatePredictionValue(homePredictedCount, setHomePredictedCount, -1)}>
+												<PiMinusBold />
+											</div>
+											<div
+												className='prediction'
+												onClick={() =>
+													updatePredictionValue(homePredictedCount, setHomePredictedCount, +1)}>
+												<PiPlusBold />
+											</div>
 										</div>
 									</div>
-								</div>
-							</>
-						) : (
-							<>
+								</>
+							) : (
+								<>
+									<div className='text-4xl font-normal'>
+										TBD
+									</div>
+								</>
+							)}
+						</div>
+
+						<div className='center-item text-5xl font-normal'>
+							{match.matchResult?.fullTime
+								? (
+									<>
+										{match.matchResult.fullTime.homeTeamScore} : {match.matchResult.fullTime.awayTeamScore}
+									</>
+								)
+								: (
+									<>0 : 0</>
+								)
+							}
+						</div>
+
+						<div className='team-item last'>
+							{match.teamAway ? (
+								<>
+									<div className='team-icon'>
+										<img src={match?.teamAway?.emblemUrl} alt='Team Emblem' />
+									</div>
+									<div className='team-name'>
+										{match?.teamAway?.shortName}
+									</div>
+									<div className='wrapper-prediction'>
+										<div className='prediction-value'>{awayPredictedCount}</div>
+										<div className='flex space-x-4'>
+											<div
+												className='prediction'
+												onClick={() =>
+													updatePredictionValue(awayPredictedCount, setAwayPredictedCount, -1)}>
+												<PiMinusBold />
+											</div>
+											<div
+												className='prediction'
+												onClick={() =>
+													updatePredictionValue(awayPredictedCount, setAwayPredictedCount, +1)}>
+												<PiPlusBold />
+											</div>
+										</div>
+									</div>
+								</>
+							) : (
 								<div className='text-4xl font-normal'>
 									TBD
 								</div>
-							</>
-						)}
+							)}
+						</div>
+
 					</div>
 
-					<div className='center-item text-5xl font-normal'>
-						{match.matchResult?.fullTime
-							? (
-								<>
-									{match.matchResult.fullTime.homeTeamScore} : {match.matchResult.fullTime.awayTeamScore}
-								</>
-							)
-							: (
-								<>0 : 0</>
-							)
-						}
-					</div>
-
-					<div className='team-item last'>
-						{match.teamAway ? (
-							<>
-								<div className='team-icon'>
-									<img src={match?.teamAway?.emblemUrl} alt='Team Emblem' />
-								</div>
-								<div className='team-name'>
-									{match?.teamAway?.shortName}
-								</div>
-								<div className='wrapper-prediction'>
-									<div className='prediction-value'>{awayPredictedCount}</div>
-									<div className='flex space-x-4'>
-										<div
-											className='prediction'
-											onClick={() =>
-												updatePredictionValue(awayPredictedCount, setAwayPredictedCount, -1)}>
-											<PiMinusBold />
-										</div>
-										<div
-											className='prediction'
-											onClick={() =>
-												updatePredictionValue(awayPredictedCount, setAwayPredictedCount, +1)}>
-											<PiPlusBold />
-										</div>
-									</div>
-								</div>
-							</>
-						) : (
-							<div className='text-4xl font-normal'>
-								TBD
-							</div>
-						)}
-					</div>
+					{match.teamHome && match.teamAway ? (
+						<div
+							className='prediction-button font-thin'
+							onClick={sendRequest}>
+							make a prediction
+						</div>
+					) : (
+						<></>
+					)}
 
 				</div>
 
-				{match.teamHome && match.teamAway ? (
-					<div
-						className='prediction-button font-thin'
-						onClick={sendRequest}>
-						make a prediction
-					</div>
-				) : (
-					<></>
-				)}
-
+				{popupMessage && <Popup message={popupMessage} isError={isError} duration={2000} />}
 			</div>
-
-			{popupMessage && <Popup message={popupMessage} isError={isError} duration={2000} />}
 		</>
 	)
 }
