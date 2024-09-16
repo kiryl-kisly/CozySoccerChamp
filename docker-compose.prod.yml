@@ -1,0 +1,59 @@
+version: '3.8'
+
+networks:
+  prod:
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - './nginx.conf:/etc/nginx/nginx.conf'
+    depends_on:
+      - "cozysoccerchamp.api"
+      - "cozysoccerchamp.webclient"
+    networks:
+      - prod
+
+  cozysoccerchamp.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8000
+      - ASPNETCORE_HTTPS_PORTS=8001
+    container_name: cozysoccerchamp.api
+    image: cozysoccerchamp.api
+    build:
+      context: ./src/Backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    depends_on:
+     - "cozysoccerchamp.database"
+    networks:
+      - prod
+
+  cozysoccerchamp.database:
+    container_name: cozysoccerchamp.database
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=CozySoccerChamp
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    networks:
+      - prod
+    
+  cozysoccerchamp.webclient:
+    container_name: cozysoccerchamp.webclient
+    image: cozysoccerchamp.webclient
+    build:
+      context: ./src/Client/react-web-app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - cozysoccerchamp.api
+    networks:
+      - prod
