@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
-const baseURL = 'api/'
+const baseURL = '/api/'
 
 const axiosClient = (): AxiosInstance => {
   const headers = {
