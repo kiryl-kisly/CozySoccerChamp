@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router'
 import { Layout } from '../layouts/MainLayout'
+import { InfoPage } from '../pages/InfoPage/InfoPage'
 import { LeaderboardPage } from '../pages/LeaderboardPage/LeaderboardPage'
 import { MatchesPage } from '../pages/MatchesPage/MatchesPage'
 import { PredictionPage } from '../pages/PredictionPage/PredictionPage'
@@ -10,7 +11,6 @@ import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
 import './App.css'
 import { UserProfile } from './UserProfile/UserProfile'
-import { InfoPage } from '../pages/InfoPage/InfoPage'
 
 export function App() {
   const [data, setData] = useState<IInitDataResponse>({
@@ -40,7 +40,7 @@ export function App() {
               <p>loading ...</p>
             ) : (
               <>
-                <UserProfile leaderBoard = {leaderBoard}/>
+                <UserProfile leaderboard={leaderBoard} userProfile={data.userProfile} />
 
                 <Routes>
                   <Route path="/" element={<Layout />}>

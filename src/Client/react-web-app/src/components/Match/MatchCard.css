@@ -18,24 +18,24 @@
 }
 
 .match-disabled {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(69 69 69 / 91%);
-    top: 0;
-    left: 0;
-    z-index: 2;
-    backdrop-filter: blur(5px);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgb(69 69 69 / 91%);
+	top: 0;
+	left: 0;
+	z-index: 2;
+	backdrop-filter: blur(5px);
 }
 
 .match-disable-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    max-height: 200px;
-    height: 100%;
-    justify-content: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10px;
+	max-height: 200px;
+	height: 100%;
+	justify-content: center;
 }
 
 .started-time {
@@ -54,15 +54,15 @@
 }
 
 .match-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    position: relative;
-    padding: 10px;
-    overflow: hidden;
-    border-radius: 9px;
-    box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	position: relative;
+	padding: 10px;
+	overflow: hidden;
+	border-radius: 9px;
+	box-sizing: border-box;
 }
 
 .match-info {
@@ -155,11 +155,11 @@
 }
 
 .match-point {
-    position: relative;
-    top: 0;
+	position: relative;
+	top: 0;
 	right: 0;
-    color: var(--green);
-    z-index: 4;
+	color: var(--green);
+	z-index: 4;
 	display: block;
 }
 
@@ -178,28 +178,28 @@ span.match-point-text {
 }
 
 .match-point sup {
-    font-size: 100%;
-    top: -1.2em;
+	font-size: 100%;
+	top: -1.2em;
 }
 
 .match-teams-wrapper {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	justify-content: center;
 }
 
 .teams-item {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
 }
 
 .predictions-results-match {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: center;
 	color: var(--green);
 }
 
@@ -207,9 +207,10 @@ span.match-point-text {
 	display: flex;
 	justify-content: center;
 }
+
 .result-match span {
-    width: 24px;
-    text-align: center;
+	width: 24px;
+	text-align: center;
 }
 
 .march-result {
@@ -217,5 +218,5 @@ span.match-point-text {
 }
 
 .match-wrapper:last-child {
-    margin-bottom: 75px;
+	margin-bottom: 75px;
 }
