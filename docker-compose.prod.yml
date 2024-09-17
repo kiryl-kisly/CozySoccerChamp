@@ -21,7 +21,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8000
-      - ASPNETCORE_HTTPS_PORTS=8001
     container_name: cozysoccerchamp.api
     image: cozysoccerchamp.api
     build:
