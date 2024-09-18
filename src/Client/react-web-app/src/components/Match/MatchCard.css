@@ -11,7 +11,7 @@
 	border-radius: 10px;
 	z-index: 0;
 
-	background-image: url(./img/lch.png);
+	background-image: url(/img/lch.png);
 	background-size: 80%;
 	background-repeat: no-repeat;
 	background-position: -100px -40px;
