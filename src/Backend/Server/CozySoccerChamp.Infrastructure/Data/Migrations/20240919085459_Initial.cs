@@ -33,6 +33,7 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    ExternalTeamId = table.Column<int>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     ShortName = table.Column<string>(type: "TEXT", nullable: true),
                     CodeName = table.Column<string>(type: "TEXT", nullable: true),

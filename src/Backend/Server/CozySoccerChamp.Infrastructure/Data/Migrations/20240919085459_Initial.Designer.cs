@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CozySoccerChamp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240917134924_Initial")]
+    [Migration("20240919085459_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -203,6 +203,9 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
 
                     b.Property<string>("EmblemUrl")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ExternalTeamId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()

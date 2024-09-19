@@ -201,6 +201,9 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                     b.Property<string>("EmblemUrl")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ExternalTeamId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)

@@ -4,6 +4,7 @@ namespace CozySoccerChamp.Domain.Entities.Soccer;
 
 public class Team : BaseEntity
 {
+    public int ExternalTeamId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string ShortName { get; set; } = string.Empty;
     public string CodeName { get; set; } = string.Empty;

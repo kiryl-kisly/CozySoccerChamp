@@ -118,8 +118,8 @@ public class DataInitialization(
 
         foreach (var match in matchesData)
         {
-            var teamHome = await _teamRepository.FindAsync(x => x.CodeName == match.HomeTeam.CodeName);
-            var teamAway = await _teamRepository.FindAsync(x => x.CodeName == match.AwayTeam.CodeName);
+            var teamHome = await _teamRepository.FindAsync(x => x.ExternalTeamId == match.HomeTeam.Id);
+            var teamAway = await _teamRepository.FindAsync(x => x.ExternalTeamId == match.AwayTeam.Id);
 
             var matchEntity = mapper.Map<Match>(match);
             matchEntity.TeamHomeId = teamHome?.Id;
