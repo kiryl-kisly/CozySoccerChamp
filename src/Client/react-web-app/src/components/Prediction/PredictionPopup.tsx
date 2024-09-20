@@ -30,9 +30,9 @@ export function PredictionPopup({ selectedMatch, predictions, isVisible, onClose
 					{format(new Date(selectedMatch?.startTimeUtc as unknown as string), 'dd MMM yyyy HH:mm')}
 				</div>
 
-				<div className='flex justify-between items-center text-black p-4 space-x-5'>
+				<div className='flex justify-center w-full my-3 items-center text-black'>
 
-					<div className='w-1/3 text-left flex items-center space-x-2'>
+					<div className='w-1/2 team-col-left'>
 						<div className='w-12 h-12 rounded-full'>
 							<img src={selectedMatch?.teamHome?.emblemUrl} alt='Team Emblem' />
 						</div>
@@ -40,18 +40,18 @@ export function PredictionPopup({ selectedMatch, predictions, isVisible, onClose
 					</div>
 
 
-					<div className='w-1/3 text-center'>
+					<div className='w-1/4 text-center'>
 						{
 							selectedMatch?.matchResult?.status === 'Started' ? (
 								<div className='bg-green-500 animate-pulse rounded-lg px-4 m-2 text-white font-normal'>active</div>
 							) : (
-								<div className='text-3xl font-bold'>
+								<div className='text-2xl font-bold'>
 									{selectedMatch?.matchResult?.fullTime?.homeTeamScore} - {selectedMatch?.matchResult?.fullTime?.awayTeamScore}
 								</div>
 							)}
 					</div>
 
-					<div className='w-1/3 text-right flex items-center space-x-2'>
+					<div className='w-1/2 team-col-right'>
 						<span>{selectedMatch?.teamAway?.shortName}</span>
 						<div className='w-12 h-12 rounded-full'>
 							<img src={selectedMatch?.teamAway?.emblemUrl} alt='Team Emblem' />

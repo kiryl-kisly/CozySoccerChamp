@@ -35,7 +35,7 @@ export function Popup({ message, isError = false, duration = 2000 }: PopupProps)
 		: <IoIosCheckmarkCircle color='#55ff00' size={20} />
 
 	return (
-		<div className={`popup ${visible ? 'popup-show' : 'popup-hide'}`}>
+		<div className={`popup ${visible ? 'popup-show' : 'popup-hide'} ${isError === false ? 'success' : 'error'}` }>
 			<div className='popup-content'>
 				<span className='popup-icon'>{icon}</span>
 				<span>{text}</span>

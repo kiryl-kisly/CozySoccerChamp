@@ -66,7 +66,7 @@ export function MatchCard({ match, prediction }: Props) {
 					<div className='text-sm font-normal'>{formattedStartDate}</div>
 				</div>
 
-				<div className='match-content'>
+				<div className={`match-content ${archiveMatch ? 'disable' : ''}`}>
 
 					{
 						archiveMatch ? (
@@ -121,7 +121,7 @@ export function MatchCard({ match, prediction }: Props) {
 						) : (
 							<div className="match-info">
 
-								<div className='team-item first'>
+								<div className='team-item first w-1/3 mr-auto'>
 									{match.teamHome ? (
 										<>
 											<div className='team-icon'>
@@ -162,12 +162,12 @@ export function MatchCard({ match, prediction }: Props) {
 									)}
 								</div>
 
-								<div className="march-result">
+								<div className="match-result">
 									{match.matchResult?.status === "Started" ? (
-										<div className='bg-green-500 animate-pulse rounded-lg px-4 m-2 text-white font-normal text-center'>active</div>
+										<div className='bg-green-500 animate-pulse rounded-lg px-4 m-2 text-white font-normal text-center text-sm'>active</div>
 									) : (<></>)
 									}
-									<div className='center-item text-5xl font-normal'>
+									<div className='center-item font-normal'>
 										{match.matchResult?.fullTime
 											? (
 												<>
@@ -181,7 +181,7 @@ export function MatchCard({ match, prediction }: Props) {
 									</div>
 								</div>
 
-								<div className='team-item last'>
+								<div className='team-item last w-1/3 ml-auto'>
 									{match.teamAway ? (
 										<>
 											<div className='team-icon'>

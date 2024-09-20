@@ -7,6 +7,7 @@ import { IMatchResponse } from '../../services/interfaces/Responses/IMatchRespon
 import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
 import { getStartedOrFinished } from '../../services/MatchService'
 import { getPredictionsByMatchId } from '../../services/PredictionService'
+import './PredictionPage.css'
 
 interface Props {
 	competition: ICompetitionResponse | null
@@ -49,6 +50,7 @@ export function PredictionPage({ competition, matches }: Props) {
 
 			<Competition competition={competition} />
 
+			<div className="prediction-card-wrapper">
 			{data &&
 				data.map((match: IMatchResponse, index: number) => (
 					<PredictionCard
@@ -57,6 +59,8 @@ export function PredictionPage({ competition, matches }: Props) {
 						onClick={() => handleCardClick(match)}
 					/>
 				))}
+			</div>
+
 
 			<PredictionPopup
 				selectedMatch={selectedMatch}

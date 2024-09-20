@@ -12,21 +12,17 @@ export function PredictionCard({ match, onClick }: Props) {
 
 	return (
 		<>
-			<div
-				className={`flex w-full h-16 mb-4 text-white rounded-lg border ${isActive ? 'border-green-500' : 'border-gray-500'}`}
-				onClick={onClick}
-			>
+			<div className={`card-prediction flex w-full h-16 mb-4 border-l-8  text-white rounded-lg border ${isActive ? 'border-green-500' : 'border-gray-500'}`}
+				onClick={onClick} >
 
-				<div className={`h-full w-2 rounded-l-lg ${isActive ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-
-				<div className='flex items-center justify-between flex-1 p-4'>
+				<div className='flex items-center flex-start flex-1 p-4'>
 					<div className='flex items-center space-x-2'>
 						<div className='w-6 h-6 rounded-full'>
 							<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
 						</div>
 						<span className='truncate'>{match?.teamHome?.shortName}</span>
 					</div>
-
+					<span className='mx-2'> - </span>
 					<div className='flex items-center space-x-2'>
 						<span className='truncate'>{match?.teamAway?.shortName}</span>
 						<div className='w-6 h-6 rounded-full'>
@@ -34,7 +30,7 @@ export function PredictionCard({ match, onClick }: Props) {
 						</div>
 					</div>
 
-					<div className='flex items-center'>
+					<div className='flex items-center ml-auto h-full relative arrow-link'>
 						<IoIosArrowForward />
 					</div>
 
