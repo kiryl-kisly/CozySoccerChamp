@@ -164,17 +164,21 @@
 }
 
 .match-point {
-    position: relative;
+	position: relative;
     top: 0;
-	right: 0;
+    right: 0;
     color: var(--green);
     z-index: 4;
-	display: block;
+    display: flex;
+    align-content: flex-start;
+    align-items: flex-start;
+    height: 37px;
+    width: auto;
 }
 
 span.match-point-value {
 	font-size: 40px;
-	line-height: normal;
+	line-height: 37px;
 	font-weight: 600;
 }
 
@@ -188,7 +192,7 @@ span.match-point-text {
 
 .match-point sup {
     font-size: 100%;
-    top: -1.2em;
+    top: 0em;
 }
 
 .match-teams-wrapper {
