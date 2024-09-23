@@ -167,7 +167,7 @@ export function MatchCard({ match, prediction }: Props) {
 										<div className='bg-green-500 animate-pulse rounded-lg px-4 m-2 text-white font-normal text-center text-sm'>active</div>
 									) : (<></>)
 									}
-									<div className='center-item font-normal'>
+									<div className='center-item font-normal text-2xl'>
 										{match.matchResult?.fullTime
 											? (
 												<>
