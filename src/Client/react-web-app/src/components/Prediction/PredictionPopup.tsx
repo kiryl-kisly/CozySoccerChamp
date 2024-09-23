@@ -11,6 +11,15 @@ interface Props {
 }
 
 export function PredictionPopup({ selectedMatch, predictions, isVisible, onClose, }: Props) {
+
+	const handleClose = () => {
+		document.documentElement.style.overflow = 'auto';
+		document.body.style.overflow = 'auto';
+
+		onClose();
+	};
+
+
 	if (selectedMatch == null)
 		return
 
@@ -20,7 +29,7 @@ export function PredictionPopup({ selectedMatch, predictions, isVisible, onClose
 				}`}
 			style={{ height: '75vh', zIndex: 9999 }}
 		>
-			<button className='absolute top-4 right-4 text-black' onClick={onClose}>
+			<button className='absolute top-4 right-4 text-black' onClick={handleClose}>
 				<FaTimes size={24} />
 			</button>
 
@@ -60,7 +69,7 @@ export function PredictionPopup({ selectedMatch, predictions, isVisible, onClose
 				{predictions && predictions.length > 0 ? (
 					<>
 					<div className='title-sub w-full'><h3 className='font-semibold text-black mt-5 mb-3 text-left'>Predictions:</h3></div>
-					<div className='text-white p-1 rounded-lg w-full h-full overflow-y-auto prediction-list'>
+					<div className='text-white p-1 rounded-lg w-full max-h-52 overflow-y-auto prediction-list'>
 
 						{predictions?.map((prediction, index) => (
 							<div key={index}

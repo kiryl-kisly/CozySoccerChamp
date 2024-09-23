@@ -1,6 +1,8 @@
 import { IoIosArrowForward } from 'react-icons/io'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
 
+import React, { useState } from 'react';
+
 interface Props {
 	match: IMatchResponse | null
 	onClick: () => void
@@ -10,12 +12,28 @@ export function PredictionCard({ match, onClick }: Props) {
 
 	const isActive = match?.matchResult?.status === 'Started'
 
+	const [setClick, setIsActive] = useState(false);
+
+	const handleClick = () => {
+		setIsActive(!setClick);
+
+		if (!isActive) {
+			document.documentElement.style.overflow = 'hidden';
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.documentElement.style.overflow = 'auto';
+			document.body.style.overflow = 'auto'; // возвращаем overflow
+		}
+
+		onClick();
+	};
+
 	return (
 		<>
 			<div className={`card-prediction flex w-full h-16 mb-4 border-l-8  text-white rounded-lg border ${isActive ? 'border-green-500' : 'border-gray-500'}`}
-				onClick={onClick} >
+				onClick={onClick}>
 
-				<div className='flex items-center flex-start flex-1 p-4'>
+				<div className='flex items-center flex-start flex-1 p-4' onClick={handleClick}>
 					<div className='flex items-center space-x-2'>
 						<div className='w-6 h-6 rounded-full'>
 							<img src={match?.teamHome?.emblemUrl} alt='Team Emblem' />
