@@ -1,7 +1,7 @@
 import { IoIosArrowForward } from 'react-icons/io'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
 
-import React, { useState } from 'react';
+import { useState } from 'react'
 
 interface Props {
 	match: IMatchResponse | null
@@ -12,21 +12,21 @@ export function PredictionCard({ match, onClick }: Props) {
 
 	const isActive = match?.matchResult?.status === 'Started'
 
-	const [setClick, setIsActive] = useState(false);
+	const [setClick, setIsActive] = useState(false)
 
 	const handleClick = () => {
-		setIsActive(!setClick);
+		setIsActive(!setClick)
 
 		if (!isActive) {
-			document.documentElement.style.overflow = 'hidden';
-			document.body.style.overflow = 'hidden';
+			document.documentElement.style.overflow = 'hidden'
+			document.body.style.overflow = 'hidden'
 		} else {
-			document.documentElement.style.overflow = 'auto';
-			document.body.style.overflow = 'auto'; // возвращаем overflow
+			document.documentElement.style.overflow = 'auto'
+			document.body.style.overflow = 'auto' // возвращаем overflow
 		}
 
-		onClick();
-	};
+		onClick()
+	}
 
 	return (
 		<>
