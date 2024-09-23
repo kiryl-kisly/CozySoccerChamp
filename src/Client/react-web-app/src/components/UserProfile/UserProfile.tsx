@@ -1,17 +1,18 @@
-import { GiBearFace } from 'react-icons/gi';
-import { MdInfo } from "react-icons/md";
-import { GiTrophyCup } from "react-icons/gi";
-import { Link } from 'react-router-dom';
-import { ILeaderboardResponse } from '../../services/interfaces/Responses/ILeaderboardResponse';
-import { LiaCoinsSolid } from "react-icons/lia";
+import { GiBearFace, GiTrophyCup } from 'react-icons/gi'
+import { LiaCoinsSolid } from "react-icons/lia"
+import { MdInfo } from "react-icons/md"
+import { Link } from 'react-router-dom'
+import { ILeaderboardResponse } from '../../services/interfaces/Responses/ILeaderboardResponse'
 
+import { IUserProfileResponse } from '../../services/interfaces/Responses/IUserProfileResponse'
 import './UserProfile.css'
 
 interface Props {
-	leaderBoard:ILeaderboardResponse | undefined
+	userProfile: IUserProfileResponse | null
+	leaderboard: ILeaderboardResponse | undefined | null
 }
 
-export function UserProfile({ leaderBoard }:Props) {
+export function UserProfile({ userProfile, leaderboard }: Props) {
 	return (
 		<>
 			<div className="wrapper-top-bar">
@@ -20,18 +21,18 @@ export function UserProfile({ leaderBoard }:Props) {
 						<GiBearFace size={25} />
 					</div>
 					<div>
-						<p className="text-sm">{leaderBoard?.userName}</p>
+						<p className="text-sm">{userProfile?.userName}</p>
 					</div>
 				</div>
 				<div className="point-block">
 
 					<div className="wrapper-points-info">
 						<div className="point-item">
-							<div className="icon-item"><LiaCoinsSolid size={16}/></div>
-							<span>{leaderBoard?.points}</span></div>
+							<div className="icon-item"><LiaCoinsSolid size={16} /></div>
+							<span>{leaderboard?.points ?? 0}</span></div>
 						<div className="place-item">
-							<div className="icon-item"><GiTrophyCup size={16}/></div>
-							<span>{leaderBoard?.place}</span>
+							<div className="icon-item"><GiTrophyCup size={16} /></div>
+							<span>{leaderboard?.place ?? 0}</span>
 						</div>
 					</div>
 

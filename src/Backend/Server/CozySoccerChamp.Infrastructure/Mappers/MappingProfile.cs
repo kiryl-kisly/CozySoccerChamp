@@ -17,6 +17,7 @@ public class MappingProfile : Profile
 
         CreateMap<TeamResponse, Team>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ExternalTeamId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))
             .ForMember(dest => dest.CodeName, opt => opt.MapFrom(src => src.CodeName))

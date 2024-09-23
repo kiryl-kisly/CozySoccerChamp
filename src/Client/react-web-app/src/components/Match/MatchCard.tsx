@@ -22,11 +22,11 @@ export function MatchCard({ match, prediction }: Props) {
 	const maxPredictionValue = 20
 
 	const updatePredictionValue = (_value: number, setValue: React.Dispatch<React.SetStateAction<number>>, change: number) => {
-		setValue(prevValue => Math.min(maxPredictionValue, Math.max(minPredictionValue, prevValue + change)));
+		setValue(prevValue => Math.min(maxPredictionValue, Math.max(minPredictionValue, prevValue + change)))
 	}
 
-	const [popupMessage, setPopupMessage] = useState<string | null>(null);
-	const [isError, setIsError] = useState<boolean>(false);
+	const [popupMessage, setPopupMessage] = useState<string | null>(null)
+	const [isError, setIsError] = useState<boolean>(false)
 
 	const sendRequest = async () => {
 		try {
@@ -53,10 +53,8 @@ export function MatchCard({ match, prediction }: Props) {
 		}
 	}
 
-	const formattedStartDate = format(new Date(match?.startTimeUtc as unknown as string), 'dd MMM yyyy HH:mm');
-	const archiveMatch = match.matchResult?.status === 'Finished';
-
-	console.log(match);
+	const formattedStartDate = format(new Date(match?.startTimeUtc as unknown as string), 'dd MMM yyyy HH:mm')
+	const archiveMatch = match.matchResult?.status === 'Finished'
 
 	return (
 		<>
@@ -70,15 +68,15 @@ export function MatchCard({ match, prediction }: Props) {
 
 					{
 						archiveMatch ? (
-							<div className="match-disabled">
+							<div className='match-disabled'>
 
-								<div className="match-disable-content">
-									<div className="title-match-results text-2xl mt-2">Match results</div>
-									<div className="predictions-results-match">
+								<div className='match-disable-content'>
+									<div className='title-match-results text-2xl mt-2'>Match results</div>
+									<div className='predictions-results-match'>
 										{prediction ? (
 											<>
-												<div className="text-xs">Your prediction</div>
-												<div className="predictions-results-count">
+												<div className='text-xs'>Your prediction</div>
+												<div className='predictions-results-count'>
 													<span>{prediction?.predictedHomeScore}</span> : <span>{prediction?.predictedAwayScore}</span>
 												</div>
 											</>
@@ -86,40 +84,40 @@ export function MatchCard({ match, prediction }: Props) {
 										) : (<></>)}
 
 									</div>
-									<div className="match-teams-wrapper">
-										<div className="teams-item w-1/2">
-											<img className="team-logo mr-1 w-12 h-12" src={match.teamHome?.emblemUrl} />
-											<div className="team-name text-right flex items-center space-x-2 ml-auto">
+									<div className='match-teams-wrapper'>
+										<div className='teams-item w-1/2'>
+											<img className='team-logo mr-1 w-12 h-12' src={match.teamHome?.emblemUrl} />
+											<div className='team-name text-right flex items-center space-x-2 ml-auto'>
 												{match.teamHome?.shortName}
 											</div>
 										</div>
-										<div className="result-match mx-3 w-1/5 text-3xl">
+										<div className='result-match mx-3 w-1/5 text-3xl'>
 											<span>{match.matchResult?.fullTime?.homeTeamScore}</span> : <span>{match.matchResult?.fullTime?.awayTeamScore}</span>
 										</div>
-										<div className="teams-item w-1/2">
-											<div className="team-name text-left flex items-center space-x-2 mr-auto">
+										<div className='teams-item w-1/2'>
+											<div className='team-name text-left flex items-center space-x-2 mr-auto'>
 												{match.teamAway?.shortName}
 											</div>
-											<img className="team-logo ml-1 w-12 h-12" src={match.teamAway?.emblemUrl} />
+											<img className='team-logo ml-1 w-12 h-12' src={match.teamAway?.emblemUrl} />
 										</div>
 									</div>
 
 									{prediction ? (
-									<div className="match-point">
-										<span className="match-point-value">{prediction.pointPerMatch}</span>
-										<span className="match-point-text">Points</span>
-										{ prediction.coefficient && prediction.coefficient > 1.0 &&
-											<sup>x{prediction.coefficient}</sup>
-										}
+										<div className='match-point'>
+											<span className='match-point-value'>{prediction.pointPerMatch}</span>
+											<span className='match-point-text'>Points</span>
+											{prediction.coefficient && prediction.coefficient > 1.0 &&
+												<sup>x{prediction.coefficient}</sup>
+											}
 
-									</div>
+										</div>
 									) : (<></>)}
 
 								</div>
 
 							</div>
 						) : (
-							<div className="match-info">
+							<div className='match-info'>
 
 								<div className='team-item first w-1/3 mr-auto'>
 									{match.teamHome ? (
@@ -132,7 +130,7 @@ export function MatchCard({ match, prediction }: Props) {
 											</div>
 											<div className='wrapper-prediction'>
 												<div className='prediction-value'>{homePredictedCount}</div>
-												{match.matchResult?.status === "Timed" ? (
+												{match.matchResult?.status === 'Timed' ? (
 													<>
 														<div className='flex space-x-4'>
 															<div
@@ -149,7 +147,7 @@ export function MatchCard({ match, prediction }: Props) {
 															</div>
 														</div>
 													</>
-												) : (<></>) }
+												) : (<></>)}
 
 											</div>
 										</>
@@ -192,7 +190,7 @@ export function MatchCard({ match, prediction }: Props) {
 											</div>
 											<div className='wrapper-prediction'>
 												<div className='prediction-value'>{awayPredictedCount}</div>
-												{match.matchResult?.status === "Timed" ? (
+												{match.matchResult?.status === 'Timed' ? (
 													<>
 														<div className='flex space-x-4'>
 															<div
@@ -209,7 +207,7 @@ export function MatchCard({ match, prediction }: Props) {
 															</div>
 														</div>
 													</>
-												) : (<></>) }
+												) : (<></>)}
 
 
 											</div>
