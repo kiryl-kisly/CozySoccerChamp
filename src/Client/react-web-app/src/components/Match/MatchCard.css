@@ -54,20 +54,25 @@
 }
 
 .match-content {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	position: relative;
-	padding: 10px;
-	overflow: hidden;
-	border-radius: 9px;
-	box-sizing: border-box;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    padding: 10px;
+    overflow: hidden;
+    border-radius: 9px;
+    box-sizing: border-box;
+    margin: auto 0;
+}
+
+.match-content.disable {
+	margin: 0;
 }
 
 .match-info {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	width: 100%;
 	position: relative;
@@ -143,29 +148,37 @@
 }
 
 .prediction-button {
-	position: absolute;
-	bottom: 10px;
-	flex-direction: column;
-	align-items: center;
-	background-color: #303030;
-	border: 1px solid #424141;
-	border-radius: 5px;
-	padding: 2px 5px;
-	color: #fff
+    bottom: 10px;
+    flex-direction: column;
+    align-items: center;
+    background-color: #303030;
+    border: 1px solid #424141;
+    border-radius: 5px;
+    padding: 2px 5px;
+    color: #fff;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    width: fit-content;
+    margin-top: 10px;
 }
 
 .match-point {
 	position: relative;
-	top: 0;
-	right: 0;
-	color: var(--green);
-	z-index: 4;
-	display: block;
+    top: 0;
+    right: 0;
+    color: var(--green);
+    z-index: 4;
+    display: flex;
+    align-content: flex-start;
+    align-items: flex-start;
+    height: 37px;
+    width: auto;
 }
 
 span.match-point-value {
 	font-size: 40px;
-	line-height: normal;
+	line-height: 37px;
 	font-weight: 600;
 }
 
@@ -178,8 +191,8 @@ span.match-point-text {
 }
 
 .match-point sup {
-	font-size: 100%;
-	top: -1.2em;
+    font-size: 100%;
+    top: 0em;
 }
 
 .match-teams-wrapper {
@@ -213,10 +226,25 @@ span.match-point-text {
 	text-align: center;
 }
 
-.march-result {
-	margin-top: -30px;
+.match-wrapper:last-child {
+    margin-bottom: 75px;
 }
 
-.match-wrapper:last-child {
-	margin-bottom: 75px;
+.match-result {
+	font-size: 3rem;
+    line-height: 1;
+}
+
+@media screen and (max-width: 380px) {
+	.match-result {
+		font-size: 2.25rem;
+    	line-height: 2.5rem;
+	}
+}
+
+@media screen and (max-width: 334px) {
+	.match-result {
+		font-size: 1.8rem;
+    	line-height: 1.8rem;
+	}
 }
