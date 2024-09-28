@@ -16,10 +16,6 @@ RUN dotnet restore "Server/CozySoccerChamp.Api/CozySoccerChamp.Api.csproj"
 
 COPY . .
 
-# Apply migrations
-RUN dotnet tool install --global dotnet-ef 
-RUN /root/.dotnet/tools/dotnet-ef database update
-
 WORKDIR "/src/Server/CozySoccerChamp.Api"
 RUN dotnet build "CozySoccerChamp.Api.csproj" -c Release -o /app/build
 
