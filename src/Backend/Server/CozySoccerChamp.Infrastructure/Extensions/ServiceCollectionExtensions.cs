@@ -25,13 +25,13 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        const string sectionName = "DefaultDbConnection";
+        const string sectionName = "CozySoccerChampPostgresSqlConnection";
 
         var connectionString = configuration.GetConnectionString(sectionName)
                                ?? throw new ApplicationException("ConnectionString not found");
 
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(connectionString));
+            options.UseNpgsql(connectionString));
 
         return services;
     }

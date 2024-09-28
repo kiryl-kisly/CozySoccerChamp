@@ -77,12 +77,7 @@ public class PointCalculatingJob(
                     return 0;
 
                 var userPoint = settings.PointSettings.Outcome; // Балл за правильный исход
-
-                if (homeTeamScore == prediction.PredictedHomeScore || awayTeamScore == prediction.PredictedAwayScore)
-                {
-                    userPoint = settings.PointSettings.GoalByOneTeam; // Балл исход + за правильное число голов одной из команд
-                }
-
+                
                 if (homeTeamScore - awayTeamScore == prediction.PredictedHomeScore - prediction.PredictedAwayScore)
                 {
                     userPoint = settings.PointSettings.GoalDifference; // Балл исход + за правильную разницу забитых мячей

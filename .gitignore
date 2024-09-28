@@ -41,8 +41,3 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
-
-# SQLite db
-*.db
-*.db-shm
-*.db-wal

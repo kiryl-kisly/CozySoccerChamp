@@ -11,7 +11,6 @@ public class PointCalculateSettings
 public class PointSettings
 {
     public int Outcome { get; init; }
-    public int GoalByOneTeam { get; init; }
     public int GoalDifference { get; init; }
     public int ExactScore { get; init; }
 }

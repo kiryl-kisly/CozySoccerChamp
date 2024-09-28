@@ -24,4 +24,4 @@ app.UseCors(x => x.AllowAnyHeader()
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

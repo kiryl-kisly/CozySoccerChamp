@@ -11,7 +11,7 @@ public class PredictionService(
     IPredictionRepository predictionRepository,
     IMapper mapper) : IPredictionService
 {
-    private const int PredictionClosedInMinutes = 5;
+    private const int PredictionClosedInMinutes = 1;
 
     public async Task<PredictionResponse> MakePredictionAsync(PredictionRequest request)
     {

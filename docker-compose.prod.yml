@@ -26,22 +26,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    volumes:
-       - ./src/Backend/Server/CozySoccerChamp.Api/CozySoccerChamp.db:/app/CozySoccerChamp.db
-    # depends_on:
-    #  - "cozysoccerchamp.database"
     networks:
       - prod
-
-  # cozysoccerchamp.database:
-  #   container_name: cozysoccerchamp.database
-  #   image: postgres:latest
-  #   environment:
-  #     - POSTGRES_DB=CozySoccerChamp
-  #     - POSTGRES_USER=user
-  #     - POSTGRES_PASSWORD=password
-  #   networks:
-  #     - prod
     
   cozysoccerchamp.webclient:
     container_name: cozysoccerchamp.webclient

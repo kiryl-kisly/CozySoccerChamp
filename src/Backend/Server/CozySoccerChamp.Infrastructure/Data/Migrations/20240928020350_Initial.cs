@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,12 +16,12 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 name: "Competitions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    EmblemUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    Started = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Finished = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    EmblemUrl = table.Column<string>(type: "text", nullable: true),
+                    Started = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Finished = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,13 +32,13 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ExternalTeamId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    ShortName = table.Column<string>(type: "TEXT", nullable: true),
-                    CodeName = table.Column<string>(type: "TEXT", nullable: true),
-                    EmblemUrl = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ExternalTeamId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    ShortName = table.Column<string>(type: "text", nullable: true),
+                    CodeName = table.Column<string>(type: "text", nullable: true),
+                    EmblemUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -48,13 +49,13 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ChatId = table.Column<long>(type: "INTEGER", nullable: false),
-                    TelegramUserName = table.Column<string>(type: "TEXT", nullable: true),
-                    TelegramFirstName = table.Column<string>(type: "TEXT", nullable: true),
-                    TelegramLastName = table.Column<string>(type: "TEXT", nullable: true),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ChatId = table.Column<long>(type: "bigint", nullable: false),
+                    TelegramUserName = table.Column<string>(type: "text", nullable: true),
+                    TelegramFirstName = table.Column<string>(type: "text", nullable: true),
+                    TelegramLastName = table.Column<string>(type: "text", nullable: true),
+                    UserName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,16 +66,16 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 name: "Matches",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ExternalMatchId = table.Column<int>(type: "INTEGER", nullable: false),
-                    TeamHomeId = table.Column<int>(type: "INTEGER", nullable: true),
-                    TeamAwayId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Group = table.Column<char>(type: "TEXT", maxLength: 1, nullable: true),
-                    Stage = table.Column<string>(type: "TEXT", nullable: true),
-                    MatchDay = table.Column<int>(type: "INTEGER", nullable: true),
-                    MatchTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CompetitionId = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ExternalMatchId = table.Column<int>(type: "integer", nullable: false),
+                    TeamHomeId = table.Column<int>(type: "integer", nullable: true),
+                    TeamAwayId = table.Column<int>(type: "integer", nullable: true),
+                    Group = table.Column<char>(type: "character(1)", maxLength: 1, nullable: true),
+                    Stage = table.Column<string>(type: "text", nullable: true),
+                    MatchDay = table.Column<int>(type: "integer", nullable: true),
+                    MatchTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CompetitionId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,16 +101,16 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 name: "MatchResults",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    MatchId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Duration = table.Column<string>(type: "TEXT", nullable: false),
-                    Status = table.Column<string>(type: "TEXT", nullable: false),
-                    FullTime = table.Column<string>(type: "TEXT", nullable: true),
-                    HalfTime = table.Column<string>(type: "TEXT", nullable: true),
-                    RegularTime = table.Column<string>(type: "TEXT", nullable: true),
-                    ExtraTime = table.Column<string>(type: "TEXT", nullable: true),
-                    Penalties = table.Column<string>(type: "TEXT", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MatchId = table.Column<int>(type: "integer", nullable: false),
+                    Duration = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    FullTime = table.Column<string>(type: "text", nullable: true),
+                    HalfTime = table.Column<string>(type: "text", nullable: true),
+                    RegularTime = table.Column<string>(type: "text", nullable: true),
+                    ExtraTime = table.Column<string>(type: "text", nullable: true),
+                    Penalties = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -126,15 +127,15 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 name: "Predictions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    MatchId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PredictedHomeScore = table.Column<int>(type: "INTEGER", nullable: true),
-                    PredictedAwayScore = table.Column<int>(type: "INTEGER", nullable: true),
-                    PredictionTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    PointPerMatch = table.Column<int>(type: "INTEGER", nullable: true),
-                    Coefficient = table.Column<double>(type: "REAL", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    MatchId = table.Column<int>(type: "integer", nullable: false),
+                    PredictedHomeScore = table.Column<int>(type: "integer", nullable: true),
+                    PredictedAwayScore = table.Column<int>(type: "integer", nullable: true),
+                    PredictionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PointPerMatch = table.Column<int>(type: "integer", nullable: true),
+                    Coefficient = table.Column<double>(type: "double precision", nullable: true)
                 },
                 constraints: table =>
                 {

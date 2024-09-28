@@ -80,8 +80,8 @@ public class DataInitialization(
         {
             Name = competitionsData!.Name,
             EmblemUrl = competitionsData.EmblemUrl,
-            Started = resultSetData.First,
-            Finished = resultSetData.Last
+            Started = resultSetData.First.ToUniversalTime(),
+            Finished = resultSetData.Last.ToUniversalTime()
         };
 
         await _competitionRepository.AddAsync(competition);
