@@ -8,10 +8,12 @@ public class MatchService(IMatchRepository matchRepository, IMapper mapper) : IM
 {
     public async Task<IReadOnlyCollection<MatchResponse>> GetAllAsync()
     {
-        var matches = await matchRepository.GetAllAsync(asNoTracking: true,
-            x => x.TeamHome,
-            x => x.TeamAway,
-            x => x.MatchResult);
+        var matches = await matchRepository.GetAllAsQueryable(asNoTracking: true,
+                x => x.TeamHome,
+                x => x.TeamAway,
+                x => x.MatchResult)
+            .OrderByDescending(x => x.Id)
+            .ToListAsync();
 
         return mapper.Map<IReadOnlyCollection<MatchResponse>>(matches);
     }
