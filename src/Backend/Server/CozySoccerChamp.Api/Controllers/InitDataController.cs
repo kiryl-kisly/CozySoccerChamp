@@ -1,3 +1,5 @@
+using CozySoccerChamp.Api.Headers;
+
 namespace CozySoccerChamp.Api.Controllers;
 
 [ApiController]
@@ -7,15 +9,17 @@ namespace CozySoccerChamp.Api.Controllers;
 public class InitDataController(
     ICompetitionService competitionService,
     IMatchService matchService,
-    IUserService userService, 
+    IUserService userService,
     IPredictionService predictionService) : ControllerBase
 {
     /// <summary>
     ///     Получить всё информацию при первоночальной загрузке веб-приложения
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] int userId)
+    public async Task<IActionResult> Get([FromHeader] TelegramHeader telegramHeader)
     {
+        var userId = telegramHeader.UserId;
+
         var competition = await competitionService.GetById(1);
         var userProfile = await userService.GetUserById(userId);
         var matches = await matchService.GetAllAsync();

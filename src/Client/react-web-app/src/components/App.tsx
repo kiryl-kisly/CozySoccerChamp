@@ -26,7 +26,7 @@ export function App() {
 
   useEffect(() => {
     async function fetchData() {
-      setData((await getInitData(1)))
+      setData((await getInitData()))
     }
     fetchData()
   }, [])
