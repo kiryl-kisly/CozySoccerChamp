@@ -37,7 +37,7 @@ export function App() {
         {
           data.isLoading
             ? (
-              <p>loading ...</p>
+              <p className="loader-wrapper"><span className="loader">Load&nbsp;ng</span></p>
             ) : (
               <>
                 <UserProfile leaderboard={leaderBoard} userProfile={data.userProfile} />
