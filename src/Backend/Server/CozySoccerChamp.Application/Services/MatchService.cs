@@ -12,7 +12,7 @@ public class MatchService(IMatchRepository matchRepository, IMapper mapper) : IM
                 x => x.TeamHome,
                 x => x.TeamAway,
                 x => x.MatchResult)
-            .OrderByDescending(x => x.Id)
+            .OrderBy(x => x.Id)
             .ToListAsync();
 
         return mapper.Map<IReadOnlyCollection<MatchResponse>>(matches);
