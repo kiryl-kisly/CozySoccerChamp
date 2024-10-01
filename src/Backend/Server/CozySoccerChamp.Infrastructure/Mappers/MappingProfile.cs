@@ -10,7 +10,7 @@ public class MappingProfile : Profile
     {
         CreateMap<Chat, ApplicationUser>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.ChatId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.TelegramUserId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.TelegramUserName, opt => opt.MapFrom(src => src.Username ?? string.Empty))
             .ForMember(dest => dest.TelegramFirstName, opt => opt.MapFrom(src => src.FirstName ?? string.Empty))
             .ForMember(dest => dest.TelegramLastName, opt => opt.MapFrom(src => src.LastName ?? string.Empty));

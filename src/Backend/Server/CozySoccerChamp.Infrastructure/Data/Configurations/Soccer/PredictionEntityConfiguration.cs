@@ -9,7 +9,7 @@ public class PredictionEntityConfiguration : IEntityTypeConfiguration<Prediction
         builder
             .HasOne(x => x.User)
             .WithMany(x => x.Predictions)
-            .HasForeignKey(x => x.UserId);
+            .HasForeignKey(x => x.TelegramUserId);
 
         builder
             .HasOne(x => x.Match)
@@ -17,7 +17,7 @@ public class PredictionEntityConfiguration : IEntityTypeConfiguration<Prediction
             .HasForeignKey(x => x.MatchId);
         
         builder
-            .HasIndex(x => new { x.UserId, x.MatchId })
+            .HasIndex(x => new { x.TelegramUserId, x.MatchId })
             .IsUnique();
     }
 }

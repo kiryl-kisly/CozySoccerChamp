@@ -9,7 +9,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<ApplicationUser, UserResponse>()
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.TelegramUserId, opt => opt.MapFrom(src => src.TelegramUserId))
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>
                 src.UserName
                 ?? (string.IsNullOrEmpty(src.TelegramUserName)
@@ -39,7 +39,6 @@ public class MappingProfile : Profile
             .ReverseMap();
         
         CreateMap<Prediction, PredictionRequest>()
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
             .ForMember(dest => dest.MatchId, opt => opt.MapFrom(src => src.MatchId))
             .ForPath(dest => dest.Prediction!.PredictedHomeScore, opt => opt.MapFrom(src => src.PredictedHomeScore))
             .ForPath(dest => dest.Prediction!.PredictedAwayScore, opt => opt.MapFrom(src => src.PredictedAwayScore))

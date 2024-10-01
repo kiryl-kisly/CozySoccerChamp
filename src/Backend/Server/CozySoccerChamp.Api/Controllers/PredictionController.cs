@@ -1,3 +1,5 @@
+using CozySoccerChamp.Infrastructure.Extensions;
+using CozySoccerChamp.Infrastructure.Filters;
 using Microsoft.Net.Http.Headers;
 
 namespace CozySoccerChamp.Api.Controllers;
@@ -6,6 +8,7 @@ namespace CozySoccerChamp.Api.Controllers;
 [Route("api/[controller]/[action]")]
 [Produces("application/json")]
 [Consumes("application/json")]
+[TypeFilter(typeof(AuthenticationTelegramRequestFilter))]
 public class PredictionController(IPredictionService predictionService) : ControllerBase
 {
     /// <summary>
@@ -15,7 +18,9 @@ public class PredictionController(IPredictionService predictionService) : Contro
     [HttpPost]
     public async Task<PredictionResponse> MakePrediction([FromBody] PredictionRequest request)
     {
-        return await predictionService.MakePredictionAsync(request);
+        var telegramUserId = HttpContext.GetTelegramUserId();
+        
+        return await predictionService.MakePredictionAsync(request, telegramUserId);
     }
 
     /// <summary>

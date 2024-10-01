@@ -7,13 +7,9 @@ const axiosClient = (): AxiosInstance => {
 
   const initData = initInitData()
 
-  console.log(initData)
-
   const headers = {
     'Content-Type': 'application/json',
-    'Access': 'application/json',
-    'withCredentials': false,
-    'X-Telegram-User-Id': initData?.user?.id
+    'X-Telegram-User-Id': initData?.user?.id,
   }
 
   const client = axios.create({

@@ -49,17 +49,17 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    TelegramUserId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ChatId = table.Column<long>(type: "bigint", nullable: false),
                     TelegramUserName = table.Column<string>(type: "text", nullable: true),
                     TelegramFirstName = table.Column<string>(type: "text", nullable: true),
                     TelegramLastName = table.Column<string>(type: "text", nullable: true),
-                    UserName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                    UserName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.TelegramUserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,7 +129,7 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    TelegramUserId = table.Column<long>(type: "bigint", nullable: false),
                     MatchId = table.Column<int>(type: "integer", nullable: false),
                     PredictedHomeScore = table.Column<int>(type: "integer", nullable: true),
                     PredictedAwayScore = table.Column<int>(type: "integer", nullable: true),
@@ -147,10 +147,10 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Predictions_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Predictions_Users_TelegramUserId",
+                        column: x => x.TelegramUserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "TelegramUserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -181,9 +181,9 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 column: "MatchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Predictions_UserId_MatchId",
+                name: "IX_Predictions_TelegramUserId_MatchId",
                 table: "Predictions",
-                columns: new[] { "UserId", "MatchId" },
+                columns: new[] { "TelegramUserId", "MatchId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -193,9 +193,9 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_ChatId",
+                name: "IX_Users_TelegramUserId",
                 table: "Users",
-                column: "ChatId",
+                column: "TelegramUserId",
                 unique: true);
         }
 

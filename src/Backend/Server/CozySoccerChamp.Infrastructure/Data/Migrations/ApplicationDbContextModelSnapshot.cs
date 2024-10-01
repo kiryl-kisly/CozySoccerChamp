@@ -24,14 +24,14 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CozySoccerChamp.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("TelegramUserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<long>("ChatId")
                         .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("TelegramUserId"));
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TelegramFirstName")
                         .HasColumnType("text");
@@ -46,9 +46,9 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("TelegramUserId");
 
-                    b.HasIndex("ChatId")
+                    b.HasIndex("TelegramUserId")
                         .IsUnique();
 
                     b.ToTable("Users");
@@ -191,14 +191,14 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                     b.Property<DateTime>("PredictionTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<long>("TelegramUserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("MatchId");
 
-                    b.HasIndex("UserId", "MatchId")
+                    b.HasIndex("TelegramUserId", "MatchId")
                         .IsUnique();
 
                     b.ToTable("Predictions");
@@ -279,7 +279,7 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
 
                     b.HasOne("CozySoccerChamp.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Predictions")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TelegramUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

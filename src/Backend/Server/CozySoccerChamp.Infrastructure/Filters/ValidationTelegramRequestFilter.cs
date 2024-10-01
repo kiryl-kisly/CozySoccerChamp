@@ -1,3 +1,4 @@
+using CozySoccerChamp.Infrastructure.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -10,13 +11,11 @@ namespace CozySoccerChamp.Infrastructure.Filters;
 /// </summary>
 public class ValidationTelegramRequestFilter(BotSettings botSettings) : IAsyncActionFilter
 {
-    private const string TelegramSecretTokenHeader = "X-Telegram-Bot-Api-Secret-Token";
-
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         if (!IsValidRequest(context.HttpContext.Request))
         {
-            context.Result = new ObjectResult($"\"{TelegramSecretTokenHeader}\" is invalid")
+            context.Result = new ObjectResult($"\"{HeaderParams.TelegramSecretToken}\" is invalid")
             {
                 StatusCode = 403
             };
@@ -29,7 +28,7 @@ public class ValidationTelegramRequestFilter(BotSettings botSettings) : IAsyncAc
 
     private bool IsValidRequest(HttpRequest request)
     {
-        var isSecretTokenProvided = request.Headers.TryGetValue(TelegramSecretTokenHeader, out var secretTokenHeader);
+        var isSecretTokenProvided = request.Headers.TryGetValue(HeaderParams.TelegramSecretToken, out var secretTokenHeader);
 
         return isSecretTokenProvided && string.Equals(secretTokenHeader, botSettings.SecretToken, StringComparison.Ordinal);
     }

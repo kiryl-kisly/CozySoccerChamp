@@ -4,7 +4,7 @@ namespace CozySoccerChamp.Domain.Entities.Soccer;
 
 public class Prediction : BaseEntity
 {
-    public int UserId { get; set; }
+    public long TelegramUserId { get; set; }
     public int MatchId { get; set; }
     public int? PredictedHomeScore { get; set; }
     public int? PredictedAwayScore { get; set; }

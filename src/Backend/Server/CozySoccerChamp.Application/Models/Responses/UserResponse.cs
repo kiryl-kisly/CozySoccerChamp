@@ -2,6 +2,6 @@ namespace CozySoccerChamp.Application.Models.Responses;
 
 public class UserResponse
 {
-    public int UserId { get; set; }
+    public long TelegramUserId { get; set; }
     public string UserName { get; set; } = string.Empty;
 }

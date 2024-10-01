@@ -13,11 +13,11 @@ public class PredictionService(
 {
     private const int PredictionClosedInMinutes = 1;
 
-    public async Task<PredictionResponse> MakePredictionAsync(PredictionRequest request)
+    public async Task<PredictionResponse> MakePredictionAsync(PredictionRequest request, long telegramUserId)
     {
         await ValidateRequest(request);
 
-        var prediction = await predictionRepository.FindAsync(x => x.UserId == request.UserId && x.MatchId == request.MatchId);
+        var prediction = await predictionRepository.FindAsync(x => x.TelegramUserId == telegramUserId && x.MatchId == request.MatchId);
 
         if (prediction is null)
         {
@@ -42,10 +42,10 @@ public class PredictionService(
         }
     }
 
-    public async Task<IReadOnlyCollection<PredictionResponse>> GetAllByUserIdAsync(int userId)
+    public async Task<IReadOnlyCollection<PredictionResponse>> GetAllByTelegramUserIdAsync(long telegramUserId)
     {
         var predictions = await predictionRepository.GetAllAsQueryable(asNoTracking: true)
-            .Where(x => x.UserId == userId)
+            .Where(x => x.TelegramUserId == telegramUserId)
             .ToListAsync();
 
         return mapper.Map<IReadOnlyCollection<PredictionResponse>>(predictions);
@@ -54,10 +54,10 @@ public class PredictionService(
     public async Task<IReadOnlyCollection<LeaderboardResponse>> GetLeaderboardAsync()
     {
         var leaderboard = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
-            .GroupBy(x => x.User.ChatId)
+            .GroupBy(x => x.User.TelegramUserId)
             .Select(g => new LeaderboardResponse
             {
-                UserId = g.FirstOrDefault()!.UserId,
+                UserId = g.FirstOrDefault()!.TelegramUserId,
                 UserName = g.FirstOrDefault()!.User.UserName,
                 Points = g.Sum(x => x.PointPerMatch * x.Coefficient)
             })
@@ -83,7 +83,7 @@ public class PredictionService(
     {
         var predictions = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
             .Where(x => x.MatchId == matchId)
-            .OrderBy(x => x.UserId)
+            .OrderBy(x => x.TelegramUserId)
             .ToListAsync();
 
         return mapper.Map<IReadOnlyCollection<PredictionResponse>>(predictions);

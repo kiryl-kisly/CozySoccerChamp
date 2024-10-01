@@ -2,12 +2,12 @@ namespace CozySoccerChamp.Application.Services;
 
 public class UserService(IApplicationUserRepository userRepository, IMapper mapper) : IUserService
 {
-    public async Task<UserResponse> GetUserById(int userId)
+    public async Task<UserResponse> GetUserByTelegramId(long telegramUserId)
     {
-        var user = await userRepository.GetByIdAsync(userId);
+        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId);
         if (user is null)
             throw new ArgumentException($"{nameof(User)} not found");
-        
+
         return mapper.Map<UserResponse>(user);
     }
 
@@ -18,7 +18,7 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
 
         var user = mapper.Map<ApplicationUser>(update.Message.Chat);
 
-        var applicationUser = await userRepository.FindAsync(x => x.ChatId == user.ChatId);
+        var applicationUser = await userRepository.FindAsync(x => x.TelegramUserId == user.TelegramUserId);
 
         if (applicationUser is not null)
             return mapper.Map<UserResponse>(applicationUser);
@@ -28,10 +28,9 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
         return mapper.Map<UserResponse>(user);
     }
 
-    public async Task<UserResponse> ChangeUsernameAsync(int userId, string username)
+    public async Task<UserResponse> ChangeUsernameAsync(long telegramUserId, string username)
     {
-        var user = await userRepository.GetByIdAsync(userId);
-
+        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId);
         if (user is null)
             throw new ArgumentException($"{nameof(User)} not found");
 
