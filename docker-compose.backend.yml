@@ -1,0 +1,39 @@
+networks:
+  dev:
+    driver: bridge
+
+services:
+  cozysoccerchamp.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8000
+      - ConnectionStrings__CozySoccerChampPostgresSqlConnection=User ID =postgres;Password=postgres;Server=database;Port=5432;Database=cozysoccerchampdb;
+    container_name: cozysoccerchamp.api
+    image: cozysoccerchamp.api
+    build:
+      context: ./src/Backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    networks:
+      - dev
+
+  database:
+    image: postgres:latest
+    container_name: database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cozysoccerchampdb
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - app_data:/var/lib/postgresql/data
+    networks:
+      - dev
+
+volumes:
+  app_data:

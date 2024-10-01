@@ -1,6 +1,3 @@
-networks:
-  prod:
-
 services:
   nginx:
     image: nginx:stable-alpine
@@ -14,11 +11,17 @@ services:
       - "cozysoccerchamp.api"
       - "cozysoccerchamp.webclient"
     networks:
-      - prod
+      - prod-network
 
   cozysoccerchamp.api:
     environment:
       - ASPNETCORE_HTTP_PORTS=8000
+      - ConnectionStrings__CozySoccerChampPostgresSqlConnection=;
+      - BotSettings__BotToken=
+      - BotSettings__HostAddress=
+      - BotSettings__SecretToken=
+      - BotSettings__ClientUrl=
+      - SoccerApiSettings__ApiToken=
     container_name: cozysoccerchamp.api
     image: cozysoccerchamp.api
     build:
@@ -27,7 +30,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - prod
+      - prod-network
     
   cozysoccerchamp.webclient:
     container_name: cozysoccerchamp.webclient
@@ -38,4 +41,8 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - prod
+      - prod-network
+
+networks:
+  prod-network:
+    driver: bridge
