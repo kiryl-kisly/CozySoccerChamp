@@ -8,10 +8,10 @@ export function Layout() {
 				<div className='content-wrapper'>
 					<div className='px-4 py-8'>
 						<Outlet />
-						<Menu />
 					</div>
 				</div>
 			</div>
+			<Menu />
 		</>
 	)
 }
