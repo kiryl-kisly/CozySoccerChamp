@@ -19,8 +19,9 @@ public class PredictionController(IPredictionService predictionService) : Contro
     public async Task<PredictionResponse> MakePrediction([FromBody] PredictionRequest request)
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
+        request.TelegramUserId = telegramUserId;
         
-        return await predictionService.MakePredictionAsync(request, telegramUserId);
+        return await predictionService.MakePredictionAsync(request);
     }
 
     /// <summary>

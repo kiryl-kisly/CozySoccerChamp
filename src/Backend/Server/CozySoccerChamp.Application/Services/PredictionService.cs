@@ -13,11 +13,11 @@ public class PredictionService(
 {
     private const int PredictionClosedInMinutes = 1;
 
-    public async Task<PredictionResponse> MakePredictionAsync(PredictionRequest request, long telegramUserId)
+    public async Task<PredictionResponse> MakePredictionAsync(PredictionRequest request)
     {
         await ValidateRequest(request);
 
-        var prediction = await predictionRepository.FindAsync(x => x.TelegramUserId == telegramUserId && x.MatchId == request.MatchId);
+        var prediction = await predictionRepository.FindAsync(x => x.TelegramUserId == request.TelegramUserId && x.MatchId == request.MatchId);
 
         if (prediction is null)
         {

@@ -5,7 +5,7 @@ namespace CozySoccerChamp.Application.Services.Abstractions;
 
 public interface IPredictionService
 {
-    Task<PredictionResponse> MakePredictionAsync(PredictionRequest request, long telegramUserId);
+    Task<PredictionResponse> MakePredictionAsync(PredictionRequest request);
     Task<IReadOnlyCollection<PredictionResponse>> GetAllByTelegramUserIdAsync(long telegramUserId);
     Task<IReadOnlyCollection<LeaderboardResponse>> GetLeaderboardAsync();
     Task<IReadOnlyCollection<PredictionResponse>> GetPredictionByMatchIdAsync(int matchId);
