@@ -67,13 +67,13 @@ public sealed class MatchDataProcessingJob(
 
             if (updateData.HomeTeam.Id is not null)
             {
-                var teamHome = await teamRepository.FindAsync(x => x.Name == updateData.HomeTeam.ShortName);
+                var teamHome = await teamRepository.FindAsync(x => x.ExternalTeamId == updateData.HomeTeam.Id);
                 match.TeamHomeId = teamHome!.Id;
             }
 
             if (updateData.AwayTeam.Id is not null)
             {
-                var teamAway = await teamRepository.FindAsync(x => x.Name == updateData.AwayTeam.ShortName);
+                var teamAway = await teamRepository.FindAsync(x => x.ExternalTeamId == updateData.AwayTeam.Id);
                 match.TeamAwayId = teamAway!.Id;
             }
 
@@ -112,7 +112,7 @@ public sealed class MatchDataProcessingJob(
         foreach (var finishedMatch in finishedMatches)
         {
             var match = await matchRepository
-                .FindAsync(x => x.ExternalMatchId == finishedMatch.Id && x.MatchResult.Status != MatchResultStatus.Finished, includes: x => x.MatchResult);
+                .FindAsync(x => x.ExternalMatchId == finishedMatch.Id, includes: x => x.MatchResult);
 
             if (match is null)
                 continue;
