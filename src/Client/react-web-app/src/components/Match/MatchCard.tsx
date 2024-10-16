@@ -104,7 +104,10 @@ export function MatchCard({ match, prediction }: Props) {
 
 									{prediction ? (
 										<div className='match-point'>
-											<span className='match-point-value'>{prediction.pointPerMatch}</span>
+											<span className='match-point-value'>
+												{prediction.pointPerMatch === 0 ? (<></>) : (<>+</>)}
+												{prediction.pointPerMatch}
+											</span>
 											<span className='match-point-text'>Points</span>
 											{prediction.coefficient && prediction.coefficient > 1.0 &&
 												<sup>x{prediction.coefficient}</sup>
