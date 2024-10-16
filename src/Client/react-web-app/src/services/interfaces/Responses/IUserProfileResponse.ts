@@ -1,4 +1,4 @@
 export interface IUserProfileResponse {
-	userId: number | undefined
+	telegramUserId: number | undefined
 	userName: string | undefined
 }

@@ -22,7 +22,7 @@ export function App() {
     leaderboard: null
   })
 
-  const leaderBoard = data.leaderboard?.find((x) => x.userId === data.userProfile?.userId)
+  const leaderBoard = data.leaderboard?.find((x) => x.userId === data.userProfile?.telegramUserId)
 
   useEffect(() => {
     async function fetchData() {
