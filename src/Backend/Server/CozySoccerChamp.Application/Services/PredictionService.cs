@@ -62,6 +62,7 @@ public class PredictionService(
                 Points = g.Sum(x => x.PointPerMatch * x.Coefficient)
             })
             .OrderByDescending(x => x.Points)
+            .ThenByDescending(x => x.UserId)
             .ToListAsync();
 
         var place = 1;
