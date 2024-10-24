@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICompetitionService, CompetitionService>();
         services.AddScoped<IMatchService, MatchService>();
         services.AddScoped<IPredictionService, PredictionService>();
+        services.AddScoped<ILeaderboardService, LeaderboardService>();
 
         return services;
     }

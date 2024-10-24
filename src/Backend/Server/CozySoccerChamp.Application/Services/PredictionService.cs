@@ -51,35 +51,6 @@ public class PredictionService(
         return mapper.Map<IReadOnlyCollection<PredictionResponse>>(predictions);
     }
 
-    public async Task<IReadOnlyCollection<LeaderboardResponse>> GetLeaderboardAsync()
-    {
-        var leaderboard = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
-            .GroupBy(x => x.User.TelegramUserId)
-            .Select(g => new LeaderboardResponse
-            {
-                UserId = g.FirstOrDefault()!.TelegramUserId,
-                UserName = g.FirstOrDefault()!.User.UserName,
-                Points = g.Sum(x => x.PointPerMatch * x.Coefficient)
-            })
-            .OrderByDescending(x => x.Points)
-            .ThenByDescending(x => x.UserId)
-            .ToListAsync();
-
-        var place = 1;
-
-        var leaderboardWithPlaces = leaderboard
-            .Select(x => new LeaderboardResponse
-            {
-                UserId = x.UserId,
-                UserName = x.UserName,
-                Points = x.Points,
-                Place = place++
-            })
-            .ToList();
-
-        return leaderboardWithPlaces;
-    }
-
     public async Task<IReadOnlyCollection<PredictionResponse>> GetPredictionByMatchIdAsync(int matchId)
     {
         var predictions = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)

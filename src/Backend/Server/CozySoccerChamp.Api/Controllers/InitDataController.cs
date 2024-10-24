@@ -12,7 +12,8 @@ public class InitDataController(
     ICompetitionService competitionService,
     IMatchService matchService,
     IUserService userService,
-    IPredictionService predictionService) : ControllerBase
+    IPredictionService predictionService,
+    ILeaderboardService leaderboardService) : ControllerBase
 {
     /// <summary>
     ///     Получить всё информацию при первоночальной загрузке веб-приложения
@@ -26,7 +27,7 @@ public class InitDataController(
         var userProfile = await userService.GetUserByTelegramId(telegramUserId);
         var matches = await matchService.GetAllAsync();
         var predictions = await predictionService.GetAllByTelegramUserIdAsync(telegramUserId);
-        var leaderboard = await predictionService.GetLeaderboardAsync();
+        var leaderboard = await leaderboardService.GetLeaderboardAsync();
 
         var response = new Response
         {

@@ -1,5 +1,5 @@
 export interface ILeaderboardResponse {
-	userId: number
+	telegramUserId: number
 	userName: string
 	points: number
 	place: number

@@ -6,7 +6,7 @@ namespace CozySoccerChamp.Api.Controllers;
 [Route("api/[controller]/[action]")]
 [Produces("application/json")]
 [Consumes("application/json")]
-public class LeaderboardController(IPredictionService predictionService): ControllerBase
+public class LeaderboardController(ILeaderboardService leaderboardService): ControllerBase
 {
     /// <summary>
     ///     Получить информацию о лидерборде участников
@@ -15,6 +15,6 @@ public class LeaderboardController(IPredictionService predictionService): Contro
     [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
     public async Task<IReadOnlyCollection<LeaderboardResponse>> Get()
     {
-        return await predictionService.GetLeaderboardAsync();
+        return await leaderboardService.GetLeaderboardAsync();
     }
 }

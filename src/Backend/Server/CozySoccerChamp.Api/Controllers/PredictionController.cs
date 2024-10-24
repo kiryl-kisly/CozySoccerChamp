@@ -33,4 +33,15 @@ public class PredictionController(IPredictionService predictionService) : Contro
     {
         return await predictionService.GetPredictionByMatchIdAsync(matchId);
     }
+    
+    /// <summary>
+    ///     Получить все прогнозы игрока
+    /// </summary>
+    [HttpGet]
+    public async Task<IReadOnlyCollection<PredictionResponse>> GetPredictions()
+    {
+        var telegramUserId = HttpContext.GetTelegramUserId();
+        
+        return await predictionService.GetAllByTelegramUserIdAsync(telegramUserId);
+    }
 }

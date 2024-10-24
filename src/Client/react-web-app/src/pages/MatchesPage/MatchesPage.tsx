@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Competition } from '../../components/Competition/Competition'
 import { HorizontalCard } from '../../components/Match/HorizontalCard'
 import { MatchCard } from '../../components/Match/MatchCard'
@@ -29,6 +29,10 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 	const [selectedItems, setSelectedItems] = useState<IMatchResponse[]>(
 		() => groupedMatchData[activeStage] || []
 	)
+	const [showFinished, setShowFinished] = useState<boolean>(() => {
+		const saved = localStorage.getItem('showFinishedMatches')
+		return saved !== null ? JSON.parse(saved) : false
+	})
 
 	const matchCardRef = useRef<HTMLDivElement>(null)
 
@@ -52,24 +56,42 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 		scrollToMatchCard(scrollOffset)
 	}
 
+	const toggleSwitch = () => {
+		setShowFinished(!showFinished)
+	}
+
+	const filteredItems = showFinished
+		? selectedItems
+		: selectedItems.filter(match => match.matchResult?.status !== 'Finished')
+
+	useEffect(() => {
+		localStorage.setItem('showFinishedMatches', JSON.stringify(showFinished))
+	}, [showFinished])
+
 	return (
 		<>
 			<h1 className='title-page'>Matches</h1>
 
 			<Competition competition={competition} />
 
+			<div
+				className='flex items-center space-x-2 my-4'
+				onClick={toggleSwitch}>
+				<div className={`toggle-finish-matches ${showFinished ? 'toggle-active-color' : 'toggle-disable-color'}`}>
+					<div className={`toggle-finish-circle ${showFinished ? 'translate-x-5' : 'translate-x-0'}`}>
+					</div>
+				</div>
+				<label className='text-sm font-medium'>Show Finished Matches</label>
+			</div>
+
 			<div className='w-full overflow-x-auto sticky top-3 z-50'>
 				<div className='flex space-x-2'>
 					{Object.entries(groupedMatchData).map(([stage, items]) => (
-						<div
-							key={stage}
-						>
+						<div key={stage}>
 							<HorizontalCard
 								isSelected={stage === selectedCardId}
 								title={stage}
-								onClick={() => {
-									handleCardClick(items, stage)
-								}}
+								onClick={() => handleCardClick(items, stage)}
 							/>
 						</div>
 					))}
@@ -77,8 +99,8 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 			</div>
 
 			<div ref={matchCardRef}>
-				{selectedItems &&
-					selectedItems.map((match: IMatchResponse, index: number) => (
+				{filteredItems &&
+					filteredItems.map((match: IMatchResponse, index: number) => (
 						<MatchCard
 							key={index}
 							match={match}
@@ -88,7 +110,7 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 			</div>
 		</>
 	)
-};
+}
 
 const getActiveStage = (groupedMatchData: Record<string, IMatchResponse[]>): string => {
 	const now = new Date()

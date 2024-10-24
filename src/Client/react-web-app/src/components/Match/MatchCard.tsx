@@ -15,6 +15,7 @@ interface Props {
 }
 
 export function MatchCard({ match, prediction }: Props) {
+
 	const [homePredictedCount, setHomePredictedCount] = useState(prediction?.predictedHomeScore ?? 0)
 	const [awayPredictedCount, setAwayPredictedCount] = useState(prediction?.predictedAwayScore ?? 0)
 
@@ -34,7 +35,6 @@ export function MatchCard({ match, prediction }: Props) {
 
 			const request: IPredictionRequest =
 			{
-				userId: 1,
 				matchId: match.matchId ?? 0,
 				prediction: { predictedHomeScore: homePredictedCount, predictedAwayScore: awayPredictedCount }
 			}
