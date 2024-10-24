@@ -75,7 +75,7 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 			<Competition competition={competition} />
 
 			<div
-				className='flex items-center space-x-2 my-4'
+				className='flex items-center space-x-2 my-6'
 				onClick={toggleSwitch}>
 				<div className={`toggle-finish-matches ${showFinished ? 'toggle-active-color' : 'toggle-disable-color'}`}>
 					<div className={`toggle-finish-circle ${showFinished ? 'translate-x-5' : 'translate-x-0'}`}>
@@ -84,7 +84,7 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 				<label className='text-sm font-medium'>Show Finished Matches</label>
 			</div>
 
-			<div className='w-full overflow-x-auto sticky top-3 z-50'>
+			<div className='w-full overflow-x-auto sticky z-50'>
 				<div className='flex space-x-2'>
 					{Object.entries(groupedMatchData).map(([stage, items]) => (
 						<div key={stage}>
@@ -100,13 +100,27 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 
 			<div ref={matchCardRef}>
 				{filteredItems &&
-					filteredItems.map((match: IMatchResponse, index: number) => (
-						<MatchCard
-							key={index}
-							match={match}
-							prediction={predictions?.find(x => x.matchId === match.matchId) ?? null}
-						/>
-					))}
+					filteredItems.map((match: IMatchResponse, index: number) => {
+						const maxMatchDay = filteredItems[filteredItems.length - 1].matchDay
+						const currentMatchDay = match.matchDay
+						const previousMatchDay = index > 0 ? filteredItems[index - 1].matchDay : null
+
+						return (
+							<>
+								{previousMatchDay !== currentMatchDay && (
+									<div className='mt-6 mb-3'>
+										<h2>Matchday {currentMatchDay} of {maxMatchDay}</h2>
+									</div>
+								)}
+
+								<MatchCard
+									key={index}
+									match={match}
+									prediction={predictions?.find(x => x.matchId === match.matchId) ?? null}
+								/>
+							</>
+						)
+					})}
 			</div>
 		</>
 	)
