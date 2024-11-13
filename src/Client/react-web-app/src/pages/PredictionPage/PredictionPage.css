@@ -3,11 +3,11 @@
 }
 
 .team-col-left {
-	@apply  text-left flex items-center mr-auto justify-start;
+    @apply text-left flex items-center mr-auto justify-start;
 }
 
 .team-col-right {
-	@apply  text-right flex items-center ml-auto justify-end;
+    @apply text-right flex items-center ml-auto justify-end;
 }
 
 .team-col-right span,
@@ -19,6 +19,4 @@
     .card-prediction span.truncate {
         font-size: 12px;
     }
-
-
 }

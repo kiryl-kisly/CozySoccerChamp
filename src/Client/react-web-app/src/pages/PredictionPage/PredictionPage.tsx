@@ -51,16 +51,15 @@ export function PredictionPage({ competition, matches }: Props) {
 			<Competition competition={competition} />
 
 			<div className="prediction-card-wrapper">
-			{data &&
-				data.map((match: IMatchResponse, index: number) => (
-					<PredictionCard
-						key={index}
-						match={match}
-						onClick={() => handleCardClick(match)}
-					/>
-				))}
+				{data &&
+					data.map((match: IMatchResponse, index: number) => (
+						<PredictionCard
+							key={index}
+							match={match}
+							onClick={() => handleCardClick(match)}
+						/>
+					))}
 			</div>
-
 
 			<PredictionPopup
 				selectedMatch={selectedMatch}

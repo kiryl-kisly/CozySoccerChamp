@@ -13,7 +13,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>
                 src.UserName
                 ?? (string.IsNullOrEmpty(src.TelegramUserName)
-                    ? $"{src.TelegramUserName} {src.TelegramLastName}"
+                    ? $"{src.TelegramFirstName} {src.TelegramLastName}"
                     : src.TelegramUserName)))
             .ReverseMap();
 

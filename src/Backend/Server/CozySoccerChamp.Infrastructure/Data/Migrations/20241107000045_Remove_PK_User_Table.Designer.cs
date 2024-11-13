@@ -3,6 +3,7 @@ using System;
 using CozySoccerChamp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CozySoccerChamp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107000045_Remove_PK_User_Table")]
+    partial class Remove_PK_User_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +50,8 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("TelegramUserId");
 
                     b.ToTable("Users");
                 });
@@ -191,9 +196,14 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                     b.Property<long>("TelegramUserId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MatchId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("TelegramUserId", "MatchId")
                         .IsUnique();
@@ -276,10 +286,7 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
 
                     b.HasOne("CozySoccerChamp.Domain.Entities.ApplicationUser", "User")
                         .WithMany("Predictions")
-                        .HasForeignKey("TelegramUserId")
-                        .HasPrincipalKey("TelegramUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Match");
 

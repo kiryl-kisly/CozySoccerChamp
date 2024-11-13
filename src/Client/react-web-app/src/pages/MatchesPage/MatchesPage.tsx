@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
+import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
 import { Competition } from '../../components/Competition/Competition'
 import { HorizontalCard } from '../../components/Match/HorizontalCard'
 import { MatchCard } from '../../components/Match/MatchCard'
@@ -25,48 +26,36 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 	}, {} as Record<string, IMatchResponse[]>)
 
 	const activeStage = getActiveStage(groupedMatchData)
+	const horizontalRefs = useRef<Record<string, HTMLDivElement | null>>({})
 	const [selectedCardId, setSelectedCardId] = useState<string | null>(activeStage)
-	const [selectedItems, setSelectedItems] = useState<IMatchResponse[]>(
-		() => groupedMatchData[activeStage] || []
-	)
-	const [showFinished, setShowFinished] = useState<boolean>(() => {
-		const saved = localStorage.getItem('showFinishedMatches')
-		return saved !== null ? JSON.parse(saved) : false
+	const [selectedItems, setSelectedItems] = useState<IMatchResponse[]>(() => groupedMatchData[activeStage] || [])
+
+	const filteredItems = isHideFinishedMatches()
+		? selectedItems.filter(match => match.matchResult?.status !== 'Finished')
+		: selectedItems
+
+	const [expandedMatchDay, setExpandedMatchDay] = useState<number | null>(() => {
+		const activeMatchDay = getActiveMatchDay(filteredItems)
+
+		return activeMatchDay ? activeMatchDay : filteredItems[filteredItems.length - 1]?.matchDay ?? null
 	})
-
-	const matchCardRef = useRef<HTMLDivElement>(null)
-
-	const scrollToMatchCard = (offset: number) => {
-		if (matchCardRef.current) {
-			const elementPosition = matchCardRef.current.getBoundingClientRect().top + window.pageYOffset
-			const offsetPosition = elementPosition - offset
-
-			window.scrollTo({
-				top: offsetPosition,
-				behavior: 'smooth',
-			})
-		}
-	}
 
 	const handleCardClick = (items: IMatchResponse[], stage: string) => {
 		setSelectedCardId(stage)
 		setSelectedItems(items)
 
-		const scrollOffset = 90
-		scrollToMatchCard(scrollOffset)
+		if (horizontalRefs.current[stage]) {
+			horizontalRefs.current[stage]?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'nearest',
+				inline: 'start'
+			})
+		}
 	}
 
-	const toggleSwitch = () => {
-		setShowFinished(!showFinished)
+	const handleToggleMatchDay = (matchDay: number | null) => {
+		setExpandedMatchDay(prev => (prev === matchDay ? null : matchDay))
 	}
-
-	const filteredItems = showFinished
-		? selectedItems
-		: selectedItems.filter(match => match.matchResult?.status !== 'Finished')
-
-	useEffect(() => {
-		localStorage.setItem('showFinishedMatches', JSON.stringify(showFinished))
-	}, [showFinished])
 
 	return (
 		<>
@@ -74,20 +63,14 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 
 			<Competition competition={competition} />
 
-			<div
-				className='flex items-center space-x-2 my-6'
-				onClick={toggleSwitch}>
-				<div className={`toggle-finish-matches ${showFinished ? 'toggle-active-color' : 'toggle-disable-color'}`}>
-					<div className={`toggle-finish-circle ${showFinished ? 'translate-x-5' : 'translate-x-0'}`}>
-					</div>
-				</div>
-				<label className='text-sm font-medium'>Show Finished Matches</label>
-			</div>
-
-			<div className='w-full overflow-x-auto sticky z-50'>
+			{/* Горизонтальный скролл стейджей */}
+			<div className='w-full overflow-x-auto sticky top-3 z-50'>
 				<div className='flex space-x-2'>
 					{Object.entries(groupedMatchData).map(([stage, items]) => (
-						<div key={stage}>
+						<div
+							key={stage}
+							ref={(el) => (horizontalRefs.current[stage] = el)}
+						>
 							<HorizontalCard
 								isSelected={stage === selectedCardId}
 								title={stage}
@@ -98,32 +81,55 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 				</div>
 			</div>
 
-			<div ref={matchCardRef}>
-				{filteredItems &&
-					filteredItems.map((match: IMatchResponse, index: number) => {
-						const maxMatchDay = filteredItems[filteredItems.length - 1].matchDay
-						const currentMatchDay = match.matchDay
-						const previousMatchDay = index > 0 ? filteredItems[index - 1].matchDay : null
+			{/* Карточки с матчами */}
 
-						return (
-							<>
-								{previousMatchDay !== currentMatchDay && (
-									<div className='mt-6 mb-3'>
-										<h2>Matchday {currentMatchDay} of {maxMatchDay}</h2>
+			{filteredItems && filteredItems.map((match: IMatchResponse, index: number) => {
+				const maxMatchDay = filteredItems[filteredItems.length - 1].matchDay
+				const currentMatchDay = match.matchDay
+				const previousMatchDay = index > 0 ? filteredItems[index - 1].matchDay : null
+				const activeMatchDay = getActiveMatchDay(filteredItems)
+
+				return (
+					<React.Fragment key={index} >
+						{previousMatchDay !== currentMatchDay && match.stage !== 'FINAL' && (
+							<div
+								className={`${expandedMatchDay !== currentMatchDay ? 'toggle-show-match-day' : 'toggle-hide-match-day'} ${(activeMatchDay === match.matchDay && activeStage === match.stage) ? 'text-green-400' : 'text-white'}`
+								}
+								onClick={() => handleToggleMatchDay(currentMatchDay)}>
+								<div className='flex items-center flex-start flex-1 p-4'>
+									<span>Matchday {currentMatchDay} of {maxMatchDay}</span>
+									<div className='flex items-center ml-auto h-full relative arrow-link'>
+										{expandedMatchDay === currentMatchDay
+											? <IoIosArrowDown />
+											: <IoIosArrowForward />}
 									</div>
-								)}
+								</div>
+							</div>
+						)}
 
-								<MatchCard
-									key={index}
-									match={match}
-									prediction={predictions?.find(x => x.matchId === match.matchId) ?? null}
-								/>
-							</>
-						)
-					})}
-			</div>
+						{(expandedMatchDay === currentMatchDay || match.stage === 'FINAL') && (
+							<MatchCard
+								key={match.matchId}
+								match={match}
+								prediction={predictions?.find(x => x.matchId === match.matchId) ?? null}
+							/>
+						)}
+					</React.Fragment>
+				)
+			})}
 		</>
 	)
+}
+
+const isHideFinishedMatches = (): boolean => {
+	const saved = localStorage.getItem('isHideFinishedMatches')
+	return saved !== null ? JSON.parse(saved) : false
+}
+
+const getActiveMatchDay = (filteredItems: IMatchResponse[]): number | null | undefined => {
+	const now = new Date()
+	const activeMatch = filteredItems.find((match) => new Date(match.startTimeUtc as unknown as string) > now)
+	return activeMatch?.matchDay
 }
 
 const getActiveStage = (groupedMatchData: Record<string, IMatchResponse[]>): string => {

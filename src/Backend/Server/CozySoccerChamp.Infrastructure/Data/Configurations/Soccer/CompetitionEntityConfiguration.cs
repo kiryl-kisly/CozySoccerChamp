@@ -5,7 +5,5 @@ public class CompetitionEntityConfiguration : IEntityTypeConfiguration<Competiti
     public void Configure(EntityTypeBuilder<Competition> builder)
     {
         builder.HasKey(x => x.Id);
-        
-        
     }
 }

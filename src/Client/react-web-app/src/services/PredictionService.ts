@@ -18,7 +18,5 @@ export const getPredictionsByMatchId = async (matchId: number | null) => {
 export const getPredictionsByUserId = async () => {
 	const response = await axiosClient().get<IPredictionResponse[]>('prediction/getPredictions')
 
-	console.log("from service:", response.data)
-
 	return response.data
 }

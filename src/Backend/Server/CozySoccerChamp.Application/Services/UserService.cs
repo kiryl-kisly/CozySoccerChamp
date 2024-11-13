@@ -28,13 +28,13 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
         return mapper.Map<UserResponse>(user);
     }
 
-    public async Task<UserResponse> ChangeUsernameAsync(long telegramUserId, string username)
+    public async Task<UserResponse> ChangeUsernameAsync(long telegramUserId, string newUserName)
     {
         var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId);
         if (user is null)
             throw new ArgumentException($"{nameof(User)} not found");
 
-        user.UserName = username;
+        user.UserName = newUserName;
 
         await userRepository.UpdateAsync(user);
 

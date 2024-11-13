@@ -10,6 +10,7 @@ import { TeamPage } from '../pages/TeamPage/TeamPage'
 import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
 import './App.css'
+import { Menu } from './Menu/Menu'
 import { UserProfile } from './UserProfile/UserProfile'
 
 export function App() {
@@ -54,6 +55,7 @@ export function App() {
                   </Route>
                 </Routes>
 
+                <Menu />
               </>
             )
         }

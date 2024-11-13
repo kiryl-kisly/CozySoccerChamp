@@ -13,7 +13,8 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.TelegramUserId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.TelegramUserName, opt => opt.MapFrom(src => src.Username ?? string.Empty))
             .ForMember(dest => dest.TelegramFirstName, opt => opt.MapFrom(src => src.FirstName ?? string.Empty))
-            .ForMember(dest => dest.TelegramLastName, opt => opt.MapFrom(src => src.LastName ?? string.Empty));
+            .ForMember(dest => dest.TelegramLastName, opt => opt.MapFrom(src => src.LastName ?? string.Empty))
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => GetUserName(src)));
 
         CreateMap<TeamResponse, Team>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -37,5 +38,16 @@ public class MappingProfile : Profile
         CreateMap<CompetitionResponse, Competition>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.EmblemUrl, opt => opt.MapFrom(src => src.EmblemUrl));
+    }
+
+    private static string GetUserName(Chat src)
+    {
+        if (!string.IsNullOrEmpty(src.Username))
+            return src.Username;
+
+        if (string.IsNullOrEmpty(src.FirstName) && string.IsNullOrEmpty(src.LastName))
+            return src.Id.ToString();
+
+        return $"{src.FirstName} {src.LastName}".Trim();
     }
 }

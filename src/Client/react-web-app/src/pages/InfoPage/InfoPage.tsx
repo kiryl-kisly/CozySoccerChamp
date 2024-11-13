@@ -4,7 +4,7 @@ export function InfoPage() {
 		<>
 			<h1 className='title-page'>InfoPage</h1>
 
-            <div>
+			<div>
 				Coming soon...
 			</div>
 		</>

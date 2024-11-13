@@ -2,7 +2,7 @@ import { IScoreResponse } from './IScoreResponse'
 
 export interface IMatchResultResponse {
 	matchResultId: number
-	duration: string 
+	duration: string
 	status: string
 	fullTime: IScoreResponse | null
 	halfTime: IScoreResponse | null

@@ -7,7 +7,7 @@
 	background-color: #525252a9;
 	color: white;
 	border-radius: 7px;
-	border: 0.5px solid rgb(30 154 25 / 42%);;
+	border: 0.5px solid rgb(30 154 25 / 42%);
 	opacity: 0;
 	transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 	z-index: 1000;

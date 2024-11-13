@@ -1,15 +1,11 @@
-.toggle-finish-matches {
-	@apply w-10 h-5 flex items-center space-x-2 rounded-full p-1 cursor-pointer transition-colors duration-200;
+.toggle-show-match-day {
+	@apply flex items-center space-x-2 cursor-pointer py-2 w-full h-10 mb-4 rounded-lg border border-gray-500;
 }
 
-.toggle-finish-circle {
-	@apply bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-200;
+.toggle-show-match-day:last-child {
+	margin-bottom: 75px;
 }
 
-.toggle-active-color {
-	background-color: var(--green)
-}
-
-.toggle-disable-color {
-	background-color: var(--gray-light)
+.toggle-hide-match-day {
+	@apply flex items-center space-x-2 cursor-pointer py-2 w-full h-10 mb-4;
 }

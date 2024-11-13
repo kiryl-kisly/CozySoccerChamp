@@ -20,9 +20,11 @@
     display: flex;
     justify-content: center;
 }
+
 .point-item {
     margin-right: 20px;
 }
+
 .point-item,
 .place-item {
     display: flex;
