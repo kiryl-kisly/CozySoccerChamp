@@ -19,7 +19,7 @@ public class TelegramSetWebhook(
             UpdateType.Message
         };
 
-        await botClient.SetWebhookAsync(
+        await botClient.SetWebhook(
             url: webhookAddress,
             allowedUpdates: allowedUpdates,
             secretToken: botSettings.SecretToken,
@@ -35,7 +35,7 @@ public class TelegramSetWebhook(
         using var scope = serviceProvider.CreateScope();
         var botClient = scope.ServiceProvider.GetRequiredService<ITelegramBotClient>();
 
-        await botClient.DeleteWebhookAsync(cancellationToken: cancellationToken);
+        await botClient.DeleteWebhook(cancellationToken: cancellationToken);
     }
 
     private static async Task SetupBaseCommandAsync(ITelegramBotClient client)
@@ -45,6 +45,6 @@ public class TelegramSetWebhook(
             new BotCommand { Command = "start", Description = "Start" }
         };
 
-        await client.SetMyCommandsAsync(commands);
+        await client.SetMyCommands(commands);
     }
 }

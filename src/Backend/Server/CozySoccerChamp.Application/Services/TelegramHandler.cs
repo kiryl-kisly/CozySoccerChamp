@@ -22,9 +22,9 @@ public class TelegramHandler(
 
             var inlineKeyboardButton = InlineKeyboardButton.WithWebApp(
                 text: StartPlayButton,
-                webAppInfo: new WebAppInfo { Url = settings.ClientUrl });
-
-            await client.SendTextMessageAsync(
+                webApp: new WebAppInfo { Url = settings.ClientUrl });
+            
+            await client.SendMessage(
                 chatId: update.Message.Chat.Id,
                 text: WelcomeMessage,
                 replyMarkup: new InlineKeyboardMarkup(inlineKeyboardButton));
