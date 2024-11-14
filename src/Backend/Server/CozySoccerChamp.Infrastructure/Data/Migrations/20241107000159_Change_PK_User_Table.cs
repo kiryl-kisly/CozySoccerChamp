@@ -29,8 +29,6 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                 principalTable: "Users",
                 principalColumn: "TelegramUserId",
                 onDelete: ReferentialAction.Cascade);
-            
-            migrationBuilder.Sql("SELECT setval('Users_Id_seq', (SELECT MAX(Id) FROM Users));");
         }
 
         /// <inheritdoc />
