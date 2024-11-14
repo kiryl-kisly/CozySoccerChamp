@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 :root {
   --bgClr: #1d2025;
   --body: #282828;

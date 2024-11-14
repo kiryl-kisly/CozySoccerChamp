@@ -81,8 +81,11 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 				</div>
 			</div>
 
-			{/* Карточки с матчами */}
+			<div className='mb-4'>
 
+			</div>
+
+			{/* Карточки с матчами */}
 			{filteredItems && filteredItems.map((match: IMatchResponse, index: number) => {
 				const maxMatchDay = filteredItems[filteredItems.length - 1].matchDay
 				const currentMatchDay = match.matchDay
