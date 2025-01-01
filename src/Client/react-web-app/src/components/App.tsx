@@ -10,8 +10,8 @@ import { TeamPage } from '../pages/TeamPage/TeamPage'
 import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
 import './App.css'
+import { HeaderBar } from './HeaderBar/HeaderBar'
 import { Menu } from './Menu/Menu'
-import { UserProfile } from './UserProfile/UserProfile'
 
 export function App() {
   const [data, setData] = useState<IInitDataResponse>({
@@ -42,7 +42,7 @@ export function App() {
                 <p className="loader-wrapper"><span className="loader">Load&nbsp;ng</span></p>
               ) : (
                 <>
-                  <UserProfile leaderboard={leaderBoard} userProfile={data.userProfile} />
+                  <HeaderBar userProfile={data.userProfile} leaderboard={leaderBoard} />
 
                   <Routes>
                     <Route path="/" element={<Layout />}>
