@@ -33,33 +33,34 @@ export function App() {
   }, [])
 
   return (
-    <div className='flex justify-center'>
-      <div className='w-full text-white h-screen font-bold flex flex-col max-w-xl'>
-        {
-          data.isLoading
-            ? (
-              <p className="loader-wrapper"><span className="loader">Load&nbsp;ng</span></p>
-            ) : (
-              <>
-                <UserProfile leaderboard={leaderBoard} userProfile={data.userProfile} />
+    <>
+      <div className='flex justify-center'>
+        <div className='w-full text-white h-screen font-bold flex flex-col max-w-xl'>
+          {
+            data.isLoading
+              ? (
+                <p className="loader-wrapper"><span className="loader">Load&nbsp;ng</span></p>
+              ) : (
+                <>
+                  <UserProfile leaderboard={leaderBoard} userProfile={data.userProfile} />
 
-                <Routes>
-                  <Route path="/" element={<Layout />}>
-                    <Route index element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
-                    <Route path='matches' element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
-                    <Route path='prediction' element={<PredictionPage competition={data.competition} matches={null} />} />
-                    <Route path='settings' element={<SettingsPage />} />
-                    <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
-                    <Route path='team' element={<TeamPage />} />
-                    <Route path='info' element={<InfoPage />} />
-                  </Route>
-                </Routes>
-
-                <Menu />
-              </>
-            )
-        }
+                  <Routes>
+                    <Route path="/" element={<Layout />}>
+                      <Route index element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
+                      <Route path='matches' element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
+                      <Route path='prediction' element={<PredictionPage competition={data.competition} />} />
+                      <Route path='settings' element={<SettingsPage />} />
+                      <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
+                      <Route path='team' element={<TeamPage />} />
+                      <Route path='info' element={<InfoPage />} />
+                    </Route>
+                  </Routes>
+                </>
+              )
+          }
+        </div>
       </div>
-    </div>
+      {!data.isLoading && <Menu />}
+    </>
   )
 }

@@ -11,19 +11,22 @@ import './PredictionPage.css'
 
 interface Props {
 	competition: ICompetitionResponse | null
-	matches: IMatchResponse[] | null
 }
 
-export function PredictionPage({ competition, matches }: Props) {
-	const [data, setData] = useState<IMatchResponse[] | null>(matches)
+export function PredictionPage({ competition }: Props) {
+	const [allData, setAllData] = useState<IMatchResponse[]>([])
+	const [visibleData, setVisibleData] = useState<IMatchResponse[]>([])
 	const [selectedMatch, setSelectedMatch] = useState<IMatchResponse | null>(null)
 	const [predictions, setPredictions] = useState<IPredictionResponse[] | null>(null)
 	const [isPopupVisible, setIsPopupVisible] = useState(false)
 	const [showPopup, setShowPopup] = useState(false)
+	const [visibleCount, setVisibleCount] = useState(10)
 
 	useEffect(() => {
 		async function fetchData() {
-			setData(await getStartedOrFinished())
+			const data = await getStartedOrFinished()
+			setAllData(data)
+			setVisibleData(data.slice(0, 10))
 		}
 		fetchData()
 	}, [])
@@ -31,6 +34,12 @@ export function PredictionPage({ competition, matches }: Props) {
 	useEffect(() => {
 		setShowPopup(isPopupVisible)
 	}, [isPopupVisible])
+
+	const handleLoadMore = () => {
+		const newVisibleCount = visibleCount + 10
+		setVisibleCount(newVisibleCount)
+		setVisibleData(allData.slice(0, newVisibleCount))
+	}
 
 	const handleCardClick = async (match: IMatchResponse) => {
 		setSelectedMatch(match)
@@ -50,16 +59,21 @@ export function PredictionPage({ competition, matches }: Props) {
 
 			<Competition competition={competition} />
 
-			<div className="prediction-card-wrapper">
-				{data &&
-					data.map((match: IMatchResponse, index: number) => (
-						<PredictionCard
-							key={index}
-							match={match}
-							onClick={() => handleCardClick(match)}
-						/>
-					))}
+			<div className='prediction-card-wrapper'>
+				{visibleData.map((match: IMatchResponse, index: number) => (
+					<PredictionCard
+						key={index}
+						match={match}
+						onClick={() => handleCardClick(match)}
+					/>
+				))}
 			</div>
+
+			{visibleCount < allData.length && (
+				<button onClick={handleLoadMore} className='load-more-btn'>
+					Load More
+				</button>
+			)}
 
 			<PredictionPopup
 				selectedMatch={selectedMatch}

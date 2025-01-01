@@ -1,22 +1,23 @@
 .card-prediction:last-child {
-    margin-bottom: 75px;
+	margin-bottom: 75px;
 }
 
-.team-col-left {
-    @apply text-left flex items-center mr-auto justify-start;
+.load-more-btn {
+	color: var(--gray-light);
+	margin: -55px auto 75px auto;
+	display: block;
 }
 
-.team-col-right {
-    @apply text-right flex items-center ml-auto justify-end;
+.card-prediction:last-child + .load-more-btn {
+	margin-top: 20px;
 }
 
-.team-col-right span,
-.team-col-left span {
-    @apply break-words
+.card-prediction:last-child.no-button + .load-more-btn {
+	margin-top: 75px;
 }
 
 @media screen and (max-width: 341px) {
-    .card-prediction span.truncate {
-        font-size: 12px;
-    }
+	.card-prediction span.truncate {
+		font-size: 12px;
+	}
 }
