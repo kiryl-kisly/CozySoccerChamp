@@ -4,6 +4,7 @@ import { Layout } from '../layouts/MainLayout'
 import { InfoPage } from '../pages/InfoPage/InfoPage'
 import { LeaderboardPage } from '../pages/LeaderboardPage/LeaderboardPage'
 import { MatchesPage } from '../pages/MatchesPage/MatchesPage'
+import { PredictionDetailPage } from '../pages/PredictionDetailPage/PredictionDetailPage'
 import { PredictionPage } from '../pages/PredictionPage/PredictionPage'
 import { SettingsPage } from '../pages/SettingsPage/SettingsPage'
 import { TeamPage } from '../pages/TeamPage/TeamPage'
@@ -48,7 +49,8 @@ export function App() {
                     <Route path="/" element={<Layout />}>
                       <Route index element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
                       <Route path='matches' element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
-                      <Route path='prediction' element={<PredictionPage competition={data.competition} />} />
+                      <Route path="prediction" element={<PredictionPage competition={data.competition} />} />
+                      <Route path="prediction/:matchId" element={<PredictionDetailPage />} />
                       <Route path='settings' element={<SettingsPage />} />
                       <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
                       <Route path='team' element={<TeamPage />} />

@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import { Competition } from '../../components/Competition/Competition'
 import { PredictionCard } from '../../components/Prediction/PredictionCard'
-import { PredictionPopup } from '../../components/Prediction/PredictionPopup'
 import { ICompetitionResponse } from '../../services/interfaces/Responses/ICompetitionResponse'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
-import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
 import { getStartedOrFinished } from '../../services/MatchService'
-import { getPredictionsByMatchId } from '../../services/PredictionService'
 import './PredictionPage.css'
 
 interface Props {
@@ -14,12 +12,9 @@ interface Props {
 }
 
 export function PredictionPage({ competition }: Props) {
+	const navigate = useNavigate()
 	const [allData, setAllData] = useState<IMatchResponse[]>([])
 	const [visibleData, setVisibleData] = useState<IMatchResponse[]>([])
-	const [selectedMatch, setSelectedMatch] = useState<IMatchResponse | null>(null)
-	const [predictions, setPredictions] = useState<IPredictionResponse[] | null>(null)
-	const [isPopupVisible, setIsPopupVisible] = useState(false)
-	const [showPopup, setShowPopup] = useState(false)
 	const [visibleCount, setVisibleCount] = useState(10)
 
 	useEffect(() => {
@@ -31,26 +26,16 @@ export function PredictionPage({ competition }: Props) {
 		fetchData()
 	}, [])
 
-	useEffect(() => {
-		setShowPopup(isPopupVisible)
-	}, [isPopupVisible])
-
 	const handleLoadMore = () => {
 		const newVisibleCount = visibleCount + 10
 		setVisibleCount(newVisibleCount)
 		setVisibleData(allData.slice(0, newVisibleCount))
 	}
 
-	const handleCardClick = async (match: IMatchResponse) => {
-		setSelectedMatch(match)
-		setIsPopupVisible(true)
-
-		const fetchedPredictions = await getPredictionsByMatchId(match.matchId)
-		setPredictions(fetchedPredictions)
-	}
-
-	const closePopup = () => {
-		setIsPopupVisible(false)
+	const handleCardClick = (match: IMatchResponse) => {
+		if (match.matchId !== null && match.matchId !== undefined) {
+			navigate(`/prediction/${match.matchId}`, { state: { match } })
+		}
 	}
 
 	return (
@@ -74,13 +59,6 @@ export function PredictionPage({ competition }: Props) {
 					Load More
 				</button>
 			)}
-
-			<PredictionPopup
-				selectedMatch={selectedMatch}
-				predictions={predictions}
-				isVisible={showPopup}
-				onClose={closePopup}
-			/>
 		</>
 	)
 }
