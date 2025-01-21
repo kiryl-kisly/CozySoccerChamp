@@ -41,7 +41,7 @@ public class DataInitialization(
                 return;
             }
 
-            var season = DateTime.UtcNow.Year;
+            var season = 2024; //DateTime.UtcNow.Year;
 
             await CompetitionInitializationAsync(season);
             await TeamInitializationAsync(season);

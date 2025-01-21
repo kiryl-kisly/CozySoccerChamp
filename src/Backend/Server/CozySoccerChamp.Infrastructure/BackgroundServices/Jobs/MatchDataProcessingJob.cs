@@ -35,7 +35,9 @@ public sealed class MatchDataProcessingJob(
 
     private async Task ExecuteAsync()
     {
-        var season = DateTime.UtcNow.Year;
+        // TODO: Придумать как обрабатывать это
+        //       Например брать дату из Competitions
+        var season = 2024; //DateTime.UtcNow.Year;
 
         await MatchesProcessingAsync(season);
     }
