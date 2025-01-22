@@ -9,7 +9,7 @@ namespace CozySoccerChamp.Infrastructure.Filters;
 /// Check for "X-Telegram-Bot-Api-Secret-Token"
 /// Read more: <see href="https://core.telegram.org/bots/api#setwebhook"/> "secret_token"
 /// </summary>
-public class ValidationTelegramRequestFilter(BotSettings botSettings) : IAsyncActionFilter
+public abstract class ValidationTelegramRequestFilter(BotSettings botSettings) : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
@@ -17,7 +17,7 @@ public class ValidationTelegramRequestFilter(BotSettings botSettings) : IAsyncAc
         {
             context.Result = new ObjectResult($"\"{HeaderParams.TelegramSecretToken}\" is invalid")
             {
-                StatusCode = 403
+                StatusCode = StatusCodes.Status403Forbidden
             };
 
             return;

@@ -1,4 +1,3 @@
-using CozySoccerChamp.Infrastructure.Filters;
 using Telegram.Bot.Types;
 
 namespace CozySoccerChamp.Api.Controllers;
@@ -7,7 +6,6 @@ namespace CozySoccerChamp.Api.Controllers;
 [Route("api/[controller]/[action]")]
 [Produces("application/json")]
 [Consumes("application/json")]
-[TypeFilter(typeof(ValidationTelegramRequestFilter))]
 public class TelegramBotController : ControllerBase
 {
     /// <summary>

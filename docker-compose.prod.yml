@@ -16,12 +16,12 @@ services:
   cozysoccerchamp.api:
     environment:
       - ASPNETCORE_HTTP_PORTS=8000
-      - ConnectionStrings__CozySoccerChampPostgresSqlConnection=;
-      - BotSettings__BotToken=
-      - BotSettings__HostAddress=
-      - BotSettings__SecretToken=
-      - BotSettings__ClientUrl=
-      - SoccerApiSettings__ApiToken=
+      - ConnectionStrings__CozySoccerChampPostgresSqlConnection=""
+      - BotSettings__BotToken=""
+      - BotSettings__HostAddress=""
+      - BotSettings__SecretToken=""
+      - BotSettings__ClientUrl=""
+      - SoccerApiSettings__ApiToken=""
     container_name: cozysoccerchamp.api
     image: cozysoccerchamp.api
     build:

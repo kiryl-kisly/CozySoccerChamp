@@ -1,5 +1,6 @@
 using CozySoccerChamp.Infrastructure.Constants;
 using CozySoccerChamp.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
@@ -16,7 +17,7 @@ public class AuthenticationTelegramRequestFilter(IApplicationUserRepository user
         {
             context.Result = new ObjectResult($"\"{HeaderParams.TelegramUserId}\" not found")
             {
-                StatusCode = 401
+                StatusCode = StatusCodes.Status401Unauthorized
             };
 
             return;
@@ -28,14 +29,16 @@ public class AuthenticationTelegramRequestFilter(IApplicationUserRepository user
 
             if (applicationUser is null)
             {
-                var user = new ApplicationUser { TelegramUserId = telegramUserId };
-
-                await userRepository.AddAsync(user);
+                context.Result = new ObjectResult($"TelegramUserId: {telegramUserId} not found")
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
+                
+                return;
             }
         }
         
         context.HttpContext.SetTelegramUserId(telegramUserId);
-
 
         await next();
     }

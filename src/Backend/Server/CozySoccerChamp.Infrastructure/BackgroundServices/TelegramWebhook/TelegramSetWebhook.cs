@@ -23,6 +23,7 @@ public class TelegramSetWebhook(
             url: webhookAddress,
             allowedUpdates: allowedUpdates,
             secretToken: botSettings.SecretToken,
+            dropPendingUpdates: true,
             cancellationToken: cancellationToken);
 
         await SetupBaseCommandAsync(botClient);
