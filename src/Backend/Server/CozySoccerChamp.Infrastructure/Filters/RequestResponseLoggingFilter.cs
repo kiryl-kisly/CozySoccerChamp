@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CozySoccerChamp.Infrastructure.Filters;
 
-public abstract class RequestResponseLoggingFilter(ILogger<RequestResponseLoggingFilter> logger) : IAsyncActionFilter
+public class RequestResponseLoggingFilter(ILogger<RequestResponseLoggingFilter> logger) : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {

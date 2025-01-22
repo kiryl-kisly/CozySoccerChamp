@@ -68,7 +68,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static IServiceCollection AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
+    private static void AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
     {
         var settings = configuration.GetSection(PointCalculateSettings.SectionName).Get<PointCalculateSettings>()
                        ?? throw new ApplicationException($"{PointCalculateSettings.SectionName} not found");
@@ -80,8 +80,6 @@ public static class ServiceCollectionExtensions
             .AddHostedService<TelegramSetWebhook>();
 
         services.AddQuartzJobs(configuration);
-
-        return services;
     }
 
     private static void AddQuartzJobs(this IServiceCollection services, IConfiguration configuration)
