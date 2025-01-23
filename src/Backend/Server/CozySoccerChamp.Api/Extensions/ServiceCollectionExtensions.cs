@@ -1,6 +1,7 @@
 using System.Reflection;
 using CozySoccerChamp.Api.Exceptions;
 using CozySoccerChamp.Infrastructure.Filters;
+using Microsoft.AspNetCore.HttpLogging;
 
 namespace CozySoccerChamp.Api.Extensions;
 
@@ -15,14 +16,23 @@ public static class ServiceCollectionExtensions
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
+        services.AddHttpLogging(options =>
+        {
+            options.CombineLogs = true;
+
+            options.LoggingFields = HttpLoggingFields.RequestQuery
+                                    | HttpLoggingFields.RequestMethod
+                                    | HttpLoggingFields.RequestPath
+                                    | HttpLoggingFields.RequestBody
+                                    | HttpLoggingFields.ResponseStatusCode
+                                    | HttpLoggingFields.ResponseBody
+                                    | HttpLoggingFields.Duration;
+        });
+
         services
             .AddProblemDetails()
             .AddExceptionHandler<ExceptionHandler>()
-            .AddControllers(options =>
-            {
-                options.Filters.Add<RequestResponseLoggingFilter>();
-                options.Filters.Add<ValidationTelegramRequestFilter>();
-            })
+            .AddControllers()
             .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
