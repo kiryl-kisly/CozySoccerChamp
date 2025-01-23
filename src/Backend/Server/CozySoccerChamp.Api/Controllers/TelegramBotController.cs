@@ -17,7 +17,7 @@ public class TelegramBotController : ControllerBase
     /// <param name="handler"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> Update([FromBody] Update? update, [FromServices] ITelegramHandler handler)
+    public async Task<IActionResult> Update([FromBody] Update update, [FromServices] ITelegramHandler handler)
     {
         await handler.HandleUpdateAsync(update);
 

@@ -1,7 +1,7 @@
+using System.Text.Json;
 using CozySoccerChamp.External.SoccerApi.Abstractions;
 using CozySoccerChamp.External.SoccerApi.Models.Infrastructures;
 using CozySoccerChamp.External.SoccerApi.Models.Responses;
-using Newtonsoft.Json;
 using RestSharp;
 
 namespace CozySoccerChamp.External.SoccerApi;
@@ -38,7 +38,7 @@ public class SoccerApiClient(SoccerApiSettings settings) : ISoccerApiClient
 
             var soccerApiResponse = response.Content is null
                 ? null
-                : JsonConvert.DeserializeObject<BaseSoccerResponse>(response.Content);
+                : JsonSerializer.Deserialize<BaseSoccerResponse>(response.Content);
 
             if (soccerApiResponse is not null)
                 return (soccerApiResponse.Competition, soccerApiResponse.ResultSet);
@@ -69,7 +69,7 @@ public class SoccerApiClient(SoccerApiSettings settings) : ISoccerApiClient
 
             var soccerApiResponse = response.Content is null
                 ? null
-                : JsonConvert.DeserializeObject<BaseSoccerResponse>(response.Content);
+                : JsonSerializer.Deserialize<BaseSoccerResponse>(response.Content);
 
             if (soccerApiResponse is not null)
                 return soccerApiResponse.Matches;
@@ -100,7 +100,7 @@ public class SoccerApiClient(SoccerApiSettings settings) : ISoccerApiClient
 
             var soccerApiResponse = response.Content is null
                 ? null
-                : JsonConvert.DeserializeObject<BaseSoccerResponse>(response.Content);
+                : JsonSerializer.Deserialize<BaseSoccerResponse>(response.Content);
 
             if (soccerApiResponse is not null)
                 return soccerApiResponse.Teams;

@@ -1,18 +1,18 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
 public class BaseSoccerResponse
 {
-    [JsonProperty("competition")]
+    [JsonPropertyName("competition")]
     public CompetitionResponse Competition { get; set; }
     
-    [JsonProperty("resultSet")]
+    [JsonPropertyName("resultSet")]
     public ResultSetResponse ResultSet { get; set; }
     
-    [JsonProperty("matches")]
+    [JsonPropertyName("matches")]
     public IReadOnlyCollection<MatchResponse> Matches { get; set; }
 
-    [JsonProperty("teams")]
+    [JsonPropertyName("teams")]
     public IReadOnlyCollection<TeamResponse> Teams { get; set; }
 }

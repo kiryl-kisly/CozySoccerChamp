@@ -1,21 +1,21 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
 public class TeamResponse
 {
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public int? Id { get; set; }
 
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
-    [JsonProperty("shortName")]
+    [JsonPropertyName("shortName")]
     public string ShortName { get; set; }
 
-    [JsonProperty("tla")]
+    [JsonPropertyName("tla")]
     public string CodeName { get; set; }
 
-    [JsonProperty("crest")]
+    [JsonPropertyName("crest")]
     public string EmblemUrl { get; set; }
 }

@@ -1,12 +1,12 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
 public class CompetitionResponse
 {
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
-    [JsonProperty("emblem")]
+    [JsonPropertyName("emblem")]
     public string EmblemUrl { get; set; }
 }

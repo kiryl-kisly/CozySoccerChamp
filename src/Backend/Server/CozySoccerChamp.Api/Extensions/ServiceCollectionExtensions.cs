@@ -1,6 +1,5 @@
 using System.Reflection;
 using CozySoccerChamp.Api.Exceptions;
-using CozySoccerChamp.Infrastructure.Filters;
 using Microsoft.AspNetCore.HttpLogging;
 
 namespace CozySoccerChamp.Api.Extensions;
@@ -32,12 +31,8 @@ public static class ServiceCollectionExtensions
         services
             .AddProblemDetails()
             .AddExceptionHandler<ExceptionHandler>()
-            .AddControllers()
-            .AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            });
+            .ConfigureTelegramBotMvc()
+            .AddControllers();
 
         return services;
     }

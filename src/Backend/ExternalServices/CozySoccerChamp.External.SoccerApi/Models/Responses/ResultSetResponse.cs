@@ -1,15 +1,15 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
 public class ResultSetResponse
 {
-    [JsonProperty("count")]
+    [JsonPropertyName("count")]
     public int Count { get; set; }
     
-    [JsonProperty("first")]
+    [JsonPropertyName("first")]
     public DateTime First { get; set; }
     
-    [JsonProperty("last")]
+    [JsonPropertyName("last")]
     public DateTime Last { get; set; }
 }

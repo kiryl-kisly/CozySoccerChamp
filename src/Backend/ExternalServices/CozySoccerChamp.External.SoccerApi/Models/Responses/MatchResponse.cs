@@ -1,39 +1,39 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
 public class MatchResponse
 {
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public int Id { get; set; }
     
-    [JsonProperty("utcDate")]
+    [JsonPropertyName("utcDate")]
     public DateTime StartDateUtc { get; set; }
     
-    [JsonProperty("status")]
+    [JsonPropertyName("status")]
     public string Status { get; set; }
     
-    [JsonProperty("lastUpdated")]
+    [JsonPropertyName("lastUpdated")]
     public DateTime LastUpdatedUtc { get; set; }
     
-    [JsonProperty("homeTeam")]
+    [JsonPropertyName("homeTeam")]
     public TeamResponse HomeTeam { get; set; }
     
-    [JsonProperty("awayTeam")]
+    [JsonPropertyName("awayTeam")]
     public TeamResponse AwayTeam { get; set; }
     
-    [JsonProperty("score")]
+    [JsonPropertyName("score")]
     public MatchResultResponse MatchResult { get; set; }
     
-    [JsonProperty("matchday")]
+    [JsonPropertyName("matchday")]
     public int? Matchday { get; set; }
     
-    [JsonProperty("stage")]
+    [JsonPropertyName("stage")]
     public string Stage { get; set; }
     
-    [JsonProperty("group")]
+    [JsonPropertyName("group")]
     public string Group { get; set; }
     
-    [JsonProperty("competition")]
+    [JsonPropertyName("competition")]
     public CompetitionResponse Competition { get; set; }
 }

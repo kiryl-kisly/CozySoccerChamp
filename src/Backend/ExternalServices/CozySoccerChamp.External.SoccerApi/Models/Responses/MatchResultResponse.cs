@@ -1,27 +1,27 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace CozySoccerChamp.External.SoccerApi.Models.Responses;
 
 public class MatchResultResponse
 {
-    [JsonProperty("winner")]
+    [JsonPropertyName("winner")]
     public string Winner { get; set; }
     
-    [JsonProperty("duration")]
+    [JsonPropertyName("duration")]
     public string Duration { get; set; }
     
-    [JsonProperty("fullTime")]
+    [JsonPropertyName("fullTime")]
     public ScoreResponse FullTime { get; set; }
     
-    [JsonProperty("halfTime")]
+    [JsonPropertyName("halfTime")]
     public ScoreResponse HalfTime { get; set; }
     
-    [JsonProperty("regularTime")]
+    [JsonPropertyName("regularTime")]
     public ScoreResponse RegularTime { get; set; }
     
-    [JsonProperty("extraTime")]
+    [JsonPropertyName("extraTime")]
     public ScoreResponse ExtraTime { get; set; }
     
-    [JsonProperty("penalties")]
+    [JsonPropertyName("penalties")]
     public ScoreResponse Penalties { get; set; }
 }
