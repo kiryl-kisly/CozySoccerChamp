@@ -60,6 +60,8 @@ public sealed class MatchDataProcessingJob(
             .Where(x => x.TeamHomeId == null || x.TeamAwayId == null)
             .ToListAsync();
 
+        var matchesToUpdate = new List<Match>();
+
         foreach (var match in matchesNeedUpdated)
         {
             var updateData = matchesData.FirstOrDefault(x => x.Id == match.ExternalMatchId);
@@ -79,79 +81,100 @@ public sealed class MatchDataProcessingJob(
                 match.TeamAwayId = teamAway!.Id;
             }
 
-            await matchRepository.UpdateAsync(match);
+            matchesToUpdate.Add(match);
         }
+
+        if (matchesToUpdate.Count != 0)
+            await matchRepository.UpdateRangeAsync(matchesToUpdate);
     }
 
     private async Task UpdateStartedMatchAsync(IReadOnlyCollection<MatchResponse> matchesData)
     {
         const string status = "IN_PLAY";
 
-        var startedMatches = matchesData
-            .Where(x => string.Equals(status, x.Status, StringComparison.CurrentCultureIgnoreCase));
+        var startedMatchIds = matchesData
+            .Where(x => string.Equals(status, x.Status, StringComparison.CurrentCultureIgnoreCase))
+            .Select(x => x.Id)
+            .ToList();
 
-        foreach (var startedMatch in startedMatches)
+        if (startedMatchIds.Count == 0)
+            return;
+
+        var matchesToUpdate = await matchRepository.GetAllAsQueryable()
+            .Where(x => startedMatchIds.Contains(x.ExternalMatchId))
+            .Include(x => x.MatchResult)
+            .ToListAsync();
+
+        foreach (var match in matchesToUpdate)
         {
-            var match = await matchRepository.FindAsync(x => x.ExternalMatchId == startedMatch.Id, includes: x => x.MatchResult);
-
-            if (match is null)
-                continue;
-
-            match.MatchResult.Status = MatchResultStatus.Started;
-
-            await matchRepository.UpdateAsync(match);
+            if (match.MatchResult is not null)
+            {
+                match.MatchResult.Status = MatchResultStatus.Started;
+            }
         }
+
+        if (matchesToUpdate.Count != 0)
+            await matchRepository.UpdateRangeAsync(matchesToUpdate);
     }
 
     private async Task UpdateFinishedMatchAsync(IReadOnlyCollection<MatchResponse> matchesData)
     {
         const string status = "FINISHED";
 
-        var finishedMatches = matchesData
-            .Where(x => string.Equals(status, x.Status, StringComparison.CurrentCultureIgnoreCase))
-            .Where(x => !string.IsNullOrEmpty(x.MatchResult.Winner));
+        var finishedMatchIds = matchesData
+            .Where(x => string.Equals(status, x.Status, StringComparison.CurrentCultureIgnoreCase) && !string.IsNullOrEmpty(x.MatchResult.Winner))
+            .Select(x => x.Id)
+            .ToList();
 
-        foreach (var finishedMatch in finishedMatches)
+        if (finishedMatchIds.Count == 0)
+            return;
+        
+        var matchesToUpdate = await matchRepository.GetAllAsQueryable()
+            .Where(x => finishedMatchIds.Contains(x.ExternalMatchId))
+            .Include(x => x.MatchResult)
+            .ToListAsync();
+
+        foreach (var match in matchesToUpdate)
         {
-            var match = await matchRepository
-                .FindAsync(x => x.ExternalMatchId == finishedMatch.Id, includes: x => x.MatchResult);
+            var finishedMatchData = matchesData.FirstOrDefault(x => x.Id == match.ExternalMatchId);
 
-            if (match is null)
+            if (finishedMatchData is null || match.MatchResult is null)
                 continue;
 
             var matchResult = match.MatchResult;
 
-            matchResult.Duration = GetDuration(finishedMatch.MatchResult.Duration);
-            matchResult.FullTime = GetScore(finishedMatch.MatchResult.FullTime);
-            matchResult.HalfTime = GetScore(finishedMatch.MatchResult.HalfTime);
-            matchResult.RegularTime = GetScore(finishedMatch.MatchResult.RegularTime);
-            matchResult.ExtraTime = GetScore(finishedMatch.MatchResult.ExtraTime);
-            matchResult.Penalties = GetScore(finishedMatch.MatchResult.Penalties);
+            matchResult.Duration = GetDuration(finishedMatchData.MatchResult.Duration);
+            matchResult.FullTime = GetScore(finishedMatchData.MatchResult.FullTime);
+            matchResult.HalfTime = GetScore(finishedMatchData.MatchResult.HalfTime);
+            matchResult.RegularTime = GetScore(finishedMatchData.MatchResult.RegularTime);
+            matchResult.ExtraTime = GetScore(finishedMatchData.MatchResult.ExtraTime);
+            matchResult.Penalties = GetScore(finishedMatchData.MatchResult.Penalties);
             matchResult.Status = MatchResultStatus.Finished;
-
-            await matchRepository.UpdateAsync(match);
-
-            #region local methods
-
-            DurationStatus GetDuration(string src)
-            {
-                return src switch
-                {
-                    "REGULAR" => DurationStatus.Regular,
-                    "EXTRA_TIME" => DurationStatus.ExtraTime,
-                    "PENALTY_SHOOTOUT" => DurationStatus.PenaltyShootout,
-                    _ => default
-                };
-            }
-
-            string? GetScore(ScoreResponse? src)
-            {
-                return src is null
-                    ? null
-                    : $"{src.HomeTeamScore}:{src.AwayTeamScore}";
-            }
-
-            #endregion
         }
+        
+        if (matchesToUpdate.Count != 0)
+            await matchRepository.UpdateRangeAsync(matchesToUpdate);
+
+        #region Local Methods
+
+        static DurationStatus GetDuration(string src)
+        {
+            return src switch
+            {
+                "REGULAR" => DurationStatus.Regular,
+                "EXTRA_TIME" => DurationStatus.ExtraTime,
+                "PENALTY_SHOOTOUT" => DurationStatus.PenaltyShootout,
+                _ => default
+            };
+        }
+
+        static string? GetScore(ScoreResponse? src)
+        {
+            return src is null
+                ? null
+                : $"{src.HomeTeamScore}:{src.AwayTeamScore}";
+        }
+
+        #endregion
     }
 }
