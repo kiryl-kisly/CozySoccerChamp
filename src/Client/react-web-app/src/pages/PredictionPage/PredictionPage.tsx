@@ -16,10 +16,16 @@ export function PredictionPage({ competition }: Props) {
 	const [allData, setAllData] = useState<IMatchResponse[]>([])
 	const [visibleData, setVisibleData] = useState<IMatchResponse[]>([])
 	const [visibleCount, setVisibleCount] = useState<number>(
-		() => parseInt(localStorage.getItem('visibleCount') || '10')
+		() => parseInt(sessionStorage.getItem('visibleCount') || '10')
 	)
 
 	useEffect(() => {
+		const savedScrollPosition = sessionStorage.getItem('scrollPosition')
+		if (savedScrollPosition) {
+			window.scrollTo(0, parseInt(savedScrollPosition, 10))
+			sessionStorage.removeItem('scrollPosition')
+		}
+
 		async function fetchData() {
 			const data = await getStartedOrFinished()
 			setAllData(data)
@@ -33,10 +39,12 @@ export function PredictionPage({ competition }: Props) {
 		setVisibleCount(newVisibleCount)
 		setVisibleData(allData.slice(0, newVisibleCount))
 
-		localStorage.setItem('visibleCount', newVisibleCount.toString())
+		sessionStorage.setItem('visibleCount', newVisibleCount.toString())
 	}
 
 	const handleCardClick = (match: IMatchResponse) => {
+		sessionStorage.setItem('scrollPosition', window.scrollY.toString())
+
 		if (match.matchId !== null && match.matchId !== undefined) {
 			navigate(`/prediction/${match.matchId}`, { state: { match } })
 		}
