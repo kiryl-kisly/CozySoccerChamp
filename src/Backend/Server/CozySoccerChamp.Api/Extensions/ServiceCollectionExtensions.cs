@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using CozySoccerChamp.Api.Exceptions;
 using Microsoft.AspNetCore.HttpLogging;
 
@@ -15,6 +16,22 @@ public static class ServiceCollectionExtensions
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
+        services
+            .AddHttpLogging()
+            .AddProblemDetails()
+            .AddExceptionHandler<ExceptionHandler>()
+            .ConfigureTelegramBotMvc()
+            .AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+
+        return services;
+    }
+
+    private static IServiceCollection AddHttpLogging(this IServiceCollection services)
+    {
         services.AddHttpLogging(options =>
         {
             options.CombineLogs = true;
@@ -26,12 +43,6 @@ public static class ServiceCollectionExtensions
                                     | HttpLoggingFields.ResponseStatusCode
                                     | HttpLoggingFields.Duration;
         });
-
-        services
-            .AddProblemDetails()
-            .AddExceptionHandler<ExceptionHandler>()
-            .ConfigureTelegramBotMvc()
-            .AddControllers();
 
         return services;
     }
