@@ -15,21 +15,25 @@ export function PredictionPage({ competition }: Props) {
 	const navigate = useNavigate()
 	const [allData, setAllData] = useState<IMatchResponse[]>([])
 	const [visibleData, setVisibleData] = useState<IMatchResponse[]>([])
-	const [visibleCount, setVisibleCount] = useState(10)
+	const [visibleCount, setVisibleCount] = useState<number>(
+		() => parseInt(localStorage.getItem('visibleCount') || '10')
+	)
 
 	useEffect(() => {
 		async function fetchData() {
 			const data = await getStartedOrFinished()
 			setAllData(data)
-			setVisibleData(data.slice(0, 10))
+			setVisibleData(data.slice(0, visibleCount))
 		}
 		fetchData()
-	}, [])
+	}, [visibleCount])
 
 	const handleLoadMore = () => {
 		const newVisibleCount = visibleCount + 10
 		setVisibleCount(newVisibleCount)
 		setVisibleData(allData.slice(0, newVisibleCount))
+
+		localStorage.setItem('visibleCount', newVisibleCount.toString())
 	}
 
 	const handleCardClick = (match: IMatchResponse) => {
