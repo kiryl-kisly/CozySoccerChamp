@@ -24,7 +24,6 @@ public static class ServiceCollectionExtensions
                                     | HttpLoggingFields.RequestPath
                                     | HttpLoggingFields.RequestBody
                                     | HttpLoggingFields.ResponseStatusCode
-                                    | HttpLoggingFields.ResponseBody
                                     | HttpLoggingFields.Duration;
         });
 
