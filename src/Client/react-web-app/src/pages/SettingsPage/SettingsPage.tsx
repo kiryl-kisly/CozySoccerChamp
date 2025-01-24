@@ -5,7 +5,7 @@ export function SettingsPage() {
 
 	const [isHideFinishedMatches, setIsHideFinishedMatches] = useState<boolean>(() => {
 		const saved = localStorage.getItem('isHideFinishedMatches')
-		return saved !== null ? JSON.parse(saved) : true
+		return saved !== null ? JSON.parse(saved) : false
 	})
 	useEffect(() => {
 		localStorage.setItem('isHideFinishedMatches', JSON.stringify(isHideFinishedMatches))
