@@ -1,3 +1,4 @@
+import { initMiniApp, initViewport } from '@telegram-apps/sdk-react'
 import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router'
 import { Layout } from '../layouts/MainLayout'
@@ -14,7 +15,7 @@ import './App.css'
 import { HeaderBar } from './HeaderBar/HeaderBar'
 import { Menu } from './Menu/Menu'
 
-export function App() {
+export async function App() {
   const [data, setData] = useState<IInitDataResponse>({
     isLoading: true,
     competition: null,
@@ -24,8 +25,27 @@ export function App() {
     leaderboard: null
   })
 
-  const leaderBoard = data.leaderboard?.find((x) => x.telegramUserId === data.userProfile?.telegramUserId)
+  const [miniApp] = initMiniApp()
+  const [viewport] = initViewport()
 
+  useEffect(() => {
+    if (miniApp) {
+      miniApp.setBgColor("#000")
+    }
+
+    async function expandViewport() {
+      if (viewport) {
+        const vp = await viewport
+        if (!vp.isExpanded) {
+          vp.expand()
+        }
+      }
+    }
+
+    expandViewport()
+  }, [miniApp, viewport])
+
+  const leaderBoard = data.leaderboard?.find((x) => x.telegramUserId === data.userProfile?.telegramUserId)
   useEffect(() => {
     async function fetchData() {
       setData((await getInitData()))
