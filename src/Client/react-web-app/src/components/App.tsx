@@ -35,7 +35,7 @@ export function App() {
 
   return (
     <>
-      <div className='flex justify-center'>
+      <div className='flex justify-center overflow-y-auto'>
         <div className='w-full text-white h-screen font-bold flex flex-col max-w-xl'>
           {
             data.isLoading
