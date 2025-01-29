@@ -15,7 +15,7 @@ import './App.css'
 import { HeaderBar } from './HeaderBar/HeaderBar'
 import { Menu } from './Menu/Menu'
 
-export async function App() {
+export function App() {
   const [data, setData] = useState<IInitDataResponse>({
     isLoading: true,
     competition: null,
