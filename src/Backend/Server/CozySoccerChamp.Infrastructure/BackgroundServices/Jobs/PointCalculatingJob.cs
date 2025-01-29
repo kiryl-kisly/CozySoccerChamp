@@ -72,11 +72,12 @@ public class PointCalculatingJob(
 
             Parallel.ForEach(user.Predictions, prediction =>
             {
-                if (!finishedMatchesDict.TryGetValue(prediction.MatchId, out var matchResult))
-                    return;
-
-                prediction.PointPerMatch = GetUserPoint(matchResult, prediction);
-                prediction.Coefficient = GetCoefficient(matchResult);
+                if (finishedMatchesDict.TryGetValue(prediction.MatchId, out var matchResult))
+                {
+                    prediction.PointPerMatch = GetUserPoint(matchResult, prediction);
+                    prediction.Coefficient = GetCoefficient(matchResult);
+                }
+                
                 predictionsToUpdate.Add(prediction);
             });
 
