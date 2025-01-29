@@ -20,12 +20,6 @@ export function PredictionPage({ competition }: Props) {
 	)
 
 	useEffect(() => {
-		const savedScrollPosition = sessionStorage.getItem('scrollPosition')
-		if (savedScrollPosition) {
-			window.scrollTo(0, parseInt(savedScrollPosition, 10))
-			sessionStorage.removeItem('scrollPosition')
-		}
-
 		async function fetchData() {
 			const data = await getStartedOrFinished()
 			setAllData(data)
@@ -43,8 +37,6 @@ export function PredictionPage({ competition }: Props) {
 	}
 
 	const handleCardClick = (match: IMatchResponse) => {
-		sessionStorage.setItem('scrollPosition', window.scrollY.toString())
-
 		if (match.matchId !== null && match.matchId !== undefined) {
 			navigate(`/prediction/${match.matchId}`, { state: { match } })
 		}
