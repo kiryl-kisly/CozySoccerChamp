@@ -40,6 +40,8 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 		return activeMatchDay ? activeMatchDay : filteredItems[filteredItems.length - 1]?.matchDay ?? null
 	})
 
+
+
 	const handleCardClick = (items: IMatchResponse[], stage: string) => {
 		setSelectedCardId(stage)
 		setSelectedItems(items)
@@ -143,16 +145,20 @@ const getActiveStage = (groupedMatchData: Record<string, IMatchResponse[]>): str
 			const startTime = matches[0]?.startTimeUtc
 				? new Date(matches[0]?.startTimeUtc as unknown as string)
 				: null
+				console.log(`startTime ${startTime}`)
 
 			const endTime = matches[matches.length - 1]?.startTimeUtc
 				? new Date(matches[matches.length - 1]?.startTimeUtc as unknown as string)
 				: null
+				console.log(`endTime ${endTime}`)
 
 			if (startTime instanceof Date && endTime instanceof Date) {
-				if (now >= startTime && now <= endTime) {
+				if (now <= endTime) {
 					return stage
 				}
 			}
+
+			console.log(stage)
 		}
 	}
 
