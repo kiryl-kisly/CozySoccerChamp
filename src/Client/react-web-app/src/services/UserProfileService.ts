@@ -13,7 +13,7 @@ export const changeUserName = async (newUserName: string) => {
 	return response.data
 }
 
-export const ToggleNotification = async (isEnabled: boolean | undefined) => {
+export const ToggleNotification = async (isEnabled: boolean) => {
 	const response = await axiosClient().post<IUserProfileResponse>(`userProfile/ToggleNotification?isEnabled=${isEnabled}`)
 
 	return response.data

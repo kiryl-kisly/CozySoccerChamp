@@ -1,9 +1,8 @@
-import { RootState } from '@reduxjs/toolkit/query'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { IUserProfileResponse } from '../../services/interfaces/Responses/IUserProfileResponse'
 import { ToggleNotification } from '../../services/UserProfileService'
-import { AppDispatch } from '../../store/store'
+import { AppDispatch, RootState } from '../../store/store'
 import { setUserProfile, toggleNotifications } from '../../store/userProfileSlice'
 import './SettingsPage.css'
 
