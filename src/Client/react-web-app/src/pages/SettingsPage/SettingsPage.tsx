@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { IUserProfileResponse } from '../../services/interfaces/Responses/IUserProfileResponse'
 import { ToggleNotification } from '../../services/UserProfileService'
 import { AppDispatch, RootState } from '../../store/store'
-import { setUserProfile, toggleNotifications } from '../../store/userProfileSlice'
+import { setEnabledNotification } from '../../store/userProfileSlice'
 import './SettingsPage.css'
 
-interface Props {
-	userProfile: IUserProfileResponse | null
-}
-
-export function SettingsPage({ userProfile }: Props) {
+export function SettingsPage() {
 
 	const [isHideFinishedMatches, setIsHideFinishedMatches] = useState<boolean>(() => {
 		const saved = localStorage.getItem('isHideFinishedMatches')
@@ -26,22 +21,17 @@ export function SettingsPage({ userProfile }: Props) {
 	}
 
 	const dispatch = useDispatch<AppDispatch>()
-	const profile = useSelector((state: RootState) => state.userProfile.userProfile)
+	const userProfile = useSelector((state: RootState) => state.userProfile)
 
-	// Устанавливаем начальные данные в Redux (если их нет)
-	useEffect(() => {
-		if (userProfile && !profile) {
-			dispatch(setUserProfile({ isEnabledNotification: userProfile.isEnabledNotification }))
-		}
-	}, [dispatch, userProfile, profile])
+	const [isEnabledNotification, setIsEnabledNotification] = useState(userProfile.isEnabledNotification)
 
 	const toggleIsEnabledNotifications = async () => {
-		dispatch(toggleNotifications())
+		const newIsEnabledNotification = !isEnabledNotification
+		setIsEnabledNotification(newIsEnabledNotification)
+		// Отправляем действие в Redux Store
+		dispatch(setEnabledNotification(newIsEnabledNotification))
 
-		// Обновляем настройки на сервере
-		if (profile) {
-			await ToggleNotification(!profile.isEnabledNotification)
-		}
+		await ToggleNotification(!isEnabledNotification)
 	}
 
 	return (
@@ -67,8 +57,8 @@ export function SettingsPage({ userProfile }: Props) {
 				onClick={toggleIsEnabledNotifications}>
 				<div className='absolute left-5 p-2'>Send Notifications</div>
 				<div className='ml-auto p-2'>
-					<div className={`toggle ${profile?.isEnabledNotification ? 'toggle-active-color' : 'toggle-disable-color'}`}>
-						<div className={`toggle-circle ${profile?.isEnabledNotification ? 'translate-x-8' : 'translate-x-0'}`}>
+					<div className={`toggle ${isEnabledNotification ? 'toggle-active-color' : 'toggle-disable-color'}`}>
+						<div className={`toggle-circle ${isEnabledNotification ? 'translate-x-8' : 'translate-x-0'}`}>
 						</div>
 					</div>
 				</div>

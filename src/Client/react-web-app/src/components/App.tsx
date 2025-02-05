@@ -51,7 +51,7 @@ export function App() {
                       <Route path='matches' element={<MatchesPage competition={data.competition} matches={data.matches} predictions={data.predictions} />} />
                       <Route path="prediction" element={<PredictionPage competition={data.competition} />} />
                       <Route path="prediction/:matchId" element={<PredictionDetailPage />} />
-                      <Route path='settings' element={<SettingsPage userProfile={data.userProfile} />} />
+                      <Route path='settings' element={<SettingsPage />} />
                       <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
                       <Route path='team' element={<TeamPage />} />
                       <Route path='info' element={<InfoPage />} />
