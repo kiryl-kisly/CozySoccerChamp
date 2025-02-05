@@ -1,6 +1,7 @@
 using CozySoccerChamp.Application.Models.Requests.Prediction;
 using CozySoccerChamp.Application.Models.Responses.Soccer;
 using CozySoccerChamp.Domain.Entities.Soccer;
+using CozySoccerChamp.Domain.Entities.User;
 
 namespace CozySoccerChamp.Application.Mappers;
 
@@ -10,6 +11,7 @@ public class MappingProfile : Profile
     {
         CreateMap<ApplicationUser, UserResponse>()
             .ForMember(dest => dest.TelegramUserId, opt => opt.MapFrom(src => src.TelegramUserId))
+            .ForMember(dest => dest.IsEnabledNotification, opt => opt.MapFrom(src => src.Profile.IsEnabledNotification))
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>
                 src.UserName
                 ?? (string.IsNullOrEmpty(src.TelegramUserName)

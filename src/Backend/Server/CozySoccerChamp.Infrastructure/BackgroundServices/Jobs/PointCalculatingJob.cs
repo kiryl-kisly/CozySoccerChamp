@@ -1,49 +1,31 @@
 using System.Collections.Concurrent;
-using System.Diagnostics;
+using CozySoccerChamp.Domain.Entities.User;
 using CozySoccerChamp.Infrastructure.BackgroundServices.Jobs.Settings;
 using Quartz;
 
 namespace CozySoccerChamp.Infrastructure.BackgroundServices.Jobs;
 
 [DisallowConcurrentExecution]
-public class PointCalculatingJob(
+public sealed class PointCalculatingJob(
     IMatchResultRepository matchResultRepository,
     IApplicationUserRepository userRepository,
     PointCalculateSettings settings,
-    ILogger<PointCalculatingJob> logger) : IJob
+    ILogger<PointCalculatingJob> logger) : BaseJob(logger)
 {
-    public async Task Execute(IJobExecutionContext context)
-    {
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
-
-        try
-        {
-            logger.Log(LogLevel.Information, $"---> Job is started...");
-
-            await ExecuteAsync();
-
-            stopwatch.Stop();
-            logger.Log(LogLevel.Information, $"<--- Job is ended. Execution time: {stopwatch.Elapsed:mm':'ss':'fff}");
-        }
-        catch (Exception ex)
-        {
-            stopwatch.Stop();
-            logger.Log(LogLevel.Error, $"<--- Job is ended. Execution time: {stopwatch.Elapsed:mm':'ss':'fff}.\nException: {ex}");
-        }
-    }
-
-    private async Task ExecuteAsync()
+    protected override async Task ExecuteAsync(IJobExecutionContext context)
     {
         var finishedMatches = await GetFinishedMatchesDictAsync();
+
         if (finishedMatches.Count == 0)
             return;
 
         var users = await GetUsersWithPredictionsAsync(finishedMatches);
+
         if (users.Count == 0)
             return;
 
         var usersToUpdate = ProcessPredictions(users, finishedMatches);
+
         if (usersToUpdate.Count != 0)
             await userRepository.UpdateRangeAsync(usersToUpdate);
     }
@@ -65,7 +47,7 @@ public class PointCalculatingJob(
     private List<ApplicationUser> ProcessPredictions(List<ApplicationUser> users, Dictionary<int, MatchResult> finishedMatchesDict)
     {
         var usersToUpdate = new ConcurrentDictionary<long, ApplicationUser>();
-        
+
         Parallel.ForEach(users, user =>
         {
             var predictionsToUpdate = new ConcurrentBag<Prediction>();
@@ -77,7 +59,7 @@ public class PointCalculatingJob(
                     prediction.PointPerMatch = GetUserPoint(matchResult, prediction);
                     prediction.Coefficient = GetCoefficient(matchResult);
                 }
-                
+
                 predictionsToUpdate.Add(prediction);
             });
 

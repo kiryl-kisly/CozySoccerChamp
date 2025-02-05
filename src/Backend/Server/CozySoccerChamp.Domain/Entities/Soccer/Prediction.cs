@@ -1,4 +1,5 @@
 using CozySoccerChamp.Domain.Entities.Common;
+using CozySoccerChamp.Domain.Entities.User;
 
 namespace CozySoccerChamp.Domain.Entities.Soccer;
 
@@ -9,7 +10,7 @@ public class Prediction : BaseEntity
     public int? PredictedHomeScore { get; set; }
     public int? PredictedAwayScore { get; set; }
     public DateTime PredictionTime { get; set; } = DateTime.UtcNow;
-    
+
     public int? PointPerMatch { get; set; }
     public double? Coefficient { get; set; }
 

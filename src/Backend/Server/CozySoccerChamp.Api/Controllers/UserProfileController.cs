@@ -1,21 +1,37 @@
+using CozySoccerChamp.Infrastructure.Extensions;
+using CozySoccerChamp.Infrastructure.Filters;
+
 namespace CozySoccerChamp.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
 [Produces("application/json")]
 [Consumes("application/json")]
-public class UserProfileController : ControllerBase
+[TypeFilter(typeof(AuthenticationTelegramRequestFilter))]
+public class UserProfileController(IUserService userService) : ControllerBase
 {
     /// <summary>
     ///     Изменить отображаемый никнейм пользователя в профиле
     /// </summary>
-    /// <param name="userId"> UserId пользователя </param>
     /// <param name="newUserName"> Новый username пользователя </param>
-    /// <param name="userService"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<UserResponse> ChangeUsername(int userId, string newUserName, [FromServices] IUserService userService)
+    public async Task<UserResponse> ChangeUsername(string newUserName)
     {
-        return await userService.ChangeUsernameAsync(userId, newUserName);
+        var telegramUserId = HttpContext.GetTelegramUserId();
+        
+        return await userService.ChangeUsernameAsync(telegramUserId, newUserName);
+    }
+    
+    /// <summary>
+    ///     Включить/выключить отправку уведомлений пользователю
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<UserResponse> ToggleNotification(bool isEnabled)
+    {
+        var telegramUserId = HttpContext.GetTelegramUserId();
+
+        return await userService.ToggleNotificationAsync(telegramUserId, isEnabled);
     }
 }

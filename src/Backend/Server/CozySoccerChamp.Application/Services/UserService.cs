@@ -1,10 +1,12 @@
+using CozySoccerChamp.Domain.Entities.User;
+
 namespace CozySoccerChamp.Application.Services;
 
 public class UserService(IApplicationUserRepository userRepository, IMapper mapper) : IUserService
 {
     public async Task<UserResponse> GetUserByTelegramId(long telegramUserId)
     {
-        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId);
+        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile);
         if (user is null)
             throw new ArgumentException($"{nameof(User)} not found");
 
@@ -18,8 +20,7 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
 
         var user = mapper.Map<ApplicationUser>(update.Message.Chat);
 
-        var applicationUser = await userRepository.FindAsync(x => x.TelegramUserId == user.TelegramUserId);
-
+        var applicationUser = await userRepository.FindAsync(x => x.TelegramUserId == user.TelegramUserId, includes: x => x.Profile);
         if (applicationUser is not null)
             return mapper.Map<UserResponse>(applicationUser);
 
@@ -30,11 +31,24 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
 
     public async Task<UserResponse> ChangeUsernameAsync(long telegramUserId, string newUserName)
     {
-        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId);
+        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile);
         if (user is null)
             throw new ArgumentException($"{nameof(User)} not found");
 
         user.UserName = newUserName;
+
+        await userRepository.UpdateAsync(user);
+
+        return mapper.Map<UserResponse>(user);
+    }
+
+    public async Task<UserResponse> ToggleNotificationAsync(long telegramUserId, bool isEnabled)
+    {
+        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile);
+        if (user is null)
+            throw new ArgumentException($"{nameof(User)} not found");
+
+        user.Profile.IsEnabledNotification = isEnabled;
 
         await userRepository.UpdateAsync(user);
 

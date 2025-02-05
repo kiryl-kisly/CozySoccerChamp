@@ -88,7 +88,8 @@ public static class ServiceCollectionExtensions
         {
             quartz
                 .AddJobAndTrigger<MatchDataProcessingJob>(configuration)
-                .AddJobAndTrigger<PointCalculatingJob>(configuration);
+                .AddJobAndTrigger<PointCalculatingJob>(configuration)
+                .AddJobAndTrigger<MatchNotificationJob>(configuration);
         });
 
         services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);

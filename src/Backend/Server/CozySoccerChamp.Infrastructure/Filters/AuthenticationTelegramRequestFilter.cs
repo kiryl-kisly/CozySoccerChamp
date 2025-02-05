@@ -15,7 +15,7 @@ public class AuthenticationTelegramRequestFilter(IApplicationUserRepository user
 
         if (!isValid)
         {
-            context.Result = new ObjectResult($"\"{HeaderParams.TelegramUserId}\" not found")
+            context.Result = new ObjectResult($"Header {HeaderParams.TelegramUserId} not found")
             {
                 StatusCode = StatusCodes.Status401Unauthorized
             };

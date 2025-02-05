@@ -1,4 +1,5 @@
 using AutoMapper;
+using CozySoccerChamp.Domain.Entities.User;
 using CozySoccerChamp.External.SoccerApi.Models.Responses;
 using Telegram.Bot.Types;
 

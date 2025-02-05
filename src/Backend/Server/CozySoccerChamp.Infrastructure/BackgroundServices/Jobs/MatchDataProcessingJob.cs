@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using CozySoccerChamp.External.SoccerApi.Abstractions;
 using CozySoccerChamp.External.SoccerApi.Models.Responses;
 using Quartz;
@@ -10,34 +9,12 @@ public sealed class MatchDataProcessingJob(
     ISoccerApiClient soccerApiClient,
     ITeamRepository teamRepository,
     IMatchRepository matchRepository,
-    ILogger<MatchDataProcessingJob> logger) : IJob
+    ILogger<MatchDataProcessingJob> logger) : BaseJob(logger)
 {
-    public async Task Execute(IJobExecutionContext context)
+    protected override async Task ExecuteAsync(IJobExecutionContext context)
     {
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
-
-        try
-        {
-            logger.Log(LogLevel.Information, $"---> Job is started...");
-
-            await ExecuteAsync();
-
-            stopwatch.Stop();
-            logger.Log(LogLevel.Information, $"<--- Job is ended. Execution time: {stopwatch.Elapsed:mm':'ss':'fff}");
-        }
-        catch (Exception ex)
-        {
-            stopwatch.Stop();
-            logger.Log(LogLevel.Error, $"<--- Job is ended. Execution time: {stopwatch.Elapsed:mm':'ss':'fff}.\nException: {ex}");
-        }
-    }
-
-    private async Task ExecuteAsync()
-    {
-        // TODO: Придумать как обрабатывать это
-        //       Например брать дату из Competitions
-        var season = 2024; //DateTime.UtcNow.Year;
+        // TODO: Придумать как обрабатывать это. Например брать дату из Competitions
+        var season = 2024;
 
         await MatchesProcessingAsync(season);
     }
@@ -128,7 +105,7 @@ public sealed class MatchDataProcessingJob(
 
         if (finishedMatchIds.Count == 0)
             return;
-        
+
         var matchesToUpdate = await matchRepository.GetAllAsQueryable()
             .Where(x => finishedMatchIds.Contains(x.ExternalMatchId))
             .Include(x => x.MatchResult)
@@ -151,7 +128,7 @@ public sealed class MatchDataProcessingJob(
             matchResult.Penalties = GetScore(finishedMatchData.MatchResult.Penalties);
             matchResult.Status = MatchResultStatus.Finished;
         }
-        
+
         if (matchesToUpdate.Count != 0)
             await matchRepository.UpdateRangeAsync(matchesToUpdate);
 
