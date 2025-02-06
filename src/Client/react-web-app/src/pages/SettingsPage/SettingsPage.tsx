@@ -38,19 +38,7 @@ export function SettingsPage() {
 		<>
 			<h1 className='title-page'>Settings</h1>
 
-			{/* Скрыть/показать завершенные матчи */}
-			<div
-				className='flex justify-between items-center ml-5 mr-5 text-lg'
-				onClick={toggleIsHideFinishedMatches}>
-				<div className='absolute left-5 p-2'>Hide Finished Matches</div>
-				<div className='ml-auto p-2'>
-					<div className={`toggle ${isHideFinishedMatches ? 'toggle-active-color' : 'toggle-disable-color'}`}>
-						<div className={`toggle-circle ${isHideFinishedMatches ? 'translate-x-8' : 'translate-x-0'}`}>
-						</div>
-					</div>
-				</div>
-			</div>
-
+			<p className='text-gray-400 font-thin'>notification</p>
 			{/* Включить/выключить отправку уведомлений */}
 			<div
 				className='flex justify-between items-center ml-5 mr-5 text-lg'
@@ -59,6 +47,20 @@ export function SettingsPage() {
 				<div className='ml-auto p-2'>
 					<div className={`toggle ${isEnabledNotification ? 'toggle-active-color' : 'toggle-disable-color'}`}>
 						<div className={`toggle-circle ${isEnabledNotification ? 'translate-x-8' : 'translate-x-0'}`}>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<p className='text-gray-400 font-thin mt-5'>other</p>
+			{/* Скрыть/показать завершенные матчи */}
+			<div
+				className='flex justify-between items-center ml-5 mr-5 text-lg'
+				onClick={toggleIsHideFinishedMatches}>
+				<div className='absolute left-5 p-2'>Hide Finished Matches</div>
+				<div className='ml-auto p-2'>
+					<div className={`toggle ${isHideFinishedMatches ? 'toggle-active-color' : 'toggle-disable-color'}`}>
+						<div className={`toggle-circle ${isHideFinishedMatches ? 'translate-x-8' : 'translate-x-0'}`}>
 						</div>
 					</div>
 				</div>

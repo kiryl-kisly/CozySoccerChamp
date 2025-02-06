@@ -1,7 +1,6 @@
 import { useBackButton } from '@telegram-apps/sdk-react'
 import { format } from 'date-fns'
 import { useCallback, useEffect, useState } from 'react'
-import { FaTimes } from 'react-icons/fa'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
 import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
@@ -37,22 +36,9 @@ export function PredictionDetailPage() {
 		fetchData()
 	}, [matchId])
 
-	const handleGoBack = () => {
-		if (window.history.length > 1) {
-			navigate(-1)
-		} else {
-			navigate('/prediction')
-		}
-	}
-
 	return (
 		<div className=''>
-			<div className='flex flex-col items-center mt-5'>
-
-				{/* Кастомная кнопка 'Закрыть' */}
-				<button className='absolute top-5 right-5 text-[var(--gray-light)]' onClick={handleGoBack}>
-					<FaTimes size={24} />
-				</button>
+			<div className='flex flex-col items-center'>
 
 				{/* Дата */}
 				<div className='bg-[var(--gray-light)] shadow-lg text-black px-10 py-1 rounded-lg'>
