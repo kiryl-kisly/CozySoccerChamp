@@ -1,24 +1,24 @@
 import { GiTrophyCup } from 'react-icons/gi'
 import { LiaCoinsSolid } from 'react-icons/lia'
-import { ILeaderboardResponse } from '../../../services/interfaces/Responses/ILeaderboardResponse'
+import { IUserProfileResponse } from '../../../services/interfaces/Responses/IUserProfileResponse'
 
 interface Props {
-	leaderboard: ILeaderboardResponse | undefined | null
+	userProfile: IUserProfileResponse | null
 }
 
-export function PointInfo({ leaderboard }: Props) {
+export function PointInfo({ userProfile }: Props) {
 	return (
 		<div className="point-block">
 			<div className="wrapper-points-info">
 
 				<div className="place-item">
 					<div className="icon-item"><GiTrophyCup size={16} /></div>
-					<span>{leaderboard?.place ?? 0}</span>
+					<span>{userProfile?.place ?? 0}</span>
 				</div>
 
 				<div className="point-item">
 					<div className="icon-item"><LiaCoinsSolid size={16} /></div>
-					<span>{leaderboard?.points ?? 0}</span>
+					<span>{userProfile?.points ?? 0}</span>
 				</div>
 
 			</div>

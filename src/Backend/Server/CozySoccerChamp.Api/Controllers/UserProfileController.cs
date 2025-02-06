@@ -16,7 +16,7 @@ public class UserProfileController(IUserService userService) : ControllerBase
     /// <param name="newUserName"> Новый username пользователя </param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<UserResponse> ChangeUsername(string newUserName)
+    public async Task<UserProfileResponse> ChangeUsername(string newUserName)
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
         
@@ -28,7 +28,7 @@ public class UserProfileController(IUserService userService) : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<UserResponse> ToggleNotification(bool isEnabled)
+    public async Task<UserProfileResponse> ToggleNotification(bool isEnabled)
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
 

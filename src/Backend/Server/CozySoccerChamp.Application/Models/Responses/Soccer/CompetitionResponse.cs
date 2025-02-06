@@ -1,9 +1,9 @@
 namespace CozySoccerChamp.Application.Models.Responses.Soccer;
 
-public class CompetitionResponse
+public record CompetitionResponse
 {
-    public string? Name { get; set; } = string.Empty;
-    public string? EmblemUrl { get; set; } = string.Empty;
-    public DateTime Started { get; set; }
-    public DateTime Finished { get; set; }
+    public string? Name { get; init; } = string.Empty;
+    public string? EmblemUrl { get; init; } = string.Empty;
+    public DateTime Started { get; init; }
+    public DateTime Finished { get; init; }
 }

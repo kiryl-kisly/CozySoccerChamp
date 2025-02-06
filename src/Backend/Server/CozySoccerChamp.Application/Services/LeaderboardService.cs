@@ -6,11 +6,12 @@ public class LeaderboardService(IPredictionRepository predictionRepository) : IL
 {
     public async Task<IReadOnlyCollection<LeaderboardResponse>> GetLeaderboardAsync()
     {
-        var leaderboard = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
+        var leaderboardData = await predictionRepository
+            .GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
             .GroupBy(x => x.User.TelegramUserId)
             .Select(g => new LeaderboardResponse
             {
-                TelegramUserId = g.FirstOrDefault()!.TelegramUserId,
+                TelegramUserId = g.Key,
                 UserName = g.FirstOrDefault()!.User.UserName,
                 Points = g.Sum(x => x.PointPerMatch * x.Coefficient)
             })
@@ -18,15 +19,13 @@ public class LeaderboardService(IPredictionRepository predictionRepository) : IL
             .ThenBy(x => x.TelegramUserId)
             .ToListAsync();
 
-        var place = 1;
-
-        var leaderboardWithPlaces = leaderboard
-            .Select(x => new LeaderboardResponse
+        var leaderboardWithPlaces = leaderboardData
+            .Select((x, index) => new LeaderboardResponse
             {
                 TelegramUserId = x.TelegramUserId,
                 UserName = x.UserName,
                 Points = x.Points,
-                Place = place++
+                Place = index + 1
             })
             .ToList();
 

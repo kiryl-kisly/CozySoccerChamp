@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Route, Routes } from 'react-router'
 import { Layout } from '../layouts/MainLayout'
 import { InfoPage } from '../pages/InfoPage/InfoPage'
@@ -10,6 +11,7 @@ import { SettingsPage } from '../pages/SettingsPage/SettingsPage'
 import { TeamPage } from '../pages/TeamPage/TeamPage'
 import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
+import { setInitialUserProfile } from '../store/userProfileSlice'
 import './App.css'
 import { HeaderBar } from './HeaderBar/HeaderBar'
 import { Menu } from './Menu/Menu'
@@ -24,14 +26,20 @@ export function App() {
     leaderboard: null
   })
 
-  const leaderBoard = data.leaderboard?.find((x) => x.telegramUserId === data.userProfile?.telegramUserId)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    async function fetchData() {
-      setData((await getInitData()))
+    const fetchData = async () => {
+      const response = await getInitData()
+      setData(response)
+
+      if (response.userProfile) {
+        dispatch(setInitialUserProfile({ isEnabledNotification: response.userProfile.isEnabledNotification }))
+      }
     }
+
     fetchData()
-  }, [])
+  }, [dispatch])
 
   return (
     <>
@@ -43,7 +51,7 @@ export function App() {
                 <p className="loader-wrapper"><span className="loader">Load&nbsp;ng</span></p>
               ) : (
                 <>
-                  <HeaderBar userProfile={data.userProfile} leaderboard={leaderBoard} />
+                  <HeaderBar userProfile={data.userProfile} />
 
                   <Routes>
                     <Route path="/" element={<Layout />}>

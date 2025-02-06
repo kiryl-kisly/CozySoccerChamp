@@ -1,4 +1,3 @@
-import { ILeaderboardResponse } from '../../services/interfaces/Responses/ILeaderboardResponse'
 import { IUserProfileResponse } from '../../services/interfaces/Responses/IUserProfileResponse'
 import './HeaderBar.css'
 import { InfoDetail } from './InfoDetail/InfoDetail'
@@ -7,15 +6,14 @@ import { UserProfile } from './UserProfile/UserProfile'
 
 interface Props {
 	userProfile: IUserProfileResponse | null
-	leaderboard: ILeaderboardResponse | undefined | null
 }
 
-export function HeaderBar({ userProfile, leaderboard }: Props) {
+export function HeaderBar({ userProfile }: Props) {
 	return (
 		<div className="wrapper-top-bar">
 
 			<UserProfile userProfile={userProfile} />
-			<PointInfo leaderboard={leaderboard} />
+			<PointInfo userProfile={userProfile} />
 			<InfoDetail />
 
 		</div>

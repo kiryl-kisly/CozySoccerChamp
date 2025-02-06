@@ -9,7 +9,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<ApplicationUser, UserResponse>()
+        CreateMap<ApplicationUser, UserProfileResponse>()
             .ForMember(dest => dest.TelegramUserId, opt => opt.MapFrom(src => src.TelegramUserId))
             .ForMember(dest => dest.IsEnabledNotification, opt => opt.MapFrom(src => src.Profile.IsEnabledNotification))
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>

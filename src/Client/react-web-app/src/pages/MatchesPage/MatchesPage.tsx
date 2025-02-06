@@ -132,8 +132,8 @@ const isHideFinishedMatches = (): boolean => {
 }
 
 const getActiveMatchDay = (filteredItems: IMatchResponse[]): number | null | undefined => {
-	// Добавляем смещение на 12 часов вперёд, чтобы активный matchDay не закрывался сразу
-	const adjustedTime = Date.now() + 12 * 60 * 60 * 1000
+	// Добавляем смещение на 6 часов назад, чтобы активный matchDay не закрывался сразу
+	const adjustedTime = Date.now() - 6 * 60 * 60 * 1000
 
 	return filteredItems.find((match) => new Date(match.startTimeUtc as unknown as string).getTime() > adjustedTime)?.matchDay
 }
@@ -145,20 +145,16 @@ const getActiveStage = (groupedMatchData: Record<string, IMatchResponse[]>): str
 			const startTime = matches[0]?.startTimeUtc
 				? new Date(matches[0]?.startTimeUtc as unknown as string)
 				: null
-				console.log(`startTime ${startTime}`)
 
 			const endTime = matches[matches.length - 1]?.startTimeUtc
 				? new Date(matches[matches.length - 1]?.startTimeUtc as unknown as string)
 				: null
-				console.log(`endTime ${endTime}`)
 
 			if (startTime instanceof Date && endTime instanceof Date) {
 				if (now <= endTime) {
 					return stage
 				}
 			}
-
-			console.log(stage)
 		}
 	}
 

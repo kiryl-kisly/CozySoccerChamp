@@ -1,10 +1,10 @@
 namespace CozySoccerChamp.Application.Models.Responses.Soccer;
 
-public class TeamResponse
+public record TeamResponse
 {
-    public int TeamId { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string ShortName { get; set; } = string.Empty;
-    public string CodeName { get; set; } = string.Empty;
-    public string EmblemUrl { get; set; } = string.Empty;
+    public int TeamId { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public string ShortName { get; init; } = string.Empty;
+    public string CodeName { get; init; } = string.Empty;
+    public string EmblemUrl { get; init; } = string.Empty;
 }

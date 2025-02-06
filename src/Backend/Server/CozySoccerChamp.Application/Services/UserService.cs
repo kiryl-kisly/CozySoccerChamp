@@ -4,16 +4,16 @@ namespace CozySoccerChamp.Application.Services;
 
 public class UserService(IApplicationUserRepository userRepository, IMapper mapper) : IUserService
 {
-    public async Task<UserResponse> GetUserByTelegramId(long telegramUserId)
+    public async Task<UserProfileResponse> GetUserByTelegramId(long telegramUserId)
     {
         var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile);
         if (user is null)
             throw new ArgumentException($"{nameof(User)} not found");
 
-        return mapper.Map<UserResponse>(user);
+        return mapper.Map<UserProfileResponse>(user);
     }
 
-    public async Task<UserResponse> CreateOrGetAsync(Update update)
+    public async Task<UserProfileResponse> CreateOrGetAsync(Update update)
     {
         if (update.Message?.Chat is null)
             throw new InvalidOperationException();
@@ -22,14 +22,14 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
 
         var applicationUser = await userRepository.FindAsync(x => x.TelegramUserId == user.TelegramUserId, includes: x => x.Profile);
         if (applicationUser is not null)
-            return mapper.Map<UserResponse>(applicationUser);
+            return mapper.Map<UserProfileResponse>(applicationUser);
 
         await userRepository.AddAsync(user);
 
-        return mapper.Map<UserResponse>(user);
+        return mapper.Map<UserProfileResponse>(user);
     }
 
-    public async Task<UserResponse> ChangeUsernameAsync(long telegramUserId, string newUserName)
+    public async Task<UserProfileResponse> ChangeUsernameAsync(long telegramUserId, string newUserName)
     {
         var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile);
         if (user is null)
@@ -39,10 +39,10 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
 
         await userRepository.UpdateAsync(user);
 
-        return mapper.Map<UserResponse>(user);
+        return mapper.Map<UserProfileResponse>(user);
     }
 
-    public async Task<UserResponse> ToggleNotificationAsync(long telegramUserId, bool isEnabled)
+    public async Task<UserProfileResponse> ToggleNotificationAsync(long telegramUserId, bool isEnabled)
     {
         var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile);
         if (user is null)
@@ -52,6 +52,6 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
 
         await userRepository.UpdateAsync(user);
 
-        return mapper.Map<UserResponse>(user);
+        return mapper.Map<UserProfileResponse>(user);
     }
 }

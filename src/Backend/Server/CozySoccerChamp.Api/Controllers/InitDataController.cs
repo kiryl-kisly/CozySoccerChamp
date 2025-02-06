@@ -22,12 +22,16 @@ public class InitDataController(
     public async Task<IActionResult> Get()
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
-        
+
         var competition = await competitionService.GetById(1);
         var userProfile = await userService.GetUserByTelegramId(telegramUserId);
         var matches = await matchService.GetAllAsync();
         var predictions = await predictionService.GetAllByTelegramUserIdAsync(telegramUserId);
         var leaderboard = await leaderboardService.GetLeaderboardAsync();
+
+        var leaderboardForUser = leaderboard.FirstOrDefault(x => x.TelegramUserId == telegramUserId);
+        if (leaderboardForUser is not null)
+            userProfile = userProfile with { Place = leaderboardForUser.Place, Points = leaderboardForUser.Points };
 
         var response = new Response
         {
@@ -35,7 +39,7 @@ public class InitDataController(
             UserProfile = userProfile,
             Matches = matches,
             Predictions = predictions,
-            Leaderboard = leaderboard,
+            Leaderboard = leaderboard
         };
 
         return Ok(response);
