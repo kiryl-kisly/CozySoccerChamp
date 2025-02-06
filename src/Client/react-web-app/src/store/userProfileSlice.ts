@@ -21,5 +21,6 @@ const userProfileSlice = createSlice({
 	},
 })
 
+export type { UserProfileState }
 export const { setEnabledNotification, setInitialUserProfile } = userProfileSlice.actions
 export default userProfileSlice.reducer
