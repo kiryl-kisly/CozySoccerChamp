@@ -1,3 +1,4 @@
+import { initHapticFeedback } from '@telegram-apps/sdk-react'
 import { AxiosError } from 'axios'
 import { format } from 'date-fns'
 import { useState } from 'react'
@@ -16,6 +17,8 @@ interface Props {
 
 export function MatchCard({ match, prediction }: Props) {
 
+	const hapticFeedback = initHapticFeedback()
+
 	const [homePredictedCount, setHomePredictedCount] = useState(prediction?.predictedHomeScore ?? 0)
 	const [awayPredictedCount, setAwayPredictedCount] = useState(prediction?.predictedAwayScore ?? 0)
 
@@ -24,6 +27,8 @@ export function MatchCard({ match, prediction }: Props) {
 
 	const updatePredictionValue = (_value: number, setValue: React.Dispatch<React.SetStateAction<number>>, change: number) => {
 		setValue(prevValue => Math.min(maxPredictionValue, Math.max(minPredictionValue, prevValue + change)))
+
+		hapticFeedback.impactOccurred('medium')
 	}
 
 	const [popupMessage, setPopupMessage] = useState<string | null>(null)
@@ -43,6 +48,8 @@ export function MatchCard({ match, prediction }: Props) {
 			if (result.status === 200 && result.statusText === 'OK') {
 				setPopupMessage('Your action was saved successfully')
 				setIsError(false)
+
+				hapticFeedback.notificationOccurred('success')
 			}
 		} catch (error) {
 			const axiosError = error as AxiosError<{ message?: string }>
@@ -50,6 +57,8 @@ export function MatchCard({ match, prediction }: Props) {
 
 			setPopupMessage(errorMessage)
 			setIsError(true)
+
+			hapticFeedback.notificationOccurred('error')
 		}
 	}
 
