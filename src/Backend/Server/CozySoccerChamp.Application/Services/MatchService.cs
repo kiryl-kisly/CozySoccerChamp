@@ -12,7 +12,8 @@ public class MatchService(IMatchRepository matchRepository, IMapper mapper) : IM
                 x => x.TeamHome,
                 x => x.TeamAway,
                 x => x.MatchResult)
-            .OrderBy(x => x.Id)
+            .OrderBy(x => x.MatchTime)
+            .ThenBy(x => x.Id)
             .ToListAsync();
 
         return mapper.Map<IReadOnlyCollection<MatchResponse>>(matches);
