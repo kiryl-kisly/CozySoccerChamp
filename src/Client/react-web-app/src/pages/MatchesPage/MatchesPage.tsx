@@ -15,7 +15,6 @@ interface Props {
 }
 
 export function MatchesPage({ competition, matches, predictions }: Props) {
-
 	const groupedMatchData: Record<string, IMatchResponse[]> = (matches || []).reduce((groups, item) => {
 		const stage = item.stage ?? ''
 		if (!groups[stage]) {
@@ -36,11 +35,22 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 
 	const [expandedMatchDay, setExpandedMatchDay] = useState<number | null>(() => {
 		const activeMatchDay = getActiveMatchDay(filteredItems)
-
 		return activeMatchDay ? activeMatchDay : filteredItems[filteredItems.length - 1]?.matchDay ?? null
 	})
 
+	// Функция для проверки, есть ли в стейдже незавершенные матчи
+	const hasUnfinishedMatches = (stage: string) => {
+		const matchesInStage = groupedMatchData[stage]
+		return matchesInStage.some(match => match.matchResult?.status !== 'Finished')
+	}
 
+	// Фильтрация стейджей в зависимости от флага isHideFinishedMatches
+	const filteredStages = Object.entries(groupedMatchData).filter(([stage]) => {
+		if (isHideFinishedMatches()) {
+			return hasUnfinishedMatches(stage)
+		}
+		return true
+	})
 
 	const handleCardClick = (items: IMatchResponse[], stage: string) => {
 		setSelectedCardId(stage)
@@ -68,7 +78,7 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 			{/* Горизонтальный скролл стейджей */}
 			<div className='w-full overflow-x-auto sticky top-24 z-50'>
 				<div className='flex space-x-2'>
-					{Object.entries(groupedMatchData).map(([stage, items]) => (
+					{filteredStages.map(([stage, items]) => (
 						<div
 							key={stage}
 							ref={(el) => (horizontalRefs.current[stage] = el)}
@@ -83,9 +93,7 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 				</div>
 			</div>
 
-			<div className='mb-4'>
-
-			</div>
+			<div className='mb-4'></div>
 
 			{/* Карточки с матчами */}
 			{filteredItems && filteredItems.map((match: IMatchResponse, index: number) => {
@@ -95,12 +103,12 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 				const activeMatchDay = getActiveMatchDay(filteredItems)
 
 				return (
-					<React.Fragment key={index} >
+					<React.Fragment key={index}>
 						{previousMatchDay !== currentMatchDay && match.stage !== 'FINAL' && (
 							<div
-								className={`${expandedMatchDay !== currentMatchDay ? 'toggle-show-match-day' : 'toggle-hide-match-day'} ${(activeMatchDay === match.matchDay && activeStage === match.stage) ? 'text-green-400' : 'text-white'}`
-								}
-								onClick={() => handleToggleMatchDay(currentMatchDay)}>
+								className={`${expandedMatchDay !== currentMatchDay ? 'toggle-show-match-day' : 'toggle-hide-match-day'} ${(activeMatchDay === match.matchDay && activeStage === match.stage) ? 'text-green-400' : 'text-white'}`}
+								onClick={() => handleToggleMatchDay(currentMatchDay)}
+							>
 								<div className='flex items-center flex-start flex-1 p-4'>
 									<span>Matchday {currentMatchDay} of {maxMatchDay}</span>
 									<div className='flex items-center ml-auto h-full relative arrow-link'>
