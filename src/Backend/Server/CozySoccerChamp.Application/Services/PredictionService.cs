@@ -55,7 +55,8 @@ public class PredictionService(
     {
         var predictions = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
             .Where(x => x.MatchId == matchId)
-            .OrderBy(x => x.TelegramUserId)
+            .OrderBy(x => x.User.UserName.ToLower())
+            .ThenBy(x => x.TelegramUserId)
             .ToListAsync();
 
         return mapper.Map<IReadOnlyCollection<PredictionResponse>>(predictions);
