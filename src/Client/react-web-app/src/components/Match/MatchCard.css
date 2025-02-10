@@ -162,6 +162,11 @@
 	margin-top: 10px;
 }
 
+.prediction-button-changed {
+	background-color: green;
+	color: white;
+}
+
 .match-point {
 	position: relative;
 	top: 0;
@@ -232,7 +237,7 @@ span.match-point-text {
 .match-result {
 	font-size: 3rem;
 	line-height: 1;
-	display: flex	;
+	display: flex;
 	flex-direction: column;
 	align-items: center;
 }

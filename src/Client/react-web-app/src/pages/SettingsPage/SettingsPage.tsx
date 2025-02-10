@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ToggleNotification } from '../../services/UserProfileService'
+import { setEnabledNotification } from '../../store/slices/userProfileSlice'
 import { AppDispatch, RootState } from '../../store/store'
-import { setEnabledNotification } from '../../store/userProfileSlice'
 import './SettingsPage.css'
 
 export function SettingsPage() {

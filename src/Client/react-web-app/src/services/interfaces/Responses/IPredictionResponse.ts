@@ -1,7 +1,7 @@
 import { IUserProfileResponse } from './IUserProfileResponse'
 
 export interface IPredictionResponse {
-	matchId: number
+	matchId: number | null
 	predictedHomeScore: number | null
 	predictedAwayScore: number | null
 	pointPerMatch: number | null

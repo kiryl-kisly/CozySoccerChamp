@@ -1,20 +1,22 @@
 import React, { useRef, useState } from 'react'
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
+import { useSelector } from 'react-redux'
 import { Competition } from '../../components/Competition/Competition'
 import { HorizontalCard } from '../../components/Match/HorizontalCard'
 import { MatchCard } from '../../components/Match/MatchCard'
 import { ICompetitionResponse } from '../../services/interfaces/Responses/ICompetitionResponse'
 import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
-import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
+import { RootState } from '../../store/store'
 import './MatchesPage.css'
 
 interface Props {
 	competition: ICompetitionResponse | null
 	matches: IMatchResponse[] | null
-	predictions: IPredictionResponse[] | null
 }
 
-export function MatchesPage({ competition, matches, predictions }: Props) {
+export function MatchesPage({ competition, matches }: Props) {
+	const predictions = useSelector((state: RootState) => state.predictions.predictions)
+
 	const groupedMatchData: Record<string, IMatchResponse[]> = (matches || []).reduce((groups, item) => {
 		const stage = item.stage ?? ''
 		if (!groups[stage]) {
@@ -38,13 +40,11 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 		return activeMatchDay ? activeMatchDay : filteredItems[filteredItems.length - 1]?.matchDay ?? null
 	})
 
-	// Функция для проверки, есть ли в стейдже незавершенные матчи
 	const hasUnfinishedMatches = (stage: string) => {
 		const matchesInStage = groupedMatchData[stage]
 		return matchesInStage.some(match => match.matchResult?.status !== 'Finished')
 	}
 
-	// Фильтрация стейджей в зависимости от флага isHideFinishedMatches
 	const filteredStages = Object.entries(groupedMatchData).filter(([stage]) => {
 		if (isHideFinishedMatches()) {
 			return hasUnfinishedMatches(stage)
@@ -60,7 +60,7 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 			horizontalRefs.current[stage]?.scrollIntoView({
 				behavior: 'smooth',
 				block: 'nearest',
-				inline: 'start'
+				inline: 'start',
 			})
 		}
 	}
@@ -140,9 +140,7 @@ const isHideFinishedMatches = (): boolean => {
 }
 
 const getActiveMatchDay = (filteredItems: IMatchResponse[]): number | null | undefined => {
-	// Добавляем смещение на 6 часов назад, чтобы активный matchDay не закрывался сразу
 	const adjustedTime = Date.now() - 6 * 60 * 60 * 1000
-
 	return filteredItems.find((match) => new Date(match.startTimeUtc as unknown as string).getTime() > adjustedTime)?.matchDay
 }
 

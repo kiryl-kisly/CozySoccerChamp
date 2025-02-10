@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface UserProfileState {
+export interface UserProfileState {
 	isEnabledNotification: boolean
 }
 
@@ -21,6 +21,5 @@ const userProfileSlice = createSlice({
 	},
 })
 
-export type { UserProfileState }
 export const { setEnabledNotification, setInitialUserProfile } = userProfileSlice.actions
 export default userProfileSlice.reducer
