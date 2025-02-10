@@ -9,3 +9,13 @@
 .toggle-hide-match-day {
 	@apply flex items-center space-x-2 cursor-pointer py-2 w-full h-10 mb-4 rounded-lg border border-transparent;
 }
+
+.hide-scrollbar {
+	overflow-x: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+	display: none;
+}

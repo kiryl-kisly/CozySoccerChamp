@@ -76,7 +76,7 @@ export function MatchesPage({ competition, matches, predictions }: Props) {
 			<Competition competition={competition} />
 
 			{/* Горизонтальный скролл стейджей */}
-			<div className='w-full overflow-x-auto sticky top-24 z-50'>
+			<div className='w-full hide-scrollbar sticky top-24 z-50'>
 				<div className='flex space-x-2'>
 					{filteredStages.map(([stage, items]) => (
 						<div
