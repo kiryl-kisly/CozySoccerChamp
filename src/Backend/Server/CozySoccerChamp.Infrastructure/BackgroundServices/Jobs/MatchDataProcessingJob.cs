@@ -33,15 +33,26 @@ public sealed class MatchDataProcessingJob(
 
     private async Task UpdateMatchDataAsync(IReadOnlyCollection<MatchResponse> matchesData)
     {
-        var matchesNeedUpdated = await matchRepository.GetAllAsQueryable()
-            .Where(x => x.TeamHomeId == null || x.TeamAwayId == null)
+        var matchesNeedUpdated = await matchRepository.GetAllAsQueryable(includes: x => x.MatchResult)
+            .Where(x => x.MatchResult.Status == MatchResultStatus.Scheduled || x.TeamHomeId == null || x.TeamAwayId == null)
             .ToListAsync();
+
+        if (matchesNeedUpdated.Count == 0)
+            return;
 
         var matchesToUpdate = new List<Match>();
 
         foreach (var match in matchesNeedUpdated)
         {
             var updateData = matchesData.FirstOrDefault(x => x.Id == match.ExternalMatchId);
+            if (updateData is null)
+                continue;
+
+            if (IsChangeStatus(match.MatchResult, updateData.Status))
+            {
+                match.MatchResult.Status = MatchResultStatus.Timed;
+                match.MatchTime = updateData.StartDateUtc;
+            }
 
             if (updateData?.HomeTeam.Id == null && updateData?.AwayTeam.Id == null)
                 continue;
@@ -63,6 +74,15 @@ public sealed class MatchDataProcessingJob(
 
         if (matchesToUpdate.Count != 0)
             await matchRepository.UpdateRangeAsync(matchesToUpdate);
+
+        #region Local Methods
+
+        bool IsChangeStatus(MatchResult matchResult, string status)
+        {
+            return matchResult.Status == MatchResultStatus.Scheduled && status == "TIMED";
+        }
+
+        #endregion
     }
 
     private async Task UpdateStartedMatchAsync(IReadOnlyCollection<MatchResponse> matchesData)

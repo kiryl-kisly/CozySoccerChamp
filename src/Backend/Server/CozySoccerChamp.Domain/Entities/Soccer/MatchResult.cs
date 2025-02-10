@@ -7,7 +7,7 @@ public class MatchResult : BaseEntity
 {
     public int MatchId { get; set; }
     public DurationStatus Duration { get; set; } = DurationStatus.Regular;
-    public MatchResultStatus Status { get; set; } = MatchResultStatus.Timed;
+    public MatchResultStatus Status { get; set; } = MatchResultStatus.Scheduled;
     public string FullTime { get; set; }
     public string HalfTime { get; set; }
     public string RegularTime { get; set; }
