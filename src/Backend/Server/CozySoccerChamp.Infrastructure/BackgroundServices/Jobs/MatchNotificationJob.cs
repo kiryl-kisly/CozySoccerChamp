@@ -17,7 +17,6 @@ public sealed class MatchNotificationJob(
         var now = DateTime.UtcNow;
 
         var upcomingMatches = await GetUpcomingMatchesAsync(now);
-
         if (upcomingMatches.Count == 0)
         {
             logger.LogInformation("No upcoming matches found for notifications.");
@@ -25,7 +24,6 @@ public sealed class MatchNotificationJob(
         }
 
         var usersToNotify = await GetUsersToNotifyAsync(now, upcomingMatches);
-
         if (usersToNotify.Count == 0)
         {
             logger.LogInformation("No users to notify.");
@@ -39,19 +37,13 @@ public sealed class MatchNotificationJob(
 
     #region private metods
 
-    /// <summary>
-    /// Получает список предстоящих матчей.
-    /// </summary>
     private async Task<List<Match>> GetUpcomingMatchesAsync(DateTime now)
     {
-        return await matchRepository.GetAllAsQueryable()
+        return await matchRepository.GetAllAsQueryable(includes: x => x.Predictions)
             .Where(x => x.MatchTime > now && x.MatchTime <= now.AddHours(1))
             .ToListAsync();
     }
 
-    /// <summary>
-    /// Получает список пользователей, которых нужно уведомить, исключая тех, кто уже сделал прогнозы.
-    /// </summary>
     private async Task<List<ApplicationUser>> GetUsersToNotifyAsync(DateTime now, List<Match> upcomingMatches)
     {
         var users = await userRepository.GetAllAsQueryable(includes: x => x.Profile)
@@ -59,25 +51,14 @@ public sealed class MatchNotificationJob(
                         && (x.Profile.LastNotified == null || x.Profile.LastNotified < now.AddMinutes(-60)))
             .ToListAsync();
 
-        var usersToNotify = new List<ApplicationUser>();
-
-        foreach (var user in users)
-        {
-            var hasPredictions = await predictionRepository.GetAllAsQueryable()
-                .AnyAsync(p => p.TelegramUserId == user.Id && upcomingMatches.Select(m => m.Id).Contains(p.MatchId));
-
-            if (!hasPredictions)
-            {
-                usersToNotify.Add(user);
-            }
-        }
+        var usersToNotify = users
+            .Where(user => !upcomingMatches
+                .Any(match => match.Predictions.Any(p => p.TelegramUserId == user.TelegramUserId)))
+            .ToList();
 
         return usersToNotify;
     }
 
-    /// <summary>
-    /// Отправляет уведомления пользователям и обновляет время последнего уведомления.
-    /// </summary>
     private async Task NotifyUsersAsync(List<ApplicationUser> users, DateTime now)
     {
         foreach (var user in users)
@@ -90,9 +71,6 @@ public sealed class MatchNotificationJob(
         await userRepository.UpdateRangeAsync(users);
     }
 
-    /// <summary>
-    /// Отправляет уведомление пользователю.
-    /// </summary>
     private async Task SendNotificationAsync(ApplicationUser user)
     {
         await botClient.SendMessage(
@@ -100,9 +78,6 @@ public sealed class MatchNotificationJob(
             text: MessageToChat);
     }
 
-    /// <summary>
-    /// Обновляет время последнего уведомления пользователя.
-    /// </summary>
     private static void UpdateUserLastNotified(ApplicationUser user, DateTime now)
     {
         user.Profile.LastNotified = now;
