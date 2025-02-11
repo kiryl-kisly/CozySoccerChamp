@@ -20,7 +20,7 @@ public sealed class MatchNotificationJob(
             return;
         }
 
-        var usersToNotify = await userRepository.GetAllAsQueryable()
+        var usersToNotify = await userRepository.GetAllAsQueryable(includes: x => x.Profile)
             .Where(x => x.Profile.IsEnabledNotification
                         && (x.Profile.LastNotified == null || x.Profile.LastNotified < now.AddMinutes(-60)))
             .ToListAsync();
@@ -45,7 +45,7 @@ public sealed class MatchNotificationJob(
     private async Task<bool> ShouldNotify(DateTime now)
     {
         var upcomingMatches = await matchRepository.GetAllAsQueryable()
-            .Where(x => x.MatchTime > now && x.MatchTime < now.AddHours(1))
+            .Where(x => x.MatchTime > now && x.MatchTime <= now.AddHours(1))
             .ToListAsync();
 
         return upcomingMatches.Count != 0;
