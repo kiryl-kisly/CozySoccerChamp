@@ -4,7 +4,7 @@ namespace CozySoccerChamp.Application.Services;
 
 public class LeaderboardService(IPredictionRepository predictionRepository) : ILeaderboardService
 {
-    public async Task<IReadOnlyCollection<LeaderboardResponse>> GetLeaderboardAsync()
+    public async Task<IReadOnlyCollection<LeaderboardResponse>> GetAsync()
     {
         var leaderboardData = await predictionRepository
             .GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
@@ -32,7 +32,7 @@ public class LeaderboardService(IPredictionRepository predictionRepository) : IL
         return leaderboardWithPlaces;
     }
 
-    public async Task<LeaderboardResponse?> GetLeaderboardByUserIdAsync(long telegramUserId)
+    public async Task<LeaderboardResponse?> GetByUserIdAsync(long telegramUserId)
     {
         var leaderboardData = await predictionRepository
             .GetAllAsQueryable(asNoTracking: true, includes: x => x.User)

@@ -4,7 +4,7 @@ namespace CozySoccerChamp.Application.Services;
 
 public class InitDataService(IEnumerable<IResponseDataProvider> providers) : IInitDataService
 {
-    public async Task<Response> GetInitDataAsync(long telegramUserId)
+    public async Task<Response> GetAsync(long telegramUserId)
     {
         var response = new Response(null, null, null, null, null);
 

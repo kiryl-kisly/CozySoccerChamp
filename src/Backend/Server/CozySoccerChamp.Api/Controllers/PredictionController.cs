@@ -33,7 +33,7 @@ public class PredictionController(IPredictionService predictionService) : Contro
     [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
     public async Task<IActionResult> GetPredictionsByMatchId([FromRoute] int matchId)
     {
-        var response = await predictionService.GetPredictionByMatchIdAsync(matchId);
+        var response = await predictionService.GetByMatchIdAsync(matchId);
 
         return Ok(response);
     }

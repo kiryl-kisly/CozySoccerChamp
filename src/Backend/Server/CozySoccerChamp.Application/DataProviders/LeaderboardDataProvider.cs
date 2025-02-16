@@ -6,14 +6,14 @@ public sealed class LeaderboardDataProvider(ILeaderboardService leaderboardServi
 {
     public async Task<Response> EnrichResponseAsync(Response response, long telegramUserId)
     {
-        var leaderboard = await leaderboardService.GetLeaderboardAsync();
+        var leaderboard = await leaderboardService.GetAsync();
         
         return response with { Leaderboard = leaderboard };
     }
 
     public async Task<UserProfileResponse> EnrichUserProfileAsync(UserProfileResponse response, long telegramUserId)
     {
-        var leaderboardForUser = await leaderboardService.GetLeaderboardByUserIdAsync(telegramUserId);
+        var leaderboardForUser = await leaderboardService.GetByUserIdAsync(telegramUserId);
 
         if (leaderboardForUser is not null)
             response = response with { Place = leaderboardForUser.Place, Points = leaderboardForUser.Points };

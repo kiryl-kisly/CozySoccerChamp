@@ -2,6 +2,5 @@ namespace CozySoccerChamp.Application.Services.Abstractions;
 
 public interface INotificationService
 {
-    Task<NotificationSettingsResponse> GetNotificationSettingsAsync(long telegramUserId);
-    Task<NotificationSettingsResponse> UpdateNotificationSettingsAsync(long telegramUserId, NotificationSettingsRequest request);
+    Task<NotificationSettingsResponse> UpdateAsync(long telegramUserId, NotificationSettingsRequest request);
 }

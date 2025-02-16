@@ -6,17 +6,8 @@ public class NotificationService(INotificationSettingsRepository notificationSet
 {
     // TODO: Может вынести в appsettings.json
     private static readonly int[] Intervals = [15, 30, 60];
-    
-    public async Task<NotificationSettingsResponse> GetNotificationSettingsAsync(long telegramUserId)
-    {
-        var settings = await notificationSettingsRepository.FindAsync(x => x.TelegramUserId == telegramUserId);
-        if (settings is null)
-            throw new ArgumentException($"{nameof(settings)} not found");
 
-        return mapper.Map<NotificationSettingsResponse>(settings);
-    }
-
-    public async Task<NotificationSettingsResponse> UpdateNotificationSettingsAsync(long telegramUserId, NotificationSettingsRequest request)
+    public async Task<NotificationSettingsResponse> UpdateAsync(long telegramUserId, NotificationSettingsRequest request)
     {
         if (!Intervals.Contains(request.ReminderInterval))
             throw new ArgumentException($"Not valid interval: {request.ReminderInterval}");

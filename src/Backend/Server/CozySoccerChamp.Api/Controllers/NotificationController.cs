@@ -19,7 +19,7 @@ public class NotificationController(INotificationService notificationService) : 
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
         
-        var settings = await notificationService.UpdateNotificationSettingsAsync(telegramUserId, request);
+        var settings = await notificationService.UpdateAsync(telegramUserId, request);
         
         return Ok(settings);
     }

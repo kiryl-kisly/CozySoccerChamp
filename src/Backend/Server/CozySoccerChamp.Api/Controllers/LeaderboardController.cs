@@ -15,7 +15,7 @@ public class LeaderboardController(ILeaderboardService leaderboardService): Cont
     [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
     public async Task<IActionResult> Get()
     {
-        var response = await leaderboardService.GetLeaderboardAsync();
+        var response = await leaderboardService.GetAsync();
         
         return Ok(response);
     }

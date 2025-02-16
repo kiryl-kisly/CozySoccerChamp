@@ -18,7 +18,7 @@ public class InitDataController(IInitDataService initDataService) : ControllerBa
     public async Task<IActionResult> Get()
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
-        var response = await initDataService.GetInitDataAsync(telegramUserId);
+        var response = await initDataService.GetAsync(telegramUserId);
         
         return Ok(response);
     }

@@ -6,7 +6,7 @@ public sealed class UserProfileDataProvider(IUserService userService) : IRespons
 {
     public async Task<Response> EnrichResponseAsync(Response response, long telegramUserId)
     {
-        var userProfile = await userService.GetFullUserByTelegramId(telegramUserId);
+        var userProfile = await userService.GetByUserId(telegramUserId);
 
         return response with { UserProfile = userProfile };
     }
