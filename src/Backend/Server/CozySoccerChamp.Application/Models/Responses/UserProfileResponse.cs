@@ -7,4 +7,5 @@ public record UserProfileResponse
     public double? Points { get; init; } = 0;
     public int Place { get; init; }
     public bool IsEnabledNotification { get; init; }
+    public NotificationSettingsResponse? NotificationSettings { get; init; }
 }

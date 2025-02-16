@@ -6,18 +6,20 @@ public class UserProfileEntityConfiguration : IEntityTypeConfiguration<UserProfi
 {
     public void Configure(EntityTypeBuilder<UserProfile> builder)
     {
-        builder.HasKey(up => up.TelegramUserId);
-        
+        builder.HasKey(x => x.Id);
+
         builder.Property(x => x.TelegramUserId)
             .IsRequired();
-        
-        builder.HasIndex(x => x.TelegramUserId)
-            .IsUnique();
-        
-        builder
-            .HasOne(x => x.User)
-            .WithOne(x => x.Profile)
-            .HasForeignKey<UserProfile>(x => x.TelegramUserId)
+
+        builder.HasOne(up => up.User)
+            .WithOne(u => u.Profile)
+            .HasForeignKey<UserProfile>(up => up.TelegramUserId)
+            .HasPrincipalKey<ApplicationUser>(u => u.TelegramUserId)
             .IsRequired();
+
+        builder.HasOne(up => up.NotificationSettings)
+            .WithOne(ns => ns.UserProfile)
+            .HasForeignKey<NotificationSettings>(ns => ns.TelegramUserId)
+            .IsRequired(false);
     }
 }

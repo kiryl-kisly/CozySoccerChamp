@@ -22,16 +22,4 @@ public class UserProfileController(IUserService userService) : ControllerBase
         
         return await userService.ChangeUsernameAsync(telegramUserId, newUserName);
     }
-    
-    /// <summary>
-    ///     Включить/выключить отправку уведомлений пользователю
-    /// </summary>
-    /// <returns></returns>
-    [HttpPost]
-    public async Task<UserProfileResponse> ToggleNotification(bool isEnabled)
-    {
-        var telegramUserId = HttpContext.GetTelegramUserId();
-
-        return await userService.ToggleNotificationAsync(telegramUserId, isEnabled);
-    }
 }

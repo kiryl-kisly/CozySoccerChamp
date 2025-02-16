@@ -11,12 +11,15 @@ public class MappingProfile : Profile
     {
         CreateMap<ApplicationUser, UserProfileResponse>()
             .ForMember(dest => dest.TelegramUserId, opt => opt.MapFrom(src => src.TelegramUserId))
-            .ForMember(dest => dest.IsEnabledNotification, opt => opt.MapFrom(src => src.Profile.IsEnabledNotification))
             .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>
                 src.UserName
                 ?? (string.IsNullOrEmpty(src.TelegramUserName)
                     ? $"{src.TelegramFirstName} {src.TelegramLastName}"
                     : src.TelegramUserName)))
+            .ForMember(dest => dest.NotificationSettings, opt => opt.MapFrom(src => src.Profile.NotificationSettings))
+            .ReverseMap();
+
+        CreateMap<NotificationSettings, NotificationSettingsResponse>()
             .ReverseMap();
 
         CreateMap<Match, MatchResponse>()
@@ -39,20 +42,20 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ExtraTime, opt => opt.MapFrom(src => GetScore(src.ExtraTime)))
             .ForMember(dest => dest.Penalties, opt => opt.MapFrom(src => GetScore(src.Penalties)))
             .ReverseMap();
-        
+
         CreateMap<Prediction, PredictionRequest>()
             .ForMember(dest => dest.MatchId, opt => opt.MapFrom(src => src.MatchId))
             .ForPath(dest => dest.Prediction!.PredictedHomeScore, opt => opt.MapFrom(src => src.PredictedHomeScore))
             .ForPath(dest => dest.Prediction!.PredictedAwayScore, opt => opt.MapFrom(src => src.PredictedAwayScore))
             .ReverseMap();
-        
+
         CreateMap<Prediction, PredictionResponse>()
             .ForMember(dest => dest.MatchId, opt => opt.MapFrom(src => src.MatchId))
             .ForMember(dest => dest.PredictedHomeScore, opt => opt.MapFrom(src => src.PredictedHomeScore))
             .ForMember(dest => dest.PredictedAwayScore, opt => opt.MapFrom(src => src.PredictedAwayScore))
             .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
             .ReverseMap();
-        
+
         CreateMap<Competition, CompetitionResponse>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
             .ForMember(dest => dest.EmblemUrl, opt => opt.MapFrom(src => src.EmblemUrl))

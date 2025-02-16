@@ -1,3 +1,5 @@
+using CozySoccerChamp.Application.DataProviders;
+using CozySoccerChamp.Application.DataProviders.Abstractions;
 using CozySoccerChamp.Application.Mappers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,21 +11,40 @@ public static class ServiceCollectionExtensions
     {
         services.AddAutoMapper(typeof(MappingProfile));
 
-        services.AddInternalServices();
+        services
+            .AddServices()
+            .AddDataProviders();
 
         return services;
     }
 
-    private static IServiceCollection AddInternalServices(this IServiceCollection services)
+    private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<ITelegramHandler, TelegramHandler>();
+
+        services.AddScoped<IInitDataService, InitDataService>();
+        
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<INotificationService, NotificationService>();
 
         services.AddScoped<ICompetitionService, CompetitionService>();
         services.AddScoped<IMatchService, MatchService>();
         services.AddScoped<IPredictionService, PredictionService>();
         services.AddScoped<ILeaderboardService, LeaderboardService>();
 
+        return services;
+    }
+
+    private static IServiceCollection AddDataProviders(this IServiceCollection services)
+    {
+        services.AddScoped<IResponseDataProvider, CompetitionDataProvider>();
+        services.AddScoped<IResponseDataProvider, UserProfileDataProvider>();
+        services.AddScoped<IResponseDataProvider, MatchDataProvider>();
+        services.AddScoped<IResponseDataProvider, PredictionDataProvider>();
+        services.AddScoped<IResponseDataProvider, LeaderboardDataProvider>();
+        
+        services.AddScoped<IUserProfileDataProvider, LeaderboardDataProvider>();
+        
         return services;
     }
 }

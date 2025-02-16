@@ -13,9 +13,11 @@ public class MatchController(IMatchService matchService) : ControllerBase
     /// </summary>
     [HttpGet]
     [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
-    public async Task<IReadOnlyCollection<MatchResponse>> GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        return await matchService.GetAllAsync();
+        var response = await matchService.GetAllAsync();
+
+        return Ok(response);
     }
 
     /// <summary>
@@ -23,18 +25,22 @@ public class MatchController(IMatchService matchService) : ControllerBase
     /// </summary>
     /// <param name="matchId"> Уникальный идентификатор матча </param>
     [HttpGet("{matchId}")]
-    public async Task<MatchResponse> Get([FromRoute] int matchId)
+    public async Task<IActionResult> Get([FromRoute] int matchId)
     {
-        return await matchService.GetByIdAsync(matchId);
+        var response = await matchService.GetByIdAsync(matchId);
+
+        return Ok(response);
     }
-    
+
     /// <summary>
     ///     Получить информацию по начатым или завершенным матчам
     /// </summary>
     [HttpGet]
     [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
-    public async Task<IReadOnlyCollection<MatchResponse>> GetStartedOrFinished()
+    public async Task<IActionResult> GetStartedOrFinished()
     {
-        return await matchService.GetStartedOrFinishedAsync();
+        var response = await matchService.GetStartedOrFinishedAsync();
+
+        return Ok(response);
     }
 }

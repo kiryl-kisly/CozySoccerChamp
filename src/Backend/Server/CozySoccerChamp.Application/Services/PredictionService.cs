@@ -42,7 +42,7 @@ public class PredictionService(
         }
     }
 
-    public async Task<IReadOnlyCollection<PredictionResponse>> GetAllByTelegramUserIdAsync(long telegramUserId)
+    public async Task<IReadOnlyCollection<PredictionResponse>> GetAllByUserIdAsync(long telegramUserId)
     {
         var predictions = await predictionRepository.GetAllAsQueryable(asNoTracking: true)
             .Where(x => x.TelegramUserId == telegramUserId)

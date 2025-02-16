@@ -13,8 +13,10 @@ public class LeaderboardController(ILeaderboardService leaderboardService): Cont
     /// </summary>
     [HttpGet]
     [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
-    public async Task<IReadOnlyCollection<LeaderboardResponse>> Get()
+    public async Task<IActionResult> Get()
     {
-        return await leaderboardService.GetLeaderboardAsync();
+        var response = await leaderboardService.GetLeaderboardAsync();
+        
+        return Ok(response);
     }
 }

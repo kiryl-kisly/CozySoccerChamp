@@ -2,11 +2,9 @@ using CozySoccerChamp.Application.Models.Responses.Soccer;
 
 namespace CozySoccerChamp.Application.Models.Responses;
 
-public record Response
-{
-    public UserProfileResponse? UserProfile { get; set; }
-    public CompetitionResponse? Competition { get; set; }
-    public IReadOnlyCollection<MatchResponse>? Matches { get; set; }
-    public IReadOnlyCollection<PredictionResponse>? Predictions { get; set; }
-    public IReadOnlyCollection<LeaderboardResponse>? Leaderboard { get; set; }
-}
+public record Response(
+    UserProfileResponse? UserProfile,
+    CompetitionResponse? Competition,
+    IReadOnlyCollection<MatchResponse>? Matches,
+    IReadOnlyCollection<PredictionResponse>? Predictions,
+    IReadOnlyCollection<LeaderboardResponse>? Leaderboard);
