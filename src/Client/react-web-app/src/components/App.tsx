@@ -11,6 +11,7 @@ import { HapticPage } from '../pages/SettingsPage/Haptics/HapticPage'
 import { LanguagePage } from '../pages/SettingsPage/Languages/LanguagePage'
 import { NotificationPage } from '../pages/SettingsPage/Notifications/NotificationPage'
 import { OtherPage } from '../pages/SettingsPage/Others/OtherPage'
+import { ChangeUserNamePage } from '../pages/SettingsPage/Profiles/ChangeUserNamePage'
 import { ProfilePage } from '../pages/SettingsPage/Profiles/ProfilePage'
 import { SettingsPage } from '../pages/SettingsPage/SettingsPage'
 import { TeamPage } from '../pages/TeamPage/TeamPage'
@@ -18,6 +19,7 @@ import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
 import { setNotificationSettings } from '../store/slices/notificationSlice'
 import { setPredictions } from '../store/slices/predictionsSlice'
+import { setUsername } from '../store/slices/userProfileSlice'
 import './App.css'
 import { HeaderBar } from './HeaderBar/HeaderBar'
 import { Menu } from './Menu/Menu'
@@ -41,6 +43,9 @@ export function App() {
 
       if (response.predictions) {
         dispatch(setPredictions(response.predictions))
+      }
+      if (response.userProfile?.userName) {
+        dispatch(setUsername(response.userProfile.userName))
       }
       if (response.userProfile?.notificationSettings) {
         dispatch(setNotificationSettings(response.userProfile.notificationSettings))
@@ -70,6 +75,7 @@ export function App() {
                   <Route path='team' element={<TeamPage />} />
                   <Route path='settings' element={<SettingsPage />} />
                   <Route path='settings/profile' element={<ProfilePage />} />
+                  <Route path='settings/profile/changeUsername' element={<ChangeUserNamePage />} />
                   <Route path='settings/notifications' element={<NotificationPage />} />
                   <Route path='settings/haptic' element={<HapticPage />} />
                   <Route path='settings/language' element={<LanguagePage />} />
