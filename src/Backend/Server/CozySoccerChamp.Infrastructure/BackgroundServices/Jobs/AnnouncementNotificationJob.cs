@@ -80,7 +80,7 @@ public sealed class AnnouncementNotificationJob(
     private async Task<IReadOnlyList<long>> GetUserIdsWithAnnouncementsEnabledAsync()
     {
         var users = await userRepository.GetAllAsQueryable()
-            .Where(u => u.Profile.NotificationSettings.IsAnnouncementEnabled)
+            .Where(u => u.Profile.NotificationSettings.IsAnnouncement)
             .Select(x => x.TelegramUserId)
             .ToListAsync();
 
@@ -158,7 +158,7 @@ public sealed class AnnouncementNotificationJob(
 
                 var user = await userRepository.FindAsync(x => x.TelegramUserId == userId, x => x.Profile.NotificationSettings);
                 
-                user!.Profile.NotificationSettings.IsAnnouncementEnabled = false;
+                user!.Profile.NotificationSettings.IsAnnouncement = false;
                 await userRepository.UpdateAsync(user);
             }
             catch (Exception ex)

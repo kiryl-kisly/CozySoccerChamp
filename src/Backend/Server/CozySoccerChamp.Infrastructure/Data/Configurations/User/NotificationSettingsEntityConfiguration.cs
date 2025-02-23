@@ -17,16 +17,16 @@ public class NotificationSettingsEntityConfiguration : IEntityTypeConfiguration<
             .HasPrincipalKey<UserProfile>(up => up.TelegramUserId)
             .IsRequired(false);
 
-        builder.Property(x => x.IsAnnouncementEnabled)
+        builder.Property(x => x.IsAnnouncement)
             .IsRequired();
 
-        builder.Property(x => x.IsReminderEnabled)
+        builder.Property(x => x.IsReminder)
             .IsRequired();
 
         builder.Property(x => x.ReminderInterval)
             .IsRequired();
 
-        builder.Property(x => x.IsForceNotificationEnabled)
+        builder.Property(x => x.IsForceReminder)
             .IsRequired();
         
         builder.Property(x => x.LastReminderNotified)

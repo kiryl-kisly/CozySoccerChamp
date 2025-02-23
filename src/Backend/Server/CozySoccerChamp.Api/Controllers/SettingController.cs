@@ -5,17 +5,17 @@ using CozySoccerChamp.Infrastructure.Filters;
 namespace CozySoccerChamp.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]/")]
 [Produces("application/json")]
 [Consumes("application/json")]
 [TypeFilter(typeof(AuthenticationTelegramRequestFilter))]
-public class NotificationController(INotificationService notificationService) : ControllerBase
+public class SettingController(INotificationService notificationService) : ControllerBase
 {
     /// <summary>
     ///     Обновить настройки уведомлений
     /// </summary>
-    [HttpPut]
-    public async Task<ActionResult<NotificationSettingsResponse>> UpdateNotificationSettings([FromBody] NotificationSettingsRequest request)
+    [HttpPut("Notifications/[action]")]
+    public async Task<ActionResult<NotificationSettingsResponse>> Update([FromBody] NotificationSettingsRequest request)
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
         

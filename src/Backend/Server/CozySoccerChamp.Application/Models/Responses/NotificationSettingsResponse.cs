@@ -1,8 +1,7 @@
 namespace CozySoccerChamp.Application.Models.Responses;
 
 public record NotificationSettingsResponse(
-    bool IsAnnouncementEnabled,
-    bool IsReminderEnabled,
+    bool IsAnnouncement,
+    bool IsReminder,
     int ReminderInterval,
-    bool IsForceNotificationEnabled,
-    DateTime? LastReminderNotified);
+    bool IsForceReminder);

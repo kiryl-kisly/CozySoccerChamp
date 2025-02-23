@@ -47,7 +47,7 @@ public sealed class ReminderNotificationJob(
     private async Task<IReadOnlyCollection<ApplicationUser>> GetUsersWithRemindersEnabledAsync()
     {
         return await userRepository.GetAllAsQueryable(includes: x => x.Profile.NotificationSettings)
-            .Where(u => u.Profile != null && u.Profile.NotificationSettings.IsReminderEnabled)
+            .Where(u => u.Profile != null && u.Profile.NotificationSettings.IsReminder)
             .ToListAsync();
     }
 
@@ -104,7 +104,7 @@ public sealed class ReminderNotificationJob(
             catch (ApiRequestException ex) when (ex.ErrorCode == 403)
             {
                 logger.LogWarning("User {UserId} blocked the bot. Disabling reminders.", user.TelegramUserId);
-                settings.IsReminderEnabled = false;
+                settings.IsReminder = false;
                 settingsToUpdate.Add(settings);
             }
             catch (Exception ex)

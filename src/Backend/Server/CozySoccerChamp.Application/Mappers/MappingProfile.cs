@@ -21,6 +21,9 @@ public class MappingProfile : Profile
 
         CreateMap<NotificationSettings, NotificationSettingsResponse>()
             .ReverseMap();
+        
+        CreateMap<NotificationSettings, NotificationSettingsRequest>()
+            .ReverseMap();
 
         CreateMap<Match, MatchResponse>()
             .ForMember(dest => dest.MatchId, opt => opt.MapFrom(src => src.Id))

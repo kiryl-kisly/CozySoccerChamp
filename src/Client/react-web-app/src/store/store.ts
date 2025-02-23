@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import notificationReducer from './slices/notificationSlice'
 import predictionsReducer from './slices/predictionsSlice'
-import userProfileReducer from './slices/userProfileSlice'
 
 export const store = configureStore({
 	reducer: {
-		userProfile: userProfileReducer,
 		predictions: predictionsReducer,
+		notification: notificationReducer,
 	},
 })
 

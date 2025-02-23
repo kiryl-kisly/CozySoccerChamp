@@ -11,13 +11,17 @@ public class NotificationService(INotificationSettingsRepository notificationSet
     {
         if (!Intervals.Contains(request.ReminderInterval))
             throw new ArgumentException($"Not valid interval: {request.ReminderInterval}");
-        
+
         var settings = await notificationSettingsRepository.FindAsync(x => x.TelegramUserId == telegramUserId);
         if (settings is null)
             throw new ArgumentException($"{nameof(settings)} not found");
 
-        settings = mapper.Map<NotificationSettings>(request);
-        var result = await notificationSettingsRepository.AddAsync(settings);
+        settings.IsAnnouncement = request.IsAnnouncement;
+        settings.IsReminder = request.IsReminder;
+        settings.IsForceReminder = request.IsForceReminder;
+        settings.ReminderInterval = request.ReminderInterval;
+
+        var result = await notificationSettingsRepository.UpdateAsync(settings);
 
         return mapper.Map<NotificationSettingsResponse>(result);
     }
