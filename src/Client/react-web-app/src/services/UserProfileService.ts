@@ -9,5 +9,5 @@ export const changeUserName = async (newUserName: string) => {
 			}
 		})
 
-	return response.data
+	return response
 }

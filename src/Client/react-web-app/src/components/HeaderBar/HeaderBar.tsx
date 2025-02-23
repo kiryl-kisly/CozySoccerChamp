@@ -12,7 +12,7 @@ export function HeaderBar({ userProfile }: Props) {
 	return (
 		<div className="wrapper-top-bar">
 
-			<UserProfile userProfile={userProfile} />
+			<UserProfile />
 			<PointInfo userProfile={userProfile} />
 			<InfoDetail />
 

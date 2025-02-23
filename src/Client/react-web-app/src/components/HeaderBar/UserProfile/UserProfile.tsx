@@ -1,18 +1,17 @@
 import { GiBearFace } from 'react-icons/gi'
-import { IUserProfileResponse } from '../../../services/interfaces/Responses/IUserProfileResponse'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../store/store'
 
-interface Props {
-	userProfile: IUserProfileResponse | null
-}
+export function UserProfile() {
+	const username = useSelector((state: RootState) => state.user.username)
 
-export function UserProfile({ userProfile }: Props) {
 	return (
 		<div className="flex items-center space-x-2">
 			<div className="p-1 rounded-lg">
 				<GiBearFace size={25} />
 			</div>
 			<div>
-				<p className="text-sm">{userProfile?.userName}</p>
+				<p className="text-sm">{username}</p>
 			</div>
 		</div>
 	)
