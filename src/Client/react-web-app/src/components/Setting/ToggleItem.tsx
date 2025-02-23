@@ -5,12 +5,13 @@ interface Props {
 	isActive: boolean
 	onClick: () => void
 	disabled?: boolean
+	isLast?: boolean
 }
 
-export function ToggleItem({ title, isActive, onClick, disabled }: Props) {
+export function ToggleItem({ title, isActive, onClick, disabled, isLast }: Props) {
 	return (
 		<div
-			className={`flex justify-between items-center px-4 py-[6px] text-sm ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+			className={`flex justify-between items-center px-4 py-[6px] text-sm relative ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
 				}`}
 			onClick={disabled ? undefined : onClick} // Блокируем onClick, если disabled
 		>
@@ -20,6 +21,7 @@ export function ToggleItem({ title, isActive, onClick, disabled }: Props) {
 					<div className={`toggle-circle ${isActive ? 'translate-x-8' : 'translate-x-0'}`} />
 				</div>
 			</div>
+			{!isLast && <div className="absolute bottom-0 left-4 right-0 h-[1px] bg-gray-600 mt-5" />}
 		</div>
 	)
 }

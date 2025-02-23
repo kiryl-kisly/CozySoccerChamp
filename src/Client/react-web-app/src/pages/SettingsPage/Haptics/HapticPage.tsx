@@ -6,6 +6,8 @@ export function HapticPage() {
 			<div>
 				Coming soon...
 			</div>
+
+			<div className="mb-[75px]"></div>
 		</>
 	)
 }

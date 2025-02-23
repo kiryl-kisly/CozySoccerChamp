@@ -1,6 +1,5 @@
-import { useBackButton } from '@telegram-apps/sdk-react'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ToggleItem } from '../../../components/Setting/ToggleItem'
 
 export function OtherPage() {
@@ -17,26 +16,30 @@ export function OtherPage() {
 		setIsHideFinishedMatches(!isHideFinishedMatches)
 	}
 
-	const navigate = useNavigate()
-	const backButton = useBackButton()
+	// const navigate = useNavigate()
+	// const backButton = useBackButton()
 
-	useEffect(() => {
-		backButton.show()
-		const handleBackClick = () => navigate(-1)
-		backButton.on("click", handleBackClick)
+	// useEffect(() => {
+	// 	backButton.show()
+	// 	const handleBackClick = () => navigate(-1)
+	// 	backButton.on("click", handleBackClick)
 
-		return () => {
-			backButton.hide()
-			backButton.off("click", handleBackClick)
-		}
-	}, [backButton, navigate])
+	// 	return () => {
+	// 		backButton.hide()
+	// 		backButton.off("click", handleBackClick)
+	// 	}
+	// }, [backButton, navigate])
 
 	return (
 		<>
 			<h1 className='title-page'>Other Settings</h1>
 
 			<div className="bg-[var(--gray-dark)] rounded-[10px] shadow w-full max-w-xl mx-auto">
-				<ToggleItem title={'Hide Finished Matches'} isActive={isHideFinishedMatches} onClick={toggleIsHideFinishedMatches} />
+				<ToggleItem
+					title={'Hide Finished Matches'}
+					isActive={isHideFinishedMatches}
+					onClick={toggleIsHideFinishedMatches}
+					isLast />
 			</div>
 			<p className='text-gray-400 ml-4 font-thin text-sm mt-2'>
 				Hide information for finished matches in{" "}
@@ -44,6 +47,8 @@ export function OtherPage() {
 					Matches Page
 				</Link>
 			</p>
+
+			<div className="mb-[75px]"></div>
 		</>
 	)
 }

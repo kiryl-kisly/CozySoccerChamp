@@ -20,7 +20,7 @@ export const SettingItem = ({
 }) => {
 	return (
 		<Link to={toLink} className="block">
-			<div className={`flex justify-between items-center px-4 py-[6px] border-gray-500 hover:bg-gray-600 cursor-pointer relative ${isFirst ? 'rounded-t-[10px]' : ''} ${isLast ? 'rounded-b-[10px]' : ''}`}>
+			<div className={`flex justify-between items-center px-4 py-[6px] hover:bg-gray-600 cursor-pointer relative ${isFirst ? 'rounded-t-[10px]' : ''} ${isLast ? 'rounded-b-[10px]' : ''}`}>
 				<div
 					className='w-8 h-8 flex items-center justify-center text-green-500 rounded-lg mr-4'
 					style={{ backgroundColor: iconBgColor }}>

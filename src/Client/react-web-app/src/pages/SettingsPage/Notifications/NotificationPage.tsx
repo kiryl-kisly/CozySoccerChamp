@@ -1,8 +1,6 @@
-import { useBackButton } from '@telegram-apps/sdk-react'
 import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
 import { Popup } from '../../../components/Popup/Popup'
 import { IntervalItem } from '../../../components/Setting/IntervalItem'
 import { ToggleItem } from '../../../components/Setting/ToggleItem'
@@ -17,19 +15,19 @@ export function NotificationPage() {
 
 	const [initialSettings, setInitialSettings] = useState(notificationSettings)
 
-	const navigate = useNavigate()
-	const backButton = useBackButton()
+	// const navigate = useNavigate()
+	// const backButton = useBackButton()
 
-	useEffect(() => {
-		backButton.show()
-		const handleBackClick = () => navigate(-1)
-		backButton.on("click", handleBackClick)
+	// useEffect(() => {
+	// 	backButton.show()
+	// 	const handleBackClick = () => navigate(-1)
+	// 	backButton.on("click", handleBackClick)
 
-		return () => {
-			backButton.hide()
-			backButton.off("click", handleBackClick)
-		}
-	}, [backButton, navigate])
+	// 	return () => {
+	// 		backButton.hide()
+	// 		backButton.off("click", handleBackClick)
+	// 	}
+	// }, [backButton, navigate])
 
 	useEffect(() => {
 		setInitialSettings(notificationSettings)
@@ -84,6 +82,7 @@ export function NotificationPage() {
 					title="Announcement"
 					isActive={notificationSettings.isAnnouncement}
 					onClick={() => dispatch(setNotificationSettings({ ...notificationSettings, isAnnouncement: !notificationSettings.isAnnouncement }))}
+					isLast
 				/>
 			</div>
 			<p className="text-gray-400 ml-4 font-thin text-sm mt-2">
@@ -128,6 +127,8 @@ export function NotificationPage() {
 			</button>
 
 			{popupMessage && <Popup message={popupMessage} isError={isError} duration={2000} />}
+
+			<div className="mb-[75px]"></div>
 		</>
 	)
 }
