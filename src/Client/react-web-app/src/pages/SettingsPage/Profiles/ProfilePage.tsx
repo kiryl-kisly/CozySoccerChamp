@@ -7,6 +7,7 @@ import { SettingItem } from '../../../components/Setting/SettingItem'
 import { RootState } from '../../../store/store'
 
 export function ProfilePage() {
+	const username = useSelector((state: RootState) => state.user.username)
 	const navigate = useNavigate()
 	const backButton = useBackButton()
 
@@ -20,7 +21,6 @@ export function ProfilePage() {
 			backButton.off("click", handleBackClick)
 		}
 	}, [backButton, navigate])
-	const username = useSelector((state: RootState) => state.user.username)
 
 	return (
 		<>

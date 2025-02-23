@@ -14,6 +14,7 @@ export function ChangeUserNamePage() {
 	const initialUsername = useSelector((state: RootState) => state.user.username)
 
 	const [currentUsername, setCurrentUsername] = useState(initialUsername)
+	const [loading, setLoading] = useState(false)
 	const [isValid, setIsValid] = useState(true)
 	const [popupMessage, setPopupMessage] = useState("")
 	const [isError, setIsError] = useState(false)
@@ -38,6 +39,8 @@ export function ChangeUserNamePage() {
 		if (!isChanged || !isValid)
 			return
 
+		setLoading(true)
+
 		try {
 			const response = await changeUserName(currentUsername)
 
@@ -54,6 +57,8 @@ export function ChangeUserNamePage() {
 
 			setPopupMessage(errorMessage)
 			setIsError(true)
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -81,10 +86,10 @@ export function ChangeUserNamePage() {
 					? "bg-green-500"
 					: "bg-gray-500 cursor-not-allowed"
 					}`}
-				disabled={!isChanged || !isValid}
+				disabled={!isChanged || !isValid || loading}
 				onClick={handleSave}
 			>
-				Save
+				{loading ? "Saving..." : "Save"}
 			</button>
 
 			{popupMessage && <Popup message={popupMessage} isError={isError} duration={2000} />}
