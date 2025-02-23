@@ -16,8 +16,7 @@ public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Appli
         builder.Property(x => x.UserName)
             .HasMaxLength(50);
 
-        builder
-            .HasOne(x => x.Profile)
+        builder.HasOne(x => x.Profile)
             .WithOne(x => x.User)
             .HasForeignKey<UserProfile>(up => up.TelegramUserId)
             .HasPrincipalKey<ApplicationUser>(u => u.TelegramUserId)

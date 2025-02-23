@@ -6,5 +6,6 @@ public record UserProfileResponse
     public string UserName { get; init; } = string.Empty;
     public double? Points { get; init; } = 0;
     public int Place { get; init; }
-    public bool IsEnabledNotification { get; init; }
+    
+    public NotificationSettingsResponse? NotificationSettings { get; init; }
 }

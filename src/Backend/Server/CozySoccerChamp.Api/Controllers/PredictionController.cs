@@ -16,12 +16,14 @@ public class PredictionController(IPredictionService predictionService) : Contro
     /// </summary>
     /// <param name="request"> Запрос на создание предикта </param>
     [HttpPost]
-    public async Task<PredictionResponse> MakePrediction([FromBody] PredictionRequest request)
+    public async Task<IActionResult> MakePrediction([FromBody] PredictionRequest request)
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
         request.TelegramUserId = telegramUserId;
-        
-        return await predictionService.MakePredictionAsync(request);
+
+        var response = await predictionService.MakePredictionAsync(request);
+
+        return Ok(response);
     }
 
     /// <summary>
@@ -29,19 +31,23 @@ public class PredictionController(IPredictionService predictionService) : Contro
     /// </summary>
     [HttpGet("{matchId}")]
     [ResponseCache(Duration = 120, VaryByHeader = nameof(HeaderNames.Accept))]
-    public async Task<IReadOnlyCollection<PredictionResponse>> GetPredictionsByMatchId([FromRoute] int matchId)
+    public async Task<IActionResult> GetPredictionsByMatchId([FromRoute] int matchId)
     {
-        return await predictionService.GetPredictionByMatchIdAsync(matchId);
+        var response = await predictionService.GetByMatchIdAsync(matchId);
+
+        return Ok(response);
     }
-    
+
     /// <summary>
     ///     Получить все прогнозы игрока
     /// </summary>
     [HttpGet]
-    public async Task<IReadOnlyCollection<PredictionResponse>> GetPredictions()
+    public async Task<IActionResult> GetPredictions()
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
-        
-        return await predictionService.GetAllByTelegramUserIdAsync(telegramUserId);
+
+        var response = await predictionService.GetAllByUserIdAsync(telegramUserId);
+
+        return Ok(response);
     }
 }

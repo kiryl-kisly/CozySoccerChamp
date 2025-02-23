@@ -2,9 +2,9 @@ import { useBackButton } from '@telegram-apps/sdk-react'
 import { format } from 'date-fns'
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { IMatchResponse } from '../../services/interfaces/Responses/IMatchResponse'
-import { IPredictionResponse } from '../../services/interfaces/Responses/IPredictionResponse'
-import { getPredictionsByMatchId } from '../../services/PredictionService'
+import { IMatchResponse } from '../../../services/interfaces/Responses/IMatchResponse'
+import { IPredictionResponse } from '../../../services/interfaces/Responses/IPredictionResponse'
+import { getPredictionsByMatchId } from '../../../services/PredictionService'
 import './PredictionDetailPage.css'
 
 export function PredictionDetailPage() {

@@ -8,6 +8,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<ApplicationUser> Users => Set<ApplicationUser>();
     public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
+    public DbSet<NotificationSettings> NotificationSettings => Set<NotificationSettings>();
     public DbSet<Competition> Competitions => Set<Competition>();
     public DbSet<Match> Matches => Set<Match>();
     public DbSet<MatchResult> MatchResults => Set<MatchResult>();
@@ -17,14 +18,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     protected override void OnModelCreating(ModelBuilder builder)
     {
         // User
-        new ApplicationUserEntityConfiguration().Configure(builder.Entity<ApplicationUser>());
-        new UserProfileEntityConfiguration().Configure(builder.Entity<UserProfile>());
-
+        builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
+        builder.ApplyConfiguration(new UserProfileEntityConfiguration());
+        builder.ApplyConfiguration(new NotificationSettingsEntityConfiguration());
+        
         // Soccer
-        new CompetitionEntityConfiguration().Configure(builder.Entity<Competition>());
-        new MatchEntityConfiguration().Configure(builder.Entity<Match>());
-        new MatchResultEntityConfiguration().Configure(builder.Entity<MatchResult>());
-        new TeamEntityConfiguration().Configure(builder.Entity<Team>());
-        new PredictionEntityConfiguration().Configure(builder.Entity<Prediction>());
+        builder.ApplyConfiguration(new CompetitionEntityConfiguration());
+        builder.ApplyConfiguration(new MatchEntityConfiguration());
+        builder.ApplyConfiguration(new MatchResultEntityConfiguration());
+        builder.ApplyConfiguration(new TeamEntityConfiguration());
+        builder.ApplyConfiguration(new PredictionEntityConfiguration());
     }
 }

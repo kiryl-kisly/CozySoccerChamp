@@ -39,7 +39,8 @@ public class MatchService(IMatchRepository matchRepository, IMapper mapper) : IM
                 x => x.TeamAway,
                 x => x.MatchResult)
             .Where(x => x.MatchResult.Status == MatchResultStatus.Started || x.MatchResult.Status == MatchResultStatus.Finished)
-            .OrderByDescending(x => x.Id)
+            .OrderByDescending(x => x.MatchTime)
+            .ThenByDescending(x => x.Id)
             .ToListAsync();
 
         return mapper.Map<IReadOnlyCollection<MatchResponse>>(matches);

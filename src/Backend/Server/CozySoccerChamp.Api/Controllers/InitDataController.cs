@@ -1,3 +1,4 @@
+using CozySoccerChamp.Application.Services;
 using CozySoccerChamp.Infrastructure.Extensions;
 using CozySoccerChamp.Infrastructure.Filters;
 
@@ -8,12 +9,7 @@ namespace CozySoccerChamp.Api.Controllers;
 [Produces("application/json")]
 [Consumes("application/json")]
 [TypeFilter(typeof(AuthenticationTelegramRequestFilter))]
-public class InitDataController(
-    ICompetitionService competitionService,
-    IMatchService matchService,
-    IUserService userService,
-    IPredictionService predictionService,
-    ILeaderboardService leaderboardService) : ControllerBase
+public class InitDataController(IInitDataService initDataService) : ControllerBase
 {
     /// <summary>
     ///     Получить всё информацию при первоночальной загрузке веб-приложения
@@ -22,26 +18,8 @@ public class InitDataController(
     public async Task<IActionResult> Get()
     {
         var telegramUserId = HttpContext.GetTelegramUserId();
-
-        var competition = await competitionService.GetById(1);
-        var userProfile = await userService.GetUserByTelegramId(telegramUserId);
-        var matches = await matchService.GetAllAsync();
-        var predictions = await predictionService.GetAllByTelegramUserIdAsync(telegramUserId);
-        var leaderboard = await leaderboardService.GetLeaderboardAsync();
-
-        var leaderboardForUser = leaderboard.FirstOrDefault(x => x.TelegramUserId == telegramUserId);
-        if (leaderboardForUser is not null)
-            userProfile = userProfile with { Place = leaderboardForUser.Place, Points = leaderboardForUser.Points };
-
-        var response = new Response
-        {
-            Competition = competition,
-            UserProfile = userProfile,
-            Matches = matches,
-            Predictions = predictions,
-            Leaderboard = leaderboard
-        };
-
+        var response = await initDataService.GetAsync(telegramUserId);
+        
         return Ok(response);
     }
 }

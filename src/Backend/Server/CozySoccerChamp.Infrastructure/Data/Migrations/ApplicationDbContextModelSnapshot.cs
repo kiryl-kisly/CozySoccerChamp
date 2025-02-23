@@ -234,21 +234,52 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CozySoccerChamp.Domain.Entities.User.UserProfile", b =>
+            modelBuilder.Entity("CozySoccerChamp.Domain.Entities.User.NotificationSettings", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsAnnouncement")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsForceReminder")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsReminder")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastReminderNotified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ReminderInterval")
+                        .HasColumnType("integer");
+
                     b.Property<long>("TelegramUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("IsEnabledNotification")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("LastNotified")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("TelegramUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("TelegramUserId")
                         .IsUnique();
+
+                    b.ToTable("NotificationSettings");
+                });
+
+            modelBuilder.Entity("CozySoccerChamp.Domain.Entities.User.UserProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("TelegramUserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.ToTable("UserProfiles");
                 });
@@ -305,6 +336,16 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CozySoccerChamp.Domain.Entities.User.NotificationSettings", b =>
+                {
+                    b.HasOne("CozySoccerChamp.Domain.Entities.User.UserProfile", "UserProfile")
+                        .WithOne("NotificationSettings")
+                        .HasForeignKey("CozySoccerChamp.Domain.Entities.User.NotificationSettings", "TelegramUserId")
+                        .HasPrincipalKey("CozySoccerChamp.Domain.Entities.User.UserProfile", "TelegramUserId");
+
+                    b.Navigation("UserProfile");
+                });
+
             modelBuilder.Entity("CozySoccerChamp.Domain.Entities.User.UserProfile", b =>
                 {
                     b.HasOne("CozySoccerChamp.Domain.Entities.User.ApplicationUser", "User")
@@ -341,6 +382,11 @@ namespace CozySoccerChamp.Infrastructure.Data.Migrations
                     b.Navigation("Predictions");
 
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("CozySoccerChamp.Domain.Entities.User.UserProfile", b =>
+                {
+                    b.Navigation("NotificationSettings");
                 });
 #pragma warning restore 612, 618
         }

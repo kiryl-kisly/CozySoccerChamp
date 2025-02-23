@@ -1,16 +1,27 @@
+using CozySoccerChamp.Application.DataProviders.Abstractions;
 using CozySoccerChamp.Domain.Entities.User;
 
 namespace CozySoccerChamp.Application.Services;
 
-public class UserService(IApplicationUserRepository userRepository, IMapper mapper) : IUserService
+public class UserService(
+    IApplicationUserRepository userRepository,
+    IEnumerable<IUserProfileDataProvider> providers,
+    IMapper mapper) : IUserService
 {
-    public async Task<UserProfileResponse> GetUserByTelegramId(long telegramUserId)
+    public async Task<UserProfileResponse> GetByUserId(long telegramUserId)
     {
-        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile);
-        if (user is null)
+        var userEntity = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile.NotificationSettings);
+        if (userEntity is null)
             throw new ArgumentException($"{nameof(User)} not found");
 
-        return mapper.Map<UserProfileResponse>(user);
+        var userProfile = mapper.Map<UserProfileResponse>(userEntity);
+
+        foreach (var provider in providers)
+        {
+            userProfile = await provider.EnrichUserProfileAsync(userProfile, telegramUserId);
+        }
+
+        return userProfile;
     }
 
     public async Task<UserProfileResponse> CreateOrGetAsync(Update update)
@@ -21,6 +32,7 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
         var user = mapper.Map<ApplicationUser>(update.Message.Chat);
 
         var applicationUser = await userRepository.FindAsync(x => x.TelegramUserId == user.TelegramUserId, includes: x => x.Profile);
+
         if (applicationUser is not null)
             return mapper.Map<UserProfileResponse>(applicationUser);
 
@@ -36,19 +48,6 @@ public class UserService(IApplicationUserRepository userRepository, IMapper mapp
             throw new ArgumentException($"{nameof(User)} not found");
 
         user.UserName = newUserName;
-
-        await userRepository.UpdateAsync(user);
-
-        return mapper.Map<UserProfileResponse>(user);
-    }
-
-    public async Task<UserProfileResponse> ToggleNotificationAsync(long telegramUserId, bool isEnabled)
-    {
-        var user = await userRepository.FindAsync(x => x.TelegramUserId == telegramUserId, includes: x => x.Profile);
-        if (user is null)
-            throw new ArgumentException($"{nameof(User)} not found");
-
-        user.Profile.IsEnabledNotification = isEnabled;
 
         await userRepository.UpdateAsync(user);
 

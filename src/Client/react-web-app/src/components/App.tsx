@@ -5,14 +5,19 @@ import { Layout } from '../layouts/MainLayout'
 import { InfoPage } from '../pages/InfoPage/InfoPage'
 import { LeaderboardPage } from '../pages/LeaderboardPage/LeaderboardPage'
 import { MatchesPage } from '../pages/MatchesPage/MatchesPage'
-import { PredictionDetailPage } from '../pages/PredictionDetailPage/PredictionDetailPage'
+import { PredictionDetailPage } from '../pages/PredictionPage/PredictionDetailPage/PredictionDetailPage'
 import { PredictionPage } from '../pages/PredictionPage/PredictionPage'
+import { HapticPage } from '../pages/SettingsPage/Haptics/HapticPage'
+import { LanguagePage } from '../pages/SettingsPage/Languages/LanguagePage'
+import { NotificationPage } from '../pages/SettingsPage/Notifications/NotificationPage'
+import { OtherPage } from '../pages/SettingsPage/Others/OtherPage'
+import { ProfilePage } from '../pages/SettingsPage/Profiles/ProfilePage'
 import { SettingsPage } from '../pages/SettingsPage/SettingsPage'
 import { TeamPage } from '../pages/TeamPage/TeamPage'
 import { getInitData } from '../services/InitDataService'
 import { IInitDataResponse } from '../services/interfaces/Responses/IInitDataResponse'
+import { setNotificationSettings } from '../store/slices/notificationSlice'
 import { setPredictions } from '../store/slices/predictionsSlice'
-import { setInitialUserProfile } from '../store/slices/userProfileSlice'
 import './App.css'
 import { HeaderBar } from './HeaderBar/HeaderBar'
 import { Menu } from './Menu/Menu'
@@ -34,14 +39,11 @@ export function App() {
       const response = await getInitData()
       setData(response)
 
-      if (response.userProfile) {
-        dispatch(
-          setInitialUserProfile({ isEnabledNotification: response.userProfile.isEnabledNotification })
-        )
-      }
-
       if (response.predictions) {
         dispatch(setPredictions(response.predictions))
+      }
+      if (response.userProfile?.notificationSettings) {
+        dispatch(setNotificationSettings(response.userProfile.notificationSettings))
       }
     }
 
@@ -62,11 +64,17 @@ export function App() {
                 <Route path="/" element={<Layout />}>
                   <Route index element={<MatchesPage competition={data.competition} matches={data.matches} />} />
                   <Route path='matches' element={<MatchesPage competition={data.competition} matches={data.matches} />} />
+                  <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
                   <Route path="prediction" element={<PredictionPage competition={data.competition} />} />
                   <Route path="prediction/:matchId" element={<PredictionDetailPage />} />
-                  <Route path='settings' element={<SettingsPage />} />
-                  <Route path='leaderboard' element={<LeaderboardPage competition={data.competition} leaderboard={data.leaderboard} />} />
                   <Route path='team' element={<TeamPage />} />
+                  <Route path='settings' element={<SettingsPage />} />
+                  <Route path='settings/profile' element={<ProfilePage />} />
+                  <Route path='settings/notifications' element={<NotificationPage />} />
+                  <Route path='settings/haptic' element={<HapticPage />} />
+                  <Route path='settings/language' element={<LanguagePage />} />
+                  <Route path='settings/other' element={<OtherPage />} />
+
                   <Route path='info' element={<InfoPage />} />
                 </Route>
               </Routes>

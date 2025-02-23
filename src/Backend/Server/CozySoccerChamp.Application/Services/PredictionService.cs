@@ -42,7 +42,7 @@ public class PredictionService(
         }
     }
 
-    public async Task<IReadOnlyCollection<PredictionResponse>> GetAllByTelegramUserIdAsync(long telegramUserId)
+    public async Task<IReadOnlyCollection<PredictionResponse>> GetAllByUserIdAsync(long telegramUserId)
     {
         var predictions = await predictionRepository.GetAllAsQueryable(asNoTracking: true)
             .Where(x => x.TelegramUserId == telegramUserId)
@@ -51,7 +51,7 @@ public class PredictionService(
         return mapper.Map<IReadOnlyCollection<PredictionResponse>>(predictions);
     }
 
-    public async Task<IReadOnlyCollection<PredictionResponse>> GetPredictionByMatchIdAsync(int matchId)
+    public async Task<IReadOnlyCollection<PredictionResponse>> GetByMatchIdAsync(int matchId)
     {
         var predictions = await predictionRepository.GetAllAsQueryable(asNoTracking: true, includes: x => x.User)
             .Where(x => x.MatchId == matchId)

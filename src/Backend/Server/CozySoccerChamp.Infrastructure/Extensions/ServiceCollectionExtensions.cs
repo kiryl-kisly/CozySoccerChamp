@@ -39,6 +39,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+        services.AddScoped<INotificationSettingsRepository, NotificationSettingsRepository>();
 
         services.AddScoped<ICompetitionRepository, CompetitionRepository>();
         services.AddScoped<IMatchRepository, MatchRepository>();
@@ -89,7 +90,8 @@ public static class ServiceCollectionExtensions
             quartz
                 .AddJobAndTrigger<MatchDataProcessingJob>(configuration)
                 .AddJobAndTrigger<PointCalculatingJob>(configuration)
-                .AddJobAndTrigger<MatchNotificationJob>(configuration);
+                .AddJobAndTrigger<AnnouncementNotificationJob>(configuration)
+                .AddJobAndTrigger<ReminderNotificationJob>(configuration);
         });
 
         services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
