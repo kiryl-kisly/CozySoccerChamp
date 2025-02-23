@@ -38,7 +38,7 @@ export function OtherPage() {
 			<div className="bg-[var(--gray-dark)] rounded-[10px] shadow w-full max-w-xl mx-auto">
 				<ToggleItem title={'Hide Finished Matches'} isActive={isHideFinishedMatches} onClick={toggleIsHideFinishedMatches} />
 			</div>
-			<p className='text-gray-400 ml-4 font-thin mt-2'>
+			<p className='text-gray-400 ml-4 font-thin text-sm mt-2'>
 				Hide information for finished matches in{" "}
 				<Link to="/matches" className="text-blue-400 hover:underline">
 					Matches Page

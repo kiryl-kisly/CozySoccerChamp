@@ -86,7 +86,7 @@ export function NotificationPage() {
 					onClick={() => dispatch(setNotificationSettings({ ...notificationSettings, isAnnouncement: !notificationSettings.isAnnouncement }))}
 				/>
 			</div>
-			<p className="text-gray-400 ml-4 font-thin mt-2">
+			<p className="text-gray-400 ml-4 font-thin text-sm mt-2">
 				Notifications of announcements of new matchday starts.
 			</p>
 
@@ -113,7 +113,7 @@ export function NotificationPage() {
 				/>
 			</div>
 
-			<p className="text-gray-400 ml-4 font-thin mt-2">
+			<p className="text-gray-400 ml-4 font-thin text-sm mt-2">
 				Notification if you forgot to make a prediction on matches with the interval for what time it is required to send a notification.
 			</p>
 
