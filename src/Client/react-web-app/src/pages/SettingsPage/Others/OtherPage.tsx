@@ -1,5 +1,6 @@
+import { useBackButton } from '@telegram-apps/sdk-react'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ToggleItem } from '../../../components/Setting/ToggleItem'
 
 export function OtherPage() {
@@ -16,19 +17,19 @@ export function OtherPage() {
 		setIsHideFinishedMatches(!isHideFinishedMatches)
 	}
 
-	// const navigate = useNavigate()
-	// const backButton = useBackButton()
+	const navigate = useNavigate()
+	const backButton = useBackButton()
 
-	// useEffect(() => {
-	// 	backButton.show()
-	// 	const handleBackClick = () => navigate(-1)
-	// 	backButton.on("click", handleBackClick)
+	useEffect(() => {
+		backButton.show()
+		const handleBackClick = () => navigate(-1)
+		backButton.on("click", handleBackClick)
 
-	// 	return () => {
-	// 		backButton.hide()
-	// 		backButton.off("click", handleBackClick)
-	// 	}
-	// }, [backButton, navigate])
+		return () => {
+			backButton.hide()
+			backButton.off("click", handleBackClick)
+		}
+	}, [backButton, navigate])
 
 	return (
 		<>
