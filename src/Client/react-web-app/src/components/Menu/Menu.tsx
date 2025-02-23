@@ -26,7 +26,7 @@ export function Menu() {
   const [activeIndex, setActiveIndex] = useState<number>(2)
 
   useEffect(() => {
-    const currentIndex = menuItems.findIndex(item => item.path === location.pathname)
+    const currentIndex = menuItems.findIndex(item => location.pathname.startsWith(item.path))
     if (currentIndex !== -1) {
       setActiveIndex(currentIndex)
     }
