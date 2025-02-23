@@ -13,7 +13,7 @@ export function IntervalItem({ options, selected, onSelect, disabled }: Props) {
 				{options.map((option) => (
 					<div
 						key={option}
-						className={`px-3 py-1 rounded-md transition-all duration-300 ${selected === option ? 'bg-[var(--green)] text-white' : 'text-gray-300'
+						className={`px-3 py-1 rounded-md transition-all duration-100 ${selected === option ? 'bg-[var(--green)] text-white' : 'text-gray-300'
 							} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-[var(--green)] hover:text-white'}`}
 						onClick={disabled ? undefined : () => onSelect(option)} // Блокируем клик, если disabled
 					>
